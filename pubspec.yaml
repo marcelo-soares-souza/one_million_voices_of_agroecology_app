@@ -1,7 +1,6 @@
 name: one_million_voices_of_agroecology_app
 description: "One Million Voices of Agroecology App"
 homepage: "https://onemillionvoices.agroecologymap.org"
-publish_to: 'none'
 version: 0.0.1-alpha
 
 platforms:
@@ -38,4 +37,5 @@ topics:
  - agroecology
  - permaculture
  - agroforestry
- - citizen_science
+ - citizenscience
+ - freesoftware
