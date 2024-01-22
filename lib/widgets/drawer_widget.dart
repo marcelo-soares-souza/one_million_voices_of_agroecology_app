@@ -64,7 +64,7 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(
-              Icons.agriculture,
+              Icons.forest,
               size: 26,
               color: Theme.of(context).colorScheme.onBackground,
             ),
