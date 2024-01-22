@@ -1,16 +1,5 @@
-# one_million_voices_of_agroecology_app
+# [One Million Voices of Agroecology](https://onemillionvoices.agroecologymap.org/)
 
-A new Flutter project.
+This project (Source-Code) is licensed under the terms of the [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) (See LICENSE)
+All content of Plataform is licensed under [Creative Commons (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/) (See CONTENT_LICENSE.md)
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.

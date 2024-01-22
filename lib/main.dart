@@ -5,7 +5,7 @@ import 'package:one_million_voices_of_agroecology_app/screens/home.dart';
 
 final colorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
-  seedColor: Color.fromARGB(255, 17, 2, 39),
+  seedColor: const Color.fromARGB(255, 17, 2, 39),
   background: const Color.fromARGB(255, 56, 49, 66),
 );
 
