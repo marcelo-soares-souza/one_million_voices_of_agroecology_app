@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class MainDrawer extends StatelessWidget {
+class DrawerWidget extends StatelessWidget {
   final void Function(String screen) onSelectScreen;
 
-  const MainDrawer({super.key, required this.onSelectScreen});
+  const DrawerWidget({super.key, required this.onSelectScreen});
 
   @override
   Widget build(BuildContext context) {

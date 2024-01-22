@@ -3,7 +3,7 @@ import 'package:one_million_voices_of_agroecology_app/screens/locations.dart';
 
 import 'package:one_million_voices_of_agroecology_app/screens/map.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/practices.dart';
-import 'package:one_million_voices_of_agroecology_app/widgets/main_drawer.dart';
+import 'package:one_million_voices_of_agroecology_app/widgets/drawer_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
-      drawer: MainDrawer(onSelectScreen: _setScreen),
+      drawer: DrawerWidget(onSelectScreen: _setScreen),
       body: activePage,
     );
   }
