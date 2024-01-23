@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:one_million_voices_of_agroecology_app/widgets/locations_widget.dart';
 
 class LocationsScreen extends StatelessWidget {
   const LocationsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('Locations',
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: Theme.of(context).colorScheme.onBackground)),
-      ),
-    );
+    return const Scaffold(body: LocationsWidget());
   }
 }

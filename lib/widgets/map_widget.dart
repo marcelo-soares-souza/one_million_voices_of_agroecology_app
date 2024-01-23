@@ -16,21 +16,20 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidget extends State<MapWidget> {
-  var _isLoading = true;
-  late final List<Marker> markers;
+  bool _isLoading = true;
+  late final List<Marker> _markers;
 
   void _loadMarkers() async {
     try {
-      markers = [];
-      final response =
-          await http.get(Uri.https(Config.omvUrl, 'locations.json'));
-      for (final location in json.decode(response.body.toString())) {
+      _markers = [];
+      final res = await http.get(Uri.https(Config.omvUrl, 'locations.json'));
+      for (final location in json.decode(res.body.toString())) {
         final id = location['id'];
         final latitude = location['latitude'];
         final longitude = location['longitude'];
 
         if (latitude != null) {
-          markers.add(Marker(
+          _markers.add(Marker(
             key: Key(id.toString()),
             child: const Icon(
               Icons.location_on,
@@ -42,7 +41,7 @@ class _MapWidget extends State<MapWidget> {
         }
       }
 
-      if (markers.isNotEmpty) {
+      if (_markers.isNotEmpty) {
         setState(() {
           _isLoading = false;
         });
@@ -77,7 +76,7 @@ class _MapWidget extends State<MapWidget> {
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
           ),
           SuperclusterLayer.immutable(
-            initialMarkers: markers,
+            initialMarkers: _markers,
             indexBuilder: IndexBuilders.computeWithOriginalMarkers,
             builder: (context, position, markerCount, extraClusterData) {
               return Container(
