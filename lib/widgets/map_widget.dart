@@ -4,6 +4,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_map_supercluster/flutter_map_supercluster.dart';
+import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
 
 class MapWidget extends StatefulWidget {
   const MapWidget({super.key});
@@ -21,11 +22,10 @@ class _MapWidget extends State<MapWidget> {
   void _loadMarkers() async {
     try {
       markers = [];
-      const url = 'onemillionvoices.agroecologymap.org';
-      final response = await http.get(Uri.https(url, 'locations.json'));
+      final response =
+          await http.get(Uri.https(Config.omvUrl, 'locations.json'));
       for (final location in json.decode(response.body.toString())) {
         final id = location['id'];
-        // final name = location['name'];
         final latitude = location['latitude'];
         final longitude = location['longitude'];
 
