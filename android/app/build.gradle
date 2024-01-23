@@ -31,7 +31,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "com.example.one_million_voices_of_agroecology_app"
+    namespace "org.agroecologymap.onemillionvoices"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 

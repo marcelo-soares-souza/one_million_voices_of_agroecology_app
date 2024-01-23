@@ -1,4 +1,4 @@
-package com.example.one_million_voices_of_agroecology_app
+package org.agroecologymap.onemillionvoices
 
 import io.flutter.embedding.android.FlutterActivity
 
