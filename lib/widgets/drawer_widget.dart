@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
 
 class DrawerWidget extends StatelessWidget {
   final void Function(String screen) onSelectScreen;
@@ -27,8 +28,8 @@ class DrawerWidget extends StatelessWidget {
             ),
             child: Row(children: [
               Text(
-                'Select...',
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                Config.title,
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       color: Theme.of(context).colorScheme.primary,
                     ),
               ),
