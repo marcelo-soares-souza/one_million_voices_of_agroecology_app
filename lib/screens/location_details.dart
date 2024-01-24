@@ -64,11 +64,14 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                   ),
             ),
             const SizedBox(height: 14),
-            Text(
-              widget.location.description,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                widget.location.description,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+              ),
             ),
             const SizedBox(height: 14),
             Text(
