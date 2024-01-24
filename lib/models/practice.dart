@@ -1,6 +1,7 @@
 class Practice {
   int id;
   String name;
+  String summaryDescription;
   String location;
   String responsibleForInformation;
   String url;
@@ -11,6 +12,7 @@ class Practice {
   Practice({
     required this.id,
     required this.name,
+    required this.summaryDescription,
     required this.location,
     required this.responsibleForInformation,
     required this.url,
@@ -22,13 +24,14 @@ class Practice {
   factory Practice.fromJson(Map<String, dynamic> json) {
     return Practice(
       id: json['id'],
-      name: json['name'],
-      location: json['location'],
-      responsibleForInformation: json['responsible_for_information'],
-      url: json['url'],
-      imageUrl: json['image_url'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
+      name: json['name'].toString(),
+      summaryDescription: json['summary_description'].toString(),
+      location: json['location'].toString(),
+      responsibleForInformation: json['responsible_for_information'].toString(),
+      url: json['url'].toString(),
+      imageUrl: json['image_url'].toString(),
+      createdAt: json['created_at'].toString(),
+      updatedAt: json['updated_at'].toString(),
     );
   }
 }

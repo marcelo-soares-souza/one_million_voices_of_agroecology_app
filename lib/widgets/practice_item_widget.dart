@@ -5,8 +5,10 @@ import '../models/practice.dart';
 
 class PracticeItemWidget extends StatelessWidget {
   final Practice practice;
+  final void Function(BuildContext context, Practice practice) onSelectPractice;
 
-  const PracticeItemWidget({super.key, required this.practice});
+  const PracticeItemWidget(
+      {super.key, required this.practice, required this.onSelectPractice});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,9 @@ class PracticeItemWidget extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       elevation: 2,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          onSelectPractice(context, practice);
+        },
         child: Stack(
           children: [
             Hero(

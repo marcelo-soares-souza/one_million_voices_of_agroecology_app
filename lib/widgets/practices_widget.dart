@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
+import 'package:one_million_voices_of_agroecology_app/screens/practice_details.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/practice_item_widget.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -17,6 +18,16 @@ class PracticesWidget extends StatefulWidget {
 class _PracticesWidget extends State<PracticesWidget> {
   bool _isLoading = true;
   late final List<Practice> _practices;
+
+  void selectPractice(BuildContext context, Practice practice) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => PracticeDetailsScreen(
+          practice: practice,
+        ),
+      ),
+    );
+  }
 
   void _loadPractices() async {
     try {
@@ -56,6 +67,7 @@ class _PracticesWidget extends State<PracticesWidget> {
         itemBuilder: (ctx, index) => PracticeItemWidget(
           key: ObjectKey(_practices[index].id),
           practice: _practices[index],
+          onSelectPractice: selectPractice,
         ),
       );
     }
