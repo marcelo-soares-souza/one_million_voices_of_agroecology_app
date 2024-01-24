@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
-import 'package:one_million_voices_of_agroecology_app/screens/practice_details.dart';
-import 'package:one_million_voices_of_agroecology_app/widgets/practice_item_widget.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
-import '../models/practice.dart';
+import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
+import 'package:one_million_voices_of_agroecology_app/screens/practice_details.dart';
+import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
+import 'package:one_million_voices_of_agroecology_app/widgets/practice_item_widget.dart';
 
 class PracticesWidget extends StatefulWidget {
   const PracticesWidget({super.key});
@@ -31,11 +29,7 @@ class _PracticesWidget extends State<PracticesWidget> {
 
   void _loadPractices() async {
     try {
-      _practices = [];
-      final res = await http.get(Uri.https(Config.omvUrl, 'practices.json'));
-      for (final practice in json.decode(res.body.toString())) {
-        _practices.add(Practice.fromJson(practice));
-      }
+      _practices = await PracticeService.retrieveAllPractices();
 
       if (_practices.isNotEmpty) {
         setState(() {

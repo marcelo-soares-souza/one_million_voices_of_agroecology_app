@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:flutter_map_supercluster/flutter_map_supercluster.dart';
-import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
+
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/location_details.dart';
+import 'package:one_million_voices_of_agroecology_app/services/location_service.dart';
 
 class MapWidget extends StatefulWidget {
   const MapWidget({super.key});
@@ -25,16 +24,14 @@ class _MapWidget extends State<MapWidget> {
   void _loadMarkers() async {
     try {
       _markers = [];
-      _locations = [];
-      final res = await http.get(Uri.https(Config.omvUrl, 'locations.json'));
+      _locations = await LocationService.retrieveAllLocations();
 
-      for (final location in json.decode(res.body.toString())) {
-        final id = location['id'];
-        final latitude = location['latitude'];
-        final longitude = location['longitude'];
+      for (final location in _locations) {
+        final id = location.id;
+        if (location.latitude != 'null' && location.longitude != 'null') {
+          final latitude = double.parse(location.latitude);
+          final longitude = double.parse(location.longitude);
 
-        if (latitude != null) {
-          _locations.add(Location.fromJson(location));
           _markers.add(Marker(
             key: Key(id.toString()),
             child: const Icon(
