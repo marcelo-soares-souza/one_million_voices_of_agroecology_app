@@ -5,8 +5,10 @@ import '../models/location.dart';
 
 class LocationItemWidget extends StatelessWidget {
   final Location location;
+  final void Function(BuildContext context, Location location) onSelectLocation;
 
-  const LocationItemWidget({super.key, required this.location});
+  const LocationItemWidget(
+      {super.key, required this.location, required this.onSelectLocation});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,9 @@ class LocationItemWidget extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       elevation: 2,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          onSelectLocation(context, location);
+        },
         child: Stack(
           children: [
             Hero(

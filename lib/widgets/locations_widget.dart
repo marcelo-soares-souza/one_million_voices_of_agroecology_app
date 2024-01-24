@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
+import 'package:one_million_voices_of_agroecology_app/screens/location_details.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/location_item_widget.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -17,6 +18,16 @@ class LocationsWidget extends StatefulWidget {
 class _LocationsWidget extends State<LocationsWidget> {
   bool _isLoading = true;
   late final List<Location> _locations;
+
+  void selectLocation(BuildContext context, Location location) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => LocationDetailsScreen(
+          location: location,
+        ),
+      ),
+    );
+  }
 
   void _loadLocations() async {
     try {
@@ -56,6 +67,7 @@ class _LocationsWidget extends State<LocationsWidget> {
         itemBuilder: (ctx, index) => LocationItemWidget(
           key: ObjectKey(_locations[index].id),
           location: _locations[index],
+          onSelectLocation: selectLocation,
         ),
       );
     }
