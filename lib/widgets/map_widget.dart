@@ -28,6 +28,8 @@ class _MapWidget extends State<MapWidget> {
       _locations = [];
       final res = await http.get(Uri.https(Config.omvUrl, 'locations.json'));
 
+      print(res.body.toString());
+
       for (final location in json.decode(res.body.toString())) {
         final id = location['id'];
         final latitude = location['latitude'];

@@ -65,7 +65,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
             ),
             const SizedBox(height: 14),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Text(
                 widget.location.description,
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -89,21 +89,33 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                   ),
             ),
             const SizedBox(height: 14),
-            Text(
-              'Farm and Farming System',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 14),
-            Text(
-              widget.location.farmAndFarmingSystem,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
-            ),
-            const SizedBox(height: 14),
+            if (widget.location.farmAndFarmingSystem.isNotEmpty) ...[
+              Text(
+                'Farm and Farming System',
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              const SizedBox(height: 14),
+              Text(
+                widget.location.farmAndFarmingSystem,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+              ),
+              if (widget
+                  .location.farmAndFarmingSystemComplement.isNotEmpty) ...[
+                const SizedBox(height: 14),
+                Text(
+                  widget.location.farmAndFarmingSystemComplement,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                )
+              ],
+              const SizedBox(height: 14),
+            ],
             Text(
               'Responsible for Information',
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
