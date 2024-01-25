@@ -69,10 +69,33 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
               label: 'Responsible for Information',
               value: widget.practice.responsibleForInformation,
             ),
+            //
+            // What You do Block
+            //
           ] else if (_selectedPageIndex == 1) ...[
             TextBlockWidget(
               label: 'Where it is realized?',
               value: _practice.whereItIsRealized,
+            ),
+            TextBlockWidget(
+              label: 'Practical implementation of the practice',
+              value: _practice.practicalImplementationOfThePractice,
+            ),
+            TextBlockWidget(
+              label: 'Type of agroecological practice',
+              value: _practice.typeOfAgroecologicalPractice,
+            ),
+            TextBlockWidget(
+              label: 'Why you use and what you expect from this practice',
+              value: _practice.whyYouUseAndWhatYouExpectFromThisPractice,
+            ),
+            TextBlockWidget(
+              label: 'Land Size',
+              value: _practice.landSize,
+            ),
+            TextBlockWidget(
+              label: 'Substitution of less ecological alternative',
+              value: _practice.substitutionOfLessEcologicalAlternative,
             ),
           ],
         ],

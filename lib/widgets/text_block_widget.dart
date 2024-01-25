@@ -8,28 +8,32 @@ class TextBlockWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      if (value.isNotEmpty) ...[
-        const SizedBox(height: 14),
-        Text(
-          label,
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-        const SizedBox(height: 14),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text(
-            value,
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        if (value.isNotEmpty) ...[
+          const SizedBox(height: 14),
+          Text(
+            overflow: TextOverflow.ellipsis,
+            label,
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.bold,
                 ),
           ),
-        ),
-        const SizedBox(height: 14),
+          const SizedBox(height: 14),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Text(
+              value,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+            ),
+          ),
+          const SizedBox(height: 14),
+        ],
       ],
-    ]);
+    );
   }
 }
