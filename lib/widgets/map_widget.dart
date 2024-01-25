@@ -41,6 +41,7 @@ class _MapWidget extends State<MapWidget> {
               size: 30.0,
             ),
             point: LatLng(latitude, longitude),
+            alignment: Alignment.topCenter,
           ));
         }
       }
@@ -84,6 +85,15 @@ class _MapWidget extends State<MapWidget> {
         options: const MapOptions(
           initialCenter: LatLng(16.0, 16.0),
           initialZoom: 3.0,
+          interactionOptions: InteractionOptions(
+            enableMultiFingerGestureRace: true,
+            flags: InteractiveFlag.doubleTapDragZoom |
+                InteractiveFlag.doubleTapZoom |
+                InteractiveFlag.drag |
+                InteractiveFlag.flingAnimation |
+                InteractiveFlag.pinchZoom |
+                InteractiveFlag.scrollWheelZoom,
+          ),
         ),
         children: [
           TileLayer(
