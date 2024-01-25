@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
+import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
+import 'package:one_million_voices_of_agroecology_app/widgets/text_block_widget.dart';
 
 class PracticeDetailsScreen extends StatefulWidget {
   final Practice practice;
@@ -15,6 +17,18 @@ class PracticeDetailsScreen extends StatefulWidget {
 class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
   bool isFavorite = false;
   int _selectedPageIndex = 0;
+  late Practice _practice;
+
+  void _retrieveFullPractice() async {
+    _practice =
+        await PracticeService.retrievePractice(widget.practice.id.toString());
+  }
+
+  @override
+  void initState() {
+    _retrieveFullPractice();
+    super.initState();
+  }
 
   void _setFavorite(Practice practice) {
     setState(() {
@@ -42,57 +56,25 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
               fit: BoxFit.cover,
             ),
           ),
-          const SizedBox(height: 14),
-          if (widget.practice.summaryDescription.isNotEmpty) ...[
-            Text(
-              'Summary Description',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
+          if (_selectedPageIndex == 0) ...[
+            TextBlockWidget(
+              label: 'Summary Description',
+              value: widget.practice.summaryDescription,
             ),
-            const SizedBox(height: 14),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Text(
-                widget.practice.summaryDescription,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
-              ),
-            )
+            TextBlockWidget(
+              label: 'Location',
+              value: widget.practice.location,
+            ),
+            TextBlockWidget(
+              label: 'Responsible for Information',
+              value: widget.practice.responsibleForInformation,
+            ),
+          ] else if (_selectedPageIndex == 1) ...[
+            TextBlockWidget(
+              label: 'Where it is realized?',
+              value: _practice.whereItIsRealized,
+            ),
           ],
-          const SizedBox(height: 14),
-          Text(
-            'Location',
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: 14),
-          Text(
-            widget.practice.location,
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
-                ),
-          ),
-          const SizedBox(height: 14),
-          Text(
-            'Responsible for Information',
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: 14),
-          Text(
-            widget.practice.responsibleForInformation,
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
-                ),
-          ),
-          const SizedBox(height: 14),
         ],
       ),
     );

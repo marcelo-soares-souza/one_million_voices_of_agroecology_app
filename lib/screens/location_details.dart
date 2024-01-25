@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
+import 'package:one_million_voices_of_agroecology_app/widgets/text_block_widget.dart';
 
 class LocationDetailsScreen extends StatefulWidget {
   final Location location;
@@ -55,82 +56,23 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                 fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(height: 14),
-            Text(
-              'Description',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
+            TextBlockWidget(
+              label: 'Description',
+              value: widget.location.description,
             ),
-            const SizedBox(height: 14),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Text(
-                widget.location.description,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
-              ),
+            TextBlockWidget(
+              label: 'Country',
+              value: widget.location.country,
             ),
-            const SizedBox(height: 14),
-            Text(
-              'Country',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
+            TextBlockWidget(
+              label: 'Farm and Farming System',
+              value:
+                  '${widget.location.farmAndFarmingSystem} - ${widget.location.farmAndFarmingSystemComplement}',
             ),
-            const SizedBox(height: 14),
-            Text(
-              widget.location.country,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
+            TextBlockWidget(
+              label: 'Responsible for Information',
+              value: widget.location.responsibleForInformation,
             ),
-            const SizedBox(height: 14),
-            if (widget.location.farmAndFarmingSystem.isNotEmpty) ...[
-              Text(
-                'Farm and Farming System',
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              const SizedBox(height: 14),
-              Text(
-                widget.location.farmAndFarmingSystem,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
-              ),
-              if (widget
-                  .location.farmAndFarmingSystemComplement.isNotEmpty) ...[
-                const SizedBox(height: 14),
-                Text(
-                  widget.location.farmAndFarmingSystemComplement,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground,
-                      ),
-                )
-              ],
-              const SizedBox(height: 14),
-            ],
-            Text(
-              'Responsible for Information',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 14),
-            Text(
-              widget.location.responsibleForInformation,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
-            ),
-            const SizedBox(height: 14),
           ],
         ),
       ),

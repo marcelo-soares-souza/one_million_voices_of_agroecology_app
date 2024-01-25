@@ -16,4 +16,11 @@ class PracticeService {
 
     return practices;
   }
+
+  static Future<Practice> retrievePractice(String id) async {
+    final res = await http.get(Uri.https(Config.omvUrl, '/practices/$id.json'));
+    Practice practice = Practice.fromJson(json.decode(res.body.toString()));
+
+    return practice;
+  }
 }
