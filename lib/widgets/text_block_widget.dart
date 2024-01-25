@@ -21,7 +21,7 @@ class TextBlockWidget extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
@@ -31,7 +31,7 @@ class TextBlockWidget extends StatelessWidget {
                   ),
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 8),
         ],
       ],
     );
