@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -37,7 +38,7 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(
-              Icons.map,
+              FontAwesomeIcons.map,
               size: 26,
               color: Theme.of(context).colorScheme.onBackground,
             ),
@@ -51,7 +52,7 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(
-              Icons.location_pin,
+              FontAwesomeIcons.locationDot,
               size: 26,
               color: Theme.of(context).colorScheme.onBackground,
             ),
@@ -65,7 +66,7 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(
-              Icons.forest,
+              FontAwesomeIcons.seedling,
               size: 26,
               color: Theme.of(context).colorScheme.onBackground,
             ),

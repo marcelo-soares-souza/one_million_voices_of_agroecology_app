@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map_supercluster/flutter_map_supercluster.dart';
 
@@ -35,7 +36,7 @@ class _MapWidget extends State<MapWidget> {
           _markers.add(Marker(
             key: Key(id.toString()),
             child: const Icon(
-              Icons.location_on,
+              FontAwesomeIcons.seedling,
               color: Colors.green,
               size: 30.0,
             ),

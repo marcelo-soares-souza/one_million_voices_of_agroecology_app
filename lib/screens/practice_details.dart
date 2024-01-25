@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/text_block_widget.dart';
@@ -132,28 +133,28 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
         currentIndex: _selectedPageIndex,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.work_outline),
+            icon: Icon(FontAwesomeIcons.seedling),
+            label: 'Summary',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.bookOpen),
             label: 'What you Do',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.emoji_objects_outlined),
+            icon: Icon(FontAwesomeIcons.info),
             label: 'Characterise',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.event_available_outlined),
+            icon: Icon(FontAwesomeIcons.bookBookmark),
             label: 'Evaluate',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.info_outline),
+            icon: Icon(FontAwesomeIcons.userCheck),
             label: 'Acknowledge',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.photo_library_outlined),
+            icon: Icon(FontAwesomeIcons.photoFilm),
             label: 'Gallery',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.document_scanner_outlined),
-            label: 'Documents',
           ),
         ],
       ),
