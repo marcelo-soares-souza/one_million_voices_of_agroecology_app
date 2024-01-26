@@ -84,6 +84,8 @@ class _MapWidget extends State<MapWidget> {
       content = FlutterMap(
         options: const MapOptions(
           initialCenter: LatLng(16.0, 16.0),
+          minZoom: 1.0,
+          maxZoom: 16.0,
           initialZoom: 3.0,
           interactionOptions: InteractionOptions(
             enableMultiFingerGestureRace: true,
