@@ -16,6 +16,8 @@ class PracticeDetailsScreen extends StatefulWidget {
 }
 
 class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
+  bool _isLoading = true;
+
   bool isFavorite = false;
   int _selectedPageIndex = 0;
   late Practice _practice;
@@ -23,6 +25,9 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
   void _retrieveFullPractice() async {
     _practice =
         await PracticeService.retrievePractice(widget.practice.id.toString());
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -45,75 +50,73 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget activePage = SingleChildScrollView(
-      child: Column(
-        children: [
-          Hero(
-            tag: widget.practice.id,
-            child: Image.network(
-              widget.practice.imageUrl,
-              height: 300,
-              width: double.infinity,
-              fit: BoxFit.cover,
+    Widget activePage = const Center(child: Text('No items'));
+
+    if (_isLoading) {
+      activePage = const Center(child: CircularProgressIndicator());
+    } else {
+      activePage = SingleChildScrollView(
+        child: Column(
+          children: [
+            Hero(
+              tag: widget.practice.id,
+              child: Image.network(
+                widget.practice.imageUrl,
+                height: 300,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          if (_selectedPageIndex == 0) ...[
-            TextBlockWidget(
-              label: 'Summary Description',
-              value: widget.practice.summaryDescription,
-            ),
-            TextBlockWidget(
-              label: 'Location',
-              value: widget.practice.location,
-            ),
-            TextBlockWidget(
-              label: 'Responsible for Information',
-              value: widget.practice.responsibleForInformation,
-            ),
-            //
-            // What You do Block
-            //
-          ] else if (_selectedPageIndex == 1) ...[
-            TextBlockWidget(
-              label: 'Where it is realized?',
-              value: _practice.whereItIsRealized,
-            ),
-            TextBlockWidget(
-              label: 'Practical implementation of the practice',
-              value: _practice.practicalImplementationOfThePractice,
-            ),
-            TextBlockWidget(
-              label: 'Type of agroecological practice',
-              value: _practice.typeOfAgroecologicalPractice,
-            ),
-            TextBlockWidget(
-              label: 'Why you use and what you expect from this practice',
-              value: _practice.whyYouUseAndWhatYouExpectFromThisPractice,
-            ),
-            TextBlockWidget(
-              label: 'Land Size',
-              value: _practice.landSize,
-            ),
-            TextBlockWidget(
-              label: 'Substitution of less ecological alternative',
-              value: _practice.substitutionOfLessEcologicalAlternative,
-            ),
-            //
-            // Characterise
-            //
-          ] else if (_selectedPageIndex == 2) ...[
-            TextBlockWidget(
-              label: 'Agroecology principles addressed',
-              value: _practice.agroecologyPrinciplesAddressed,
-            ),
-            TextBlockWidget(
-              label: 'Food system components addressed',
-              value: _practice.foodSystemComponentsAddressed,
-            ),
+            if (_selectedPageIndex == 0) ...[
+              //
+              // Main Block
+              //
+              for (final i in _practice.main.entries)
+                TextBlockWidget(
+                  label: i.key,
+                  value: _practice.getFieldByName(i.value),
+                ),
+            ] else if (_selectedPageIndex == 1) ...[
+              //
+              // What You do Block
+              //
+              for (final i in _practice.whatYouDo.entries)
+                TextBlockWidget(
+                  label: i.key,
+                  value: _practice.getFieldByName(i.value),
+                ),
+            ] else if (_selectedPageIndex == 2) ...[
+              //
+              // Characterise
+              //
+              for (final i in _practice.characterises.entries)
+                TextBlockWidget(
+                  label: i.key,
+                  value: _practice.getFieldByName(i.value),
+                ),
+            ] else if (_selectedPageIndex == 3) ...[
+              //
+              // Evaluate
+              //
+              for (final i in _practice.evaluates.entries)
+                TextBlockWidget(
+                  label: i.key,
+                  value: _practice.getFieldByName(i.value),
+                ),
+            ] else if (_selectedPageIndex == 4) ...[
+              //
+              // Acknowledge
+              //
+              for (final i in _practice.acknowledges.entries)
+                TextBlockWidget(
+                  label: i.key,
+                  value: _practice.getFieldByName(i.value),
+                ),
+            ],
           ],
-        ],
-      ),
-    );
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
