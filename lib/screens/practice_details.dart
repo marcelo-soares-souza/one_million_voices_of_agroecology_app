@@ -98,6 +98,18 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
               label: 'Substitution of less ecological alternative',
               value: _practice.substitutionOfLessEcologicalAlternative,
             ),
+            //
+            // Characterise
+            //
+          ] else if (_selectedPageIndex == 2) ...[
+            TextBlockWidget(
+              label: 'Agroecology principles addressed',
+              value: _practice.agroecologyPrinciplesAddressed,
+            ),
+            TextBlockWidget(
+              label: 'Food system components addressed',
+              value: _practice.foodSystemComponentsAddressed,
+            ),
           ],
         ],
       ),

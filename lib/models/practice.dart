@@ -14,6 +14,9 @@ class Practice {
   String landSize;
   String substitutionOfLessEcologicalAlternative;
 
+  String agroecologyPrinciplesAddressed;
+  String foodSystemComponentsAddressed;
+
   String createdAt;
   String updatedAt;
 
@@ -31,6 +34,8 @@ class Practice {
     required this.whyYouUseAndWhatYouExpectFromThisPractice,
     required this.landSize,
     required this.substitutionOfLessEcologicalAlternative,
+    required this.agroecologyPrinciplesAddressed,
+    required this.foodSystemComponentsAddressed,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -54,6 +59,10 @@ class Practice {
       landSize: json['land_size'].toString(),
       substitutionOfLessEcologicalAlternative:
           json['substitution_of_less_ecological_alternative'].toString(),
+      agroecologyPrinciplesAddressed:
+          json['agroecology_principles_addressed'].toString(),
+      foodSystemComponentsAddressed:
+          json['food_system_components_addressed'].toString(),
       createdAt: json['created_at'].toString(),
       updatedAt: json['updated_at'].toString(),
     );
