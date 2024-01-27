@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/text_block_widget.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class PracticeDetailsScreen extends StatefulWidget {
   final Practice practice;
@@ -21,10 +23,15 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
   bool isFavorite = false;
   int _selectedPageIndex = 0;
   late Practice _practice;
+  late List<GalleryItem> _gallery;
 
   void _retrieveFullPractice() async {
     _practice =
         await PracticeService.retrievePractice(widget.practice.id.toString());
+
+    _gallery = await PracticeService.retrievePracticeGallery(
+        widget.practice.id.toString());
+
     setState(() {
       _isLoading = false;
     });
@@ -56,64 +63,130 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
       activePage = const Center(child: CircularProgressIndicator());
     } else {
       activePage = SingleChildScrollView(
-        child: Column(
-          children: [
-            Hero(
-              tag: widget.practice.id,
-              child: Image.network(
-                widget.practice.imageUrl,
-                height: 300,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-            ),
-            if (_selectedPageIndex == 0) ...[
-              //
-              // Main Block
-              //
-              for (final i in _practice.main.entries)
-                TextBlockWidget(
-                  label: i.key,
-                  value: _practice.getFieldByName(i.value),
-                ),
-            ] else if (_selectedPageIndex == 1) ...[
-              //
-              // What You do Block
-              //
-              for (final i in _practice.whatYouDo.entries)
-                TextBlockWidget(
-                  label: i.key,
-                  value: _practice.getFieldByName(i.value),
-                ),
-            ] else if (_selectedPageIndex == 2) ...[
-              //
-              // Characterise
-              //
-              for (final i in _practice.characterises.entries)
-                TextBlockWidget(
-                  label: i.key,
-                  value: _practice.getFieldByName(i.value),
-                ),
-            ] else if (_selectedPageIndex == 3) ...[
-              //
-              // Evaluate
-              //
-              for (final i in _practice.evaluates.entries)
-                TextBlockWidget(
-                  label: i.key,
-                  value: _practice.getFieldByName(i.value),
-                ),
-            ] else if (_selectedPageIndex == 4) ...[
-              //
-              // Acknowledge
-              //
-              for (final i in _practice.acknowledges.entries)
-                TextBlockWidget(
-                  label: i.key,
-                  value: _practice.getFieldByName(i.value),
-                ),
+        child: Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              if (_selectedPageIndex != 5) ...[
+                Hero(
+                  tag: widget.practice.id,
+                  child: Image.network(
+                    widget.practice.imageUrl,
+                    height: 250,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                )
+              ],
+              if (_selectedPageIndex == 0) ...[
+                //
+                // Main Block
+                //
+                for (final i in _practice.main.entries)
+                  TextBlockWidget(
+                    label: i.key,
+                    value: _practice.getFieldByName(i.value),
+                  ),
+              ] else if (_selectedPageIndex == 1) ...[
+                //
+                // What You do Block
+                //
+                for (final i in _practice.whatYouDo.entries)
+                  TextBlockWidget(
+                    label: i.key,
+                    value: _practice.getFieldByName(i.value),
+                  ),
+              ] else if (_selectedPageIndex == 2) ...[
+                //
+                // Characterise
+                //
+                for (final i in _practice.characterises.entries)
+                  TextBlockWidget(
+                    label: i.key,
+                    value: _practice.getFieldByName(i.value),
+                  ),
+              ] else if (_selectedPageIndex == 3) ...[
+                //
+                // Evaluate
+                //
+                for (final i in _practice.evaluates.entries)
+                  TextBlockWidget(
+                    label: i.key,
+                    value: _practice.getFieldByName(i.value),
+                  ),
+              ] else if (_selectedPageIndex == 4) ...[
+                //
+                // Acknowledge
+                //
+                for (final i in _practice.acknowledges.entries)
+                  TextBlockWidget(
+                    label: i.key,
+                    value: _practice.getFieldByName(i.value),
+                  ),
+              ] else if (_selectedPageIndex == 5) ...[
+                //
+                // Gallery
+                //
+                if (_gallery.isEmpty)
+                  Center(
+                    child: Text(
+                      'No items',
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                    ),
+                  )
+                else
+                  for (final i in _gallery) ...[
+                    Stack(
+                      children: [
+                        Hero(
+                          tag: i.description,
+                          child: FadeInImage(
+                            placeholder: MemoryImage(kTransparentImage),
+                            image: NetworkImage(i.imageUrl),
+                            fit: BoxFit.cover,
+                            height: 300,
+                            width: double.infinity,
+                          ),
+                        ),
+                        if (i.description.length > 5)
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              color: Colors.black54,
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 6,
+                                horizontal: 44,
+                              ),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    i.description,
+                                    maxLines: 2,
+                                    textAlign: TextAlign.center,
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+              ],
             ],
-          ],
+          ),
         ),
       );
     }

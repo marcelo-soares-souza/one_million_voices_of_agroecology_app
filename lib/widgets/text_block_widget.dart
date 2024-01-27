@@ -11,7 +11,7 @@ class TextBlockWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        if (value.isNotEmpty) ...[
+        if (value.isNotEmpty && value.length > 3) ...[
           const SizedBox(height: 14),
           Text(
             overflow: TextOverflow.ellipsis,

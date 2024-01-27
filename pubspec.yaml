@@ -1,7 +1,7 @@
 name: one_million_voices_of_agroecology_app
 description: "One Million Voices of Agroecology App"
 homepage: "https://onemillionvoices.agroecologymap.org"
-version: 0.0.3-alpha
+version: 0.0.4-alpha
 
 platforms:
   android:
