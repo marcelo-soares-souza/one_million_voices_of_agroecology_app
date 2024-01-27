@@ -51,7 +51,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
               tag: widget.location.id,
               child: Image.network(
                 widget.location.imageUrl,
-                height: 300,
+                height: 250,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),

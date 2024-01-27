@@ -14,7 +14,7 @@ if (localPropertiesFile.exists()) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '5'
+    flutterVersionCode = '7'
 }
 print("flutterVersionCode: ${flutterVersionCode}\n")
 
@@ -33,7 +33,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace "org.agroecologymap.onemillionvoices"
     compileSdkVersion flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
+    ndkVersion '26.1.10909125'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
