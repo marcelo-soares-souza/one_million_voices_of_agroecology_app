@@ -1,10 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/text_block_widget.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class PracticeDetailsScreen extends StatefulWidget {
   final Practice practice;
@@ -65,15 +65,18 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
         child: Column(
           children: [
             if (_selectedPageIndex != 5) ...[
-              Hero(
-                tag: widget.practice.id,
-                child: Image.network(
-                  widget.practice.imageUrl,
-                  height: 250,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              )
+              CachedNetworkImage(
+                height: 250,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => const Center(
+                    child: SizedBox(
+                  width: 30.0,
+                  height: 30.0,
+                  child: CircularProgressIndicator(),
+                )),
+                imageUrl: widget.practice.imageUrl,
+              ),
             ],
             if (_selectedPageIndex == 0) ...[
               //
@@ -137,15 +140,17 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
                 for (final i in _gallery) ...[
                   Stack(
                     children: [
-                      Hero(
-                        tag: i.description,
-                        child: FadeInImage(
-                          placeholder: MemoryImage(kTransparentImage),
-                          image: NetworkImage(i.imageUrl),
-                          fit: BoxFit.cover,
-                          height: 300,
-                          width: double.infinity,
-                        ),
+                      CachedNetworkImage(
+                        height: 300,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => const Center(
+                            child: SizedBox(
+                          width: 30.0,
+                          height: 30.0,
+                          child: CircularProgressIndicator(),
+                        )),
+                        imageUrl: i.imageUrl,
                       ),
                       if (i.description.length > 5)
                         Positioned(

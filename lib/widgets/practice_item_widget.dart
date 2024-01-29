@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -23,15 +24,18 @@ class PracticeItemWidget extends StatelessWidget {
         },
         child: Stack(
           children: [
-            Hero(
-              tag: practice.id,
-              child: FadeInImage(
-                placeholder: MemoryImage(kTransparentImage),
-                image: NetworkImage(practice.imageUrl),
-                fit: BoxFit.cover,
-                height: 200,
-                width: double.infinity,
+            CachedNetworkImage(
+              height: 200,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => const Center(
+                child: SizedBox(
+                  width: 30.0,
+                  height: 30.0,
+                  child: CircularProgressIndicator(),
+                ),
               ),
+              imageUrl: practice.imageUrl,
             ),
             Positioned(
               bottom: 0,

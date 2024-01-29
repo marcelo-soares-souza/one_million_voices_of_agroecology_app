@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/text_block_widget.dart';
 
@@ -47,14 +49,18 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Hero(
-              tag: widget.location.id,
-              child: Image.network(
-                widget.location.imageUrl,
-                height: 250,
-                width: double.infinity,
-                fit: BoxFit.cover,
+            CachedNetworkImage(
+              height: 250,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => const Center(
+                child: SizedBox(
+                  width: 30.0,
+                  height: 30.0,
+                  child: CircularProgressIndicator(),
+                ),
               ),
+              imageUrl: widget.location.imageUrl,
             ),
             TextBlockWidget(
               label: 'Description',
