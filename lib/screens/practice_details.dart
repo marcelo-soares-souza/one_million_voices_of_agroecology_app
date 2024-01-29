@@ -24,9 +24,60 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
   late Practice _practice;
   late List<GalleryItem> _gallery;
 
+  late List<Widget> mainBlock;
+  late List<Widget> whatYouDoBlock;
+  late List<Widget> characteriseBlock;
+  late List<Widget> evaluateBlock;
+  late List<Widget> acknowledgeBlock;
+
   void _retrieveFullPractice() async {
     _practice =
         await PracticeService.retrievePractice(widget.practice.id.toString());
+
+    mainBlock = <Widget>[
+      for (final i in _practice.main.entries)
+        if (_practice.getFieldByName(i.value).length > 0)
+          TextBlockWidget(
+            label: i.key,
+            value: _practice.getFieldByName(i.value),
+          )
+    ];
+
+    whatYouDoBlock = <Widget>[
+      for (final i in _practice.whatYouDo.entries)
+        if (_practice.getFieldByName(i.value).length > 0)
+          TextBlockWidget(
+            label: i.key,
+            value: _practice.getFieldByName(i.value),
+          )
+    ];
+
+    characteriseBlock = <Widget>[
+      for (final i in _practice.characterises.entries)
+        if (_practice.getFieldByName(i.value).length > 0)
+          TextBlockWidget(
+            label: i.key,
+            value: _practice.getFieldByName(i.value),
+          )
+    ];
+
+    evaluateBlock = <Widget>[
+      for (final i in _practice.evaluates.entries)
+        if (_practice.getFieldByName(i.value).length > 0)
+          TextBlockWidget(
+            label: i.key,
+            value: _practice.getFieldByName(i.value),
+          )
+    ];
+
+    acknowledgeBlock = <Widget>[
+      for (final i in _practice.acknowledges.entries)
+        if (_practice.getFieldByName(i.value).length > 0)
+          TextBlockWidget(
+            label: i.key,
+            value: _practice.getFieldByName(i.value),
+          )
+    ];
 
     _gallery = await PracticeService.retrievePracticeGallery(
         widget.practice.id.toString());
@@ -34,12 +85,6 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
     setState(() {
       _isLoading = false;
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _retrieveFullPractice();
   }
 
   void _setFavorite(Practice practice) {
@@ -55,12 +100,16 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    Widget activePage = const Center(child: Text('No items'));
+  void initState() {
+    super.initState();
+    _retrieveFullPractice();
+  }
 
-    if (_isLoading) {
-      activePage = const Center(child: CircularProgressIndicator());
-    } else {
+  @override
+  Widget build(BuildContext context) {
+    Widget activePage = const Center(child: CircularProgressIndicator());
+
+    if (!_isLoading) {
       activePage = SingleChildScrollView(
         child: Column(
           children: [
@@ -78,65 +127,31 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
                 imageUrl: widget.practice.imageUrl,
               ),
             ],
-            if (_selectedPageIndex == 0) ...[
-              //
-              // Main Block
-              //
-              for (final i in _practice.main.entries)
-                TextBlockWidget(
-                  label: i.key,
-                  value: _practice.getFieldByName(i.value),
-                ),
-            ] else if (_selectedPageIndex == 1) ...[
-              //
-              // What You do Block
-              //
-              for (final i in _practice.whatYouDo.entries)
-                TextBlockWidget(
-                  label: i.key,
-                  value: _practice.getFieldByName(i.value),
-                ),
-            ] else if (_selectedPageIndex == 2) ...[
-              //
-              // Characterise
-              //
-              for (final i in _practice.characterises.entries)
-                TextBlockWidget(
-                  label: i.key,
-                  value: _practice.getFieldByName(i.value),
-                ),
-            ] else if (_selectedPageIndex == 3) ...[
-              //
-              // Evaluate
-              //
-              for (final i in _practice.evaluates.entries)
-                TextBlockWidget(
-                  label: i.key,
-                  value: _practice.getFieldByName(i.value),
-                ),
-            ] else if (_selectedPageIndex == 4) ...[
-              //
-              // Acknowledge
-              //
-              for (final i in _practice.acknowledges.entries)
-                TextBlockWidget(
-                  label: i.key,
-                  value: _practice.getFieldByName(i.value),
-                ),
-            ] else if (_selectedPageIndex == 5) ...[
+            if (_selectedPageIndex == 0 && mainBlock.isNotEmpty)
+              ...mainBlock
+            else if (_selectedPageIndex == 1 && whatYouDoBlock.isNotEmpty)
+              ...whatYouDoBlock
+            else if (_selectedPageIndex == 2 && characteriseBlock.isNotEmpty)
+              ...characteriseBlock
+            else if (_selectedPageIndex == 3 && evaluateBlock.isNotEmpty)
+              ...evaluateBlock
+            else if (_selectedPageIndex == 4 && acknowledgeBlock.isNotEmpty)
+              ...acknowledgeBlock
+            else if (_selectedPageIndex == 5) ...[
               //
               // Gallery
               //
-              if (_gallery.isEmpty)
+              if (_gallery.isEmpty) ...[
+                const SizedBox(height: 20),
                 Center(
                   child: Text(
-                    'No items',
+                    'No images available',
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
                   ),
                 )
-              else
+              ] else
                 for (final i in _gallery) ...[
                   Stack(
                     children: [
@@ -185,7 +200,17 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
                   ),
                   const SizedBox(height: 20),
                 ],
-            ],
+            ] else ...[
+              const SizedBox(height: 40),
+              Center(
+                child: Text(
+                  'No data available for this section.',
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                ),
+              )
+            ]
           ],
         ),
       );
