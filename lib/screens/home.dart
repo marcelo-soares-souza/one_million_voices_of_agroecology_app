@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:one_million_voices_of_agroecology_app/screens/locations.dart';
 
+import 'package:one_million_voices_of_agroecology_app/screens/about.dart';
+import 'package:one_million_voices_of_agroecology_app/screens/locations.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/map.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/practices.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/drawer_widget.dart';
@@ -28,6 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           activePage = const PracticesScreen();
           activePageTitle = 'Practices';
+        });
+        break;
+      case 'about':
+        setState(() {
+          activePage = const AboutScreen();
+          activePageTitle = 'About';
         });
         break;
       default:

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Config {
+  static const String aboutPage =
+      'https://onemillionvoices.agroecologymap.org/en/about';
   static const String title = 'One Million Voices of Agroecology';
   static const String omvUrl = 'onemillionvoices.agroecologymap.org';
 

@@ -78,6 +78,20 @@ class DrawerWidget extends StatelessWidget {
               onSelectScreen('practices');
             },
           ),
+          ListTile(
+            leading: Icon(
+              FontAwesomeIcons.info,
+              size: 26,
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            title: Text('About',
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                    fontSize: 24)),
+            onTap: () {
+              onSelectScreen('about');
+            },
+          )
         ],
       ),
     );
