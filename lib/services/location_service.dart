@@ -1,15 +1,23 @@
-import 'package:http/http.dart' as http;
+import 'package:http_interceptor/http/intercepted_client.dart';
 import 'dart:convert';
 
 import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
+import 'package:one_million_voices_of_agroecology_app/configs/custom_interceptor.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
 
 class LocationService {
+  static InterceptedClient httpClient = InterceptedClient.build(
+    interceptors: [
+      CustomInterceptor(),
+    ],
+  );
+
   static Future<List<Location>> retrieveAllLocations() async {
     final List<Location> locations = [];
 
-    final res = await http.get(Uri.https(Config.omvUrl, 'locations.json'));
+    final res =
+        await httpClient.get(Uri.https(Config.omvUrl, 'locations.json'));
 
     for (final location in json.decode(res.body.toString())) {
       locations.add(Location.fromJson(location));
@@ -21,8 +29,8 @@ class LocationService {
   static Future<List<GalleryItem>> retrieveLocationGallery(String id) async {
     final List<GalleryItem> gallery = [];
 
-    final res =
-        await http.get(Uri.https(Config.omvUrl, '/locations/$id/gallery.json'));
+    final res = await httpClient
+        .get(Uri.https(Config.omvUrl, '/locations/$id/gallery.json'));
 
     var data = json.decode(res.body.toString());
 

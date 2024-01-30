@@ -6,6 +6,7 @@ class Config {
       'https://onemillionvoices.agroecologymap.org/en/about';
   static const String title = 'One Million Voices of Agroecology';
   static const String omvUrl = 'onemillionvoices.agroecologymap.org';
+  static const String omvAPI = '10.0.2.2:5000';
 
   static final _colorScheme = ColorScheme.fromSeed(
     brightness: Brightness.dark,

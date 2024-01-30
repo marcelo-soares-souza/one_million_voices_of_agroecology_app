@@ -1,11 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
+import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
 
-class DrawerWidget extends StatelessWidget {
+class DrawerWidget extends StatefulWidget {
   final void Function(String screen) onSelectScreen;
 
   const DrawerWidget({super.key, required this.onSelectScreen});
+
+  @override
+  State<DrawerWidget> createState() {
+    return _DrawerWidgetState();
+  }
+}
+
+class _DrawerWidgetState extends State<DrawerWidget> {
+  bool isLoggedIn = false;
+
+  void _checkIfLoggedIn() async {
+    isLoggedIn = await AuthService.isLoggedIn();
+    setState(() {
+      isLoggedIn = isLoggedIn;
+    });
+
+    debugPrint('[DEBUG]: _checkIfLoggedIn $isLoggedIn');
+  }
+
+  void _logout() {
+    AuthService.logout();
+
+    setState(() {
+      isLoggedIn = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfLoggedIn();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +80,7 @@ class DrawerWidget extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onBackground,
                     fontSize: 24)),
             onTap: () {
-              onSelectScreen('map');
+              widget.onSelectScreen('map');
             },
           ),
           ListTile(
@@ -61,7 +94,7 @@ class DrawerWidget extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onBackground,
                     fontSize: 24)),
             onTap: () {
-              onSelectScreen('locations');
+              widget.onSelectScreen('locations');
             },
           ),
           ListTile(
@@ -75,7 +108,21 @@ class DrawerWidget extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onBackground,
                     fontSize: 24)),
             onTap: () {
-              onSelectScreen('practices');
+              widget.onSelectScreen('practices');
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              FontAwesomeIcons.rightToBracket,
+              size: 26,
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            title: Text(isLoggedIn ? 'Logout' : 'Login',
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                    fontSize: 24)),
+            onTap: () {
+              isLoggedIn ? _logout() : widget.onSelectScreen('login');
             },
           ),
           ListTile(
@@ -89,9 +136,9 @@ class DrawerWidget extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onBackground,
                     fontSize: 24)),
             onTap: () {
-              onSelectScreen('about');
+              widget.onSelectScreen('about');
             },
-          )
+          ),
         ],
       ),
     );
