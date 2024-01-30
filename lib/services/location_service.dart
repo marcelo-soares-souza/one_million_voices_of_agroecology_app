@@ -16,8 +16,7 @@ class LocationService {
   static Future<List<Location>> retrieveAllLocations() async {
     final List<Location> locations = [];
 
-    final res =
-        await httpClient.get(Uri.https(Config.omvUrl, 'locations.json'));
+    final res = await httpClient.get(Config.getURI('locations.json'));
 
     for (final location in json.decode(res.body.toString())) {
       locations.add(Location.fromJson(location));
@@ -29,8 +28,8 @@ class LocationService {
   static Future<List<GalleryItem>> retrieveLocationGallery(String id) async {
     final List<GalleryItem> gallery = [];
 
-    final res = await httpClient
-        .get(Uri.https(Config.omvUrl, '/locations/$id/gallery.json'));
+    final res =
+        await httpClient.get(Config.getURI('/locations/$id/gallery.json'));
 
     var data = json.decode(res.body.toString());
 

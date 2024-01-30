@@ -19,7 +19,7 @@ class LocationDetailsScreen extends StatefulWidget {
 }
 
 class _LocationDetailsScreen extends State<LocationDetailsScreen> {
-  bool isFavorite = false;
+  // bool isFavorite = false;
   int _selectedPageIndex = 0;
   late List<GalleryItem> _gallery;
 
@@ -28,11 +28,11 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
         widget.location.id.toString());
   }
 
-  void _setFavorite(Location location) {
-    setState(() {
-      isFavorite = true;
-    });
-  }
+  // void _setFavorite(Location location) {
+  //   setState(() {
+  //     isFavorite = true;
+  //   });
+  // }
 
   void _selectPage(int index) {
     setState(() {
@@ -51,22 +51,22 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.location.name),
-          actions: [
-            IconButton(
-              onPressed: () {
-                _setFavorite(widget.location);
-              },
-              icon: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 500),
-                child: Icon(isFavorite ? Icons.star : Icons.star_border,
-                    key: ValueKey(isFavorite)),
-                transitionBuilder: (child, animation) => RotationTransition(
-                  turns: animation,
-                  child: child,
-                ),
-              ),
-            )
-          ],
+          // actions: [
+          //   IconButton(
+          //     onPressed: () {
+          //       _setFavorite(widget.location);
+          //     },
+          //     icon: AnimatedSwitcher(
+          //       duration: const Duration(milliseconds: 500),
+          //       child: Icon(isFavorite ? Icons.star : Icons.star_border,
+          //           key: ValueKey(isFavorite)),
+          //       transitionBuilder: (child, animation) => RotationTransition(
+          //         turns: animation,
+          //         child: child,
+          //       ),
+          //     ),
+          //   )
+          // ],
         ),
         body: SingleChildScrollView(
           child: Column(

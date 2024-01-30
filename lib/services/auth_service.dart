@@ -17,11 +17,8 @@ class AuthService {
 
   static Future<bool> login(email, password) async {
     final res = await httpClient.post(
-      Uri.http(Config.omvAPI, '/api/v1/login'),
-      body: jsonEncode({
-        'email': email,
-        'password': password,
-      }),
+      Config.getURI('/login.json'),
+      body: jsonEncode({'email': email, 'password': password}),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -31,22 +28,39 @@ class AuthService {
 
     var data = jsonDecode(res.body.toString());
 
-    if (data['access_token'].toString().isEmpty) return false;
+    if (data['token'].toString().isEmpty) return false;
 
-    await storage.write(key: 'access_token', value: data['access_token']);
+    await logout();
+
+    await storage.write(key: 'token', value: data['token'].toString());
     await storage.write(key: 'email', value: email);
 
     return true;
   }
 
-  static logout() async {
-    await storage.delete(key: 'access_token');
-    await storage.delete(key: 'email');
+  static Future<bool> logout() async {
+    try {
+      await storage.delete(key: 'token');
+      await storage.delete(key: 'email');
+
+      debugPrint('[DEBUG]: E-Mail: ${await storage.containsKey(key: 'email')}');
+      debugPrint('[DEBUG]: Token: ${await storage.containsKey(key: 'token')}');
+
+      return true;
+    } catch (e) {
+      debugPrint('[DEBUG]: logout ERROR $e');
+    }
+    return false;
   }
 
   static Future<bool> isLoggedIn() async {
     try {
+      if (!await storage.containsKey(key: 'email')) return false;
+
       String email = (await storage.read(key: 'email'))!;
+
+      debugPrint('[DEBUG]: isLoggedIn E-Mail $email');
+
       if (email.isEmpty) return false;
 
       return true;

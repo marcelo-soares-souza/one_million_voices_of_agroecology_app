@@ -4,32 +4,32 @@ import 'package:http_interceptor/http_interceptor.dart';
 
 class CustomInterceptor implements InterceptorContract {
   final storage = const FlutterSecureStorage();
-  late String _acessToken = '';
-
-  CustomInterceptor() {
-    _setToken();
-  }
-
-  void _setToken() async {
-    try {
-      _acessToken = (await storage.read(key: 'access_token'))!;
-    } catch (e) {
-      debugPrint('[DEBUG]: _setToken ERROR $e');
-    }
-  }
 
   @override
   Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
-    debugPrint('[DEBUG]: interceptRequest ${request.toString()}');
-    // debugPrint('[DEBUG]: interceptRequest Token $_acessToken');
+    String? token = '';
+
+    try {
+      if (await storage.containsKey(key: 'token')) {
+        token = await storage.read(key: 'token');
+      }
+
+      request.headers['Authorization'] = 'Bearer $token';
+      request.headers['Content-Type'] = "application/json";
+
+      debugPrint('[DEBUG]: Token $token');
+      // debugPrint('[DEBUG]: interceptRequest ${request.toString()}');
+    } catch (e) {
+      debugPrint('[DEBUG]: interceptRequest ERROR $e');
+    }
+
     return request;
   }
 
   @override
   Future<BaseResponse> interceptResponse(
       {required BaseResponse response}) async {
-    debugPrint('[DEBUG]: interceptResponse ${response.toString()}');
-    // debugPrint('[DEBUG]: interceptResponse Token $_acessToken');
+    // debugPrint('[DEBUG]: interceptResponse ${response.toString()}');
 
     return response;
   }

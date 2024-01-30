@@ -210,10 +210,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_login
-      sha256: "97f27a52bd68038090bd79f22600ad9ae86158f1d55c47e3d0cef66b299579f3"
+      sha256: "1f7c46d0d76081cf4c5180e3a265b1f5b1d7e48c81859f58f03a8dcd27338b85"
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.1"
+    version: "5.0.0"
   flutter_map:
     dependency: "direct main"
     description:

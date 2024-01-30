@@ -18,8 +18,8 @@ class PracticeDetailsScreen extends StatefulWidget {
 }
 
 class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
+  // bool isFavorite = false;
   bool _isLoading = true;
-  bool isFavorite = false;
   int _selectedPageIndex = 0;
   late Practice _practice;
   late List<GalleryItem> _gallery;
@@ -87,11 +87,11 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
     });
   }
 
-  void _setFavorite(Practice practice) {
-    setState(() {
-      isFavorite = true;
-    });
-  }
+  // void _setFavorite(Practice practice) {
+  //   setState(() {
+  //     isFavorite = true;
+  //   });
+  // }
 
   void _selectPage(int index) {
     setState(() {
@@ -219,22 +219,22 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.practice.name),
-        actions: [
-          IconButton(
-            onPressed: () {
-              _setFavorite(widget.practice);
-            },
-            icon: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 500),
-              child: Icon(isFavorite ? Icons.star : Icons.star_border,
-                  key: ValueKey(isFavorite)),
-              transitionBuilder: (child, animation) => RotationTransition(
-                turns: animation,
-                child: child,
-              ),
-            ),
-          )
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {
+        //       _setFavorite(widget.practice);
+        //     },
+        //     icon: AnimatedSwitcher(
+        //       duration: const Duration(milliseconds: 500),
+        //       child: Icon(isFavorite ? Icons.star : Icons.star_border,
+        //           key: ValueKey(isFavorite)),
+        //       transitionBuilder: (child, animation) => RotationTransition(
+        //         turns: animation,
+        //         child: child,
+        //       ),
+        //     ),
+        //   )
+        // ],
       ),
       body: activePage,
       bottomNavigationBar: BottomNavigationBar(

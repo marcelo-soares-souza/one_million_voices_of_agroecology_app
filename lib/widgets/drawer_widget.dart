@@ -18,20 +18,32 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   bool isLoggedIn = false;
 
   void _checkIfLoggedIn() async {
-    isLoggedIn = await AuthService.isLoggedIn();
-    setState(() {
-      isLoggedIn = isLoggedIn;
-    });
+    try {
+      bool loggedIn = await AuthService.isLoggedIn();
+
+      setState(() {
+        isLoggedIn = loggedIn;
+      });
+    } catch (e) {
+      debugPrint('[DEBUG]: _checkIfLoggedIn ERROR $e');
+    }
 
     debugPrint('[DEBUG]: _checkIfLoggedIn $isLoggedIn');
   }
 
-  void _logout() {
-    AuthService.logout();
+  void _logout() async {
+    bool logoutSuccess = await AuthService.logout();
 
-    setState(() {
-      isLoggedIn = false;
-    });
+    if (logoutSuccess) {
+      setState(() {
+        isLoggedIn = false;
+      });
+      debugPrint('[DEBUG]: _logout $logoutSuccess');
+
+      widget.onSelectScreen('map');
+    } else {
+      debugPrint('[DEBUG]: _logout ERROR');
+    }
   }
 
   @override
@@ -113,7 +125,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           ListTile(
             leading: Icon(
-              FontAwesomeIcons.rightToBracket,
+              isLoggedIn
+                  ? FontAwesomeIcons.rightFromBracket
+                  : FontAwesomeIcons.rightToBracket,
               size: 26,
               color: Theme.of(context).colorScheme.onBackground,
             ),

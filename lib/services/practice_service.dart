@@ -16,8 +16,7 @@ class PracticeService {
   static Future<List<Practice>> retrieveAllPractices() async {
     final List<Practice> practices = [];
 
-    final res =
-        await httpClient.get(Uri.https(Config.omvUrl, 'practices.json'));
+    final res = await httpClient.get(Config.getURI('practices.json'));
 
     for (final practice in json.decode(res.body.toString())) {
       practices.add(Practice.fromJson(practice));
@@ -27,8 +26,7 @@ class PracticeService {
   }
 
   static Future<Practice> retrievePractice(String id) async {
-    final res =
-        await httpClient.get(Uri.https(Config.omvUrl, '/practices/$id.json'));
+    final res = await httpClient.get(Config.getURI('/practices/$id.json'));
     Practice practice = Practice.fromJson(json.decode(res.body.toString()));
 
     return practice;
@@ -37,8 +35,8 @@ class PracticeService {
   static Future<List<GalleryItem>> retrievePracticeGallery(String id) async {
     final List<GalleryItem> gallery = [];
 
-    final res = await httpClient
-        .get(Uri.https(Config.omvUrl, '/practices/$id/gallery.json'));
+    final res =
+        await httpClient.get(Config.getURI('/practices/$id/gallery.json'));
 
     var data = json.decode(res.body.toString());
 

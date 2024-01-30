@@ -13,7 +13,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreen extends State<LoginScreen> {
-  Duration get loginTime => const Duration(milliseconds: 1000);
+  Duration get loginTime => const Duration(milliseconds: 500);
 
   Future<String?> _authUser(LoginData data) async {
     bool isAuthenticated = await AuthService.login(data.name, data.password);
@@ -27,12 +27,6 @@ class _LoginScreen extends State<LoginScreen> {
     });
   }
 
-  Future<String?> _signupUser(SignupData data) {
-    return Future.delayed(loginTime).then((_) {
-      return null;
-    });
-  }
-
   Future<String> _recoverPassword(String name) {
     return Future.delayed(loginTime).then((_) {
       return 'Password recovery not implemented';
@@ -42,17 +36,21 @@ class _LoginScreen extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
+      hideForgotPasswordButton: true,
+      hideProvidersTitle: true,
+      messages: LoginMessages(signupButton: ''),
       theme: LoginTheme(
         primaryColor: Colors.black,
         cardTheme: const CardTheme(color: Colors.black),
       ),
       logo: const AssetImage('assets/images/logo.png'),
       onLogin: _authUser,
-      onSignup: _signupUser,
       onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ));
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ),
+        );
       },
       onRecoverPassword: _recoverPassword,
     );
