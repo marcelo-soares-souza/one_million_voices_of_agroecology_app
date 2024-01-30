@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:http_interceptor/http/intercepted_client.dart';
 import 'dart:convert';
 
@@ -39,5 +40,20 @@ class LocationService {
       }
     }
     return gallery;
+  }
+
+  static Future<bool> sendLocation(Location location) async {
+    final res = await httpClient.post(
+      Config.getURI('/locations.json'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json
+          .encode({'name': location.name, 'description': location.description}),
+    );
+
+    debugPrint('[DEBUG]: Token ${res.body}');
+
+    return true;
   }
 }

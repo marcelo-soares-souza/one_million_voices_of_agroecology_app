@@ -40,8 +40,30 @@ class _LoginScreen extends State<LoginScreen> {
       hideProvidersTitle: true,
       messages: LoginMessages(signupButton: ''),
       theme: LoginTheme(
-        primaryColor: Colors.black,
-        cardTheme: const CardTheme(color: Colors.black),
+        textFieldStyle: const TextStyle(
+          color: Colors.white,
+        ),
+        primaryColor: Theme.of(context).copyWith().shadowColor,
+        cardTheme: CardTheme(
+            color: Theme.of(context).copyWith().shadowColor,
+            surfaceTintColor: Colors.white),
+        inputTheme: const InputDecorationTheme(
+          floatingLabelStyle: TextStyle(color: Colors.white),
+          prefixStyle: TextStyle(color: Colors.white),
+          hintStyle: TextStyle(color: Colors.white),
+          labelStyle: TextStyle(color: Colors.white),
+          counterStyle: TextStyle(color: Colors.white),
+          errorStyle: TextStyle(color: Colors.white),
+          helperStyle: TextStyle(color: Colors.white),
+          suffixStyle: TextStyle(color: Colors.white),
+          contentPadding: EdgeInsets.all(10),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+        ),
       ),
       logo: const AssetImage('assets/images/logo.png'),
       onLogin: _authUser,

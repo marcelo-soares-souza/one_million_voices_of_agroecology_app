@@ -5,10 +5,10 @@ class Config {
   static const String aboutPage =
       'https://onemillionvoices.agroecologymap.org/en/about';
   static const String title = 'One Million Voices of Agroecology';
-  static const String omvUrl = '10.0.2.2:3000';
+  static const String omvUrl = 'dev.agroecologymap.org';
 
   static Uri getURI(String page) {
-    return Uri.http(omvUrl, page);
+    return Uri.https(omvUrl, page);
   }
 
   static final _colorScheme = ColorScheme.fromSeed(
