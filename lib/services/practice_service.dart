@@ -2,7 +2,7 @@ import 'package:http_interceptor/http/intercepted_client.dart';
 import 'dart:convert';
 
 import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
-import 'package:one_million_voices_of_agroecology_app/configs/custom_interceptor.dart';
+import 'package:one_million_voices_of_agroecology_app/helpers/custom_interceptor.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
 
