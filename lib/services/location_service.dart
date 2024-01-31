@@ -48,8 +48,7 @@ class LocationService {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: json
-          .encode({'name': location.name, 'description': location.description}),
+      body: json.encode(location.toJson()),
     );
 
     debugPrint('[DEBUG]: Token ${res.body}');

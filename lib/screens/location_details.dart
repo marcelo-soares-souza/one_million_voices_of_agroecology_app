@@ -106,7 +106,8 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                 //
                 // Gallery
                 //
-                if (_gallery.isEmpty)
+                if (_gallery.isEmpty) ...[
+                  const SizedBox(height: 40),
                   Center(
                     child: Text(
                       'No items',
@@ -115,7 +116,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                           ),
                     ),
                   )
-                else
+                ] else
                   for (final i in _gallery) ...[
                     Stack(
                       children: [

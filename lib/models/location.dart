@@ -1,17 +1,17 @@
 class Location {
-  final int id;
-  final String name;
-  final String country;
-  final String farmAndFarmingSystem;
-  final String farmAndFarmingSystemComplement;
-  final String description;
-  final String latitude;
-  final String longitude;
-  final String responsibleForInformation;
-  final String url;
-  final String imageUrl;
-  final String createdAt;
-  final String updatedAt;
+  int id;
+  String name;
+  String country;
+  String farmAndFarmingSystem;
+  String farmAndFarmingSystemComplement;
+  String description;
+  String latitude;
+  String longitude;
+  String responsibleForInformation;
+  String url;
+  String imageUrl;
+  String createdAt;
+  String updatedAt;
 
   Location({
     required this.id,
@@ -46,5 +46,23 @@ class Location {
       createdAt: json['created_at'].toString(),
       updatedAt: json['updated_at'].toString(),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'country': country,
+      'farm_and_farming_system': farmAndFarmingSystem,
+      'farm_and_farming_system_complement': farmAndFarmingSystemComplement,
+      'description': description,
+      'latitude': latitude,
+      'longitude': longitude,
+      'responsible_for_information': responsibleForInformation,
+      'url': url,
+      'image_url': imageUrl,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+    };
   }
 }
