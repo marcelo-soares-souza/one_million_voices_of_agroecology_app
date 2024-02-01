@@ -53,12 +53,20 @@ class LocationService {
   }
 
   static Future<bool> sendLocation(Location location) async {
+    final locationJson = location.toJson();
+
+    locationJson.remove('id');
+    locationJson.remove('created_at');
+    locationJson.remove('updated_at');
+
+    final body = json.encode(locationJson);
+
+    debugPrint('[DEBUG]: sendLocation body: $body');
+
     final res = await httpClient.post(
       Config.getURI('/locations.json'),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: json.encode(location.toJson()),
+      headers: Config.headers,
+      body: body,
     );
 
     debugPrint('[DEBUG]: Token ${res.body}');

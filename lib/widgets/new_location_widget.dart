@@ -36,12 +36,8 @@ class _NewLocation extends State<NewLocation> {
 
   List<DropdownMenuItem<String>> get dropDownYesNo {
     List<DropdownMenuItem<String>> yesNoItems = [];
-    yesNoItems.add(
-      const DropdownMenuItem(value: 'true', child: Text('Yes')),
-    );
-    yesNoItems.add(
-      const DropdownMenuItem(value: 'false', child: Text('No')),
-    );
+    yesNoItems.add(const DropdownMenuItem(value: 'true', child: Text('Yes')));
+    yesNoItems.add(const DropdownMenuItem(value: 'false', child: Text('No')));
     return yesNoItems;
   }
 
@@ -93,6 +89,14 @@ class _NewLocation extends State<NewLocation> {
     });
   }
 
+  Map<String, bool> farmAndFarmingSystemComplementValues = {
+    'Crops': false,
+    'Animals': false,
+    'Trees': false,
+    'Fish': false,
+    'Other': false,
+  };
+
   @override
   void initState() {
     _location = Location(
@@ -128,9 +132,14 @@ class _NewLocation extends State<NewLocation> {
         _isSending = true;
       });
 
-      await LocationService.sendLocation(_location);
+      _location.farmAndFarmingSystemComplement =
+          farmAndFarmingSystemComplementValues.entries
+              .where((entry) => entry.value == true)
+              .map((entry) => entry.key)
+              .toList()
+              .join(', ');
 
-      debugPrint('[DEBUG]: Location Saved: ${_location.toJson()}');
+      await LocationService.sendLocation(_location);
 
       if (!context.mounted) {
         return;
@@ -156,78 +165,105 @@ class _NewLocation extends State<NewLocation> {
       appBar: AppBar(
         title: const Text('Add a new Location'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                maxLength: 64,
-                style: const TextStyle(color: Colors.white),
-                validator: (value) => validateInputSize(value, 1, 64),
-                decoration: const InputDecoration(
-                  label: Text('Name'),
-                ),
-                onSaved: (value) => _location.name = value!,
-              ),
-              DropdownButtonFormField(
-                items: dropDownCountries,
-                value: _defaultCountry,
-                onChanged: (value) => _location.country = value!,
-                decoration: const InputDecoration(
-                  filled: false,
-                  fillColor: Colors.blueAccent,
-                ),
-                dropdownColor: Colors.black,
-              ),
-              DropdownButtonFormField(
-                items: dropDownYesNo,
-                value: 'true',
-                onChanged: (value) => _location.isItAFarm = value!,
-                decoration: const InputDecoration(
-                  filled: false,
-                  fillColor: Colors.blueAccent,
-                ),
-                dropdownColor: Colors.black,
-              ),
-              TextFormField(
-                maxLength: 512,
-                minLines: 2,
-                maxLines: null,
-                style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(
-                  label: Text('Description'),
-                ),
-                onSaved: (value) => _location.description = value!,
-              ),
-              //
-              // Buttons
-              //
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: _isSending
-                        ? null
-                        : () {
-                            _formKey.currentState!.reset();
-                          },
-                    child: const Text('Reset'),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  maxLength: 64,
+                  style: const TextStyle(color: Colors.white),
+                  validator: (value) => validateInputSize(value, 1, 64),
+                  decoration: const InputDecoration(
+                    label: Text('Name'),
                   ),
-                  ElevatedButton(
-                    onPressed: _isSending ? null : _saveItem,
-                    child: _isSending
-                        ? const SizedBox(
-                            height: 16,
-                            width: 16,
-                            child: CircularProgressIndicator(),
-                          )
-                        : const Text('Add'),
+                  onSaved: (value) => _location.name = value!,
+                ),
+                DropdownButtonFormField(
+                  items: dropDownCountries,
+                  value: _defaultCountry,
+                  onChanged: (value) => _location.country = value!,
+                  decoration: const InputDecoration(
+                    label: Text('Country'),
+                    filled: false,
+                    fillColor: Colors.blueAccent,
                   ),
-                ],
-              ),
-            ],
+                  dropdownColor: Colors.black,
+                ),
+                const SizedBox(height: 16),
+                DropdownButtonFormField(
+                  items: dropDownYesNo,
+                  value: 'true',
+                  onChanged: (value) => _location.isItAFarm = value!,
+                  decoration: const InputDecoration(
+                    label: Text('Is it a farm?'),
+                    filled: false,
+                    fillColor: Colors.blueAccent,
+                  ),
+                  dropdownColor: Colors.black,
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'What do you have on your farm?',
+                  style: TextStyle(color: Colors.white),
+                  textAlign: TextAlign.right,
+                ),
+                ListView(
+                    shrinkWrap: true,
+                    children: farmAndFarmingSystemComplementValues.keys
+                        .map((String key) {
+                      return CheckboxListTile(
+                        title: Text(key),
+                        value: farmAndFarmingSystemComplementValues[key],
+                        onChanged: (value) {
+                          setState(() {
+                            farmAndFarmingSystemComplementValues[key] = value!;
+                            debugPrint(
+                                '[DEBUG]: $farmAndFarmingSystemComplementValues');
+                          });
+                        },
+                      );
+                    }).toList()),
+                TextFormField(
+                  maxLength: 512,
+                  minLines: 2,
+                  maxLines: null,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    label: Text('Description'),
+                  ),
+                  onSaved: (value) => _location.description = value!,
+                ),
+                //
+                // Buttons
+                //
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: _isSending
+                          ? null
+                          : () {
+                              _formKey.currentState!.reset();
+                            },
+                      child: const Text('Reset'),
+                    ),
+                    ElevatedButton(
+                      onPressed: _isSending ? null : _saveItem,
+                      child: _isSending
+                          ? const SizedBox(
+                              height: 16,
+                              width: 16,
+                              child: CircularProgressIndicator(),
+                            )
+                          : const Text('Add'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
