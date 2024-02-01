@@ -34,6 +34,17 @@ class _NewLocation extends State<NewLocation> {
     return countryItems;
   }
 
+  List<DropdownMenuItem<String>> get dropDownYesNo {
+    List<DropdownMenuItem<String>> yesNoItems = [];
+    yesNoItems.add(
+      const DropdownMenuItem(value: 'true', child: Text('Yes')),
+    );
+    yesNoItems.add(
+      const DropdownMenuItem(value: 'false', child: Text('No')),
+    );
+    return yesNoItems;
+  }
+
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -88,14 +99,18 @@ class _NewLocation extends State<NewLocation> {
       id: 0,
       name: '',
       country: _defaultCountry,
-      farmAndFarmingSystem: '',
+      isItAFarm: 'true',
       farmAndFarmingSystemComplement: '',
+      farmAndFarmingSystem: '',
+      farmAndFarmingSystemDetails: '',
+      whatIsYourDream: '',
+      imageUrl: '',
       description: '',
+      hideMyLocation: 'false',
       latitude: '-15.75',
       longitude: '-47.89',
       responsibleForInformation: '',
       url: '',
-      imageUrl: '',
       createdAt: '',
       updatedAt: '',
     );
@@ -160,6 +175,16 @@ class _NewLocation extends State<NewLocation> {
                 items: dropDownCountries,
                 value: _defaultCountry,
                 onChanged: (value) => _location.country = value!,
+                decoration: const InputDecoration(
+                  filled: false,
+                  fillColor: Colors.blueAccent,
+                ),
+                dropdownColor: Colors.black,
+              ),
+              DropdownButtonFormField(
+                items: dropDownYesNo,
+                value: 'true',
+                onChanged: (value) => _location.isItAFarm = value!,
                 decoration: const InputDecoration(
                   filled: false,
                   fillColor: Colors.blueAccent,

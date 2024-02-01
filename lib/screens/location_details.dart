@@ -23,8 +23,12 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
   bool _isLoading = true;
   int _selectedPageIndex = 0;
   late List<GalleryItem> _gallery;
+  late Location _location;
 
   void _retrieveGallery() async {
+    _location =
+        await LocationService.retrieveLocation(widget.location.id.toString());
+
     _gallery = await LocationService.retrieveLocationGallery(
         widget.location.id.toString());
 
@@ -70,24 +74,32 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                     child: CircularProgressIndicator(),
                   ),
                 ),
-                imageUrl: widget.location.imageUrl,
+                imageUrl: _location.imageUrl,
               ),
               TextBlockWidget(
                 label: 'Description',
-                value: widget.location.description,
+                value: _location.description,
               ),
               TextBlockWidget(
                 label: 'Country',
-                value: widget.location.country,
+                value: _location.country,
               ),
               TextBlockWidget(
                 label: 'Farm and Farming System',
                 value:
-                    '${widget.location.farmAndFarmingSystem} - ${widget.location.farmAndFarmingSystemComplement}',
+                    '${_location.farmAndFarmingSystem} - ${_location.farmAndFarmingSystemComplement}',
+              ),
+              TextBlockWidget(
+                label: 'Details of the farming system',
+                value: _location.farmAndFarmingSystemDetails,
+              ),
+              TextBlockWidget(
+                label: 'What is your dream ',
+                value: _location.whatIsYourDream,
               ),
               TextBlockWidget(
                 label: 'Responsible for Information',
-                value: widget.location.responsibleForInformation,
+                value: _location.responsibleForInformation,
               ),
             ] else if (_selectedPageIndex == 1) ...[
               //

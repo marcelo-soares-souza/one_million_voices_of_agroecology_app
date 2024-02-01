@@ -26,14 +26,21 @@ class LocationService {
     return locations;
   }
 
+  static Future<Location> retrieveLocation(String id) async {
+    final res = await httpClient.get(Config.getURI('/locations/$id.json'));
+    Location location = Location.fromJson(json.decode(res.body.toString()));
+
+    return location;
+  }
+
   static Future<List<GalleryItem>> retrieveLocationGallery(String id) async {
     final List<GalleryItem> gallery = [];
 
     final res =
         await httpClient.get(Config.getURI('/locations/$id/gallery.json'));
 
-    debugPrint('[DEBUG]: ${res.statusCode} <-----');
-    debugPrint('[DEBUG]: ${res.body} <-----');
+    debugPrint('[DEBUG]: statusCode ${res.statusCode}');
+    debugPrint('[DEBUG]: body ${res.body}');
 
     var data = json.decode(res.body.toString());
 
