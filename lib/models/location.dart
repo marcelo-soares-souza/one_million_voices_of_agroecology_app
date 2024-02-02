@@ -37,17 +37,37 @@ class Location {
     required this.updatedAt,
   });
 
+  static Location initLocation() {
+    return Location(
+      id: 0,
+      name: '',
+      country: 'BR',
+      isItAFarm: 'true',
+      farmAndFarmingSystemComplement: '',
+      farmAndFarmingSystem: '',
+      farmAndFarmingSystemDetails: '',
+      whatIsYourDream: '',
+      imageUrl: '',
+      description: '',
+      hideMyLocation: 'false',
+      latitude: '-15.75',
+      longitude: '-47.89',
+      responsibleForInformation: '',
+      url: '',
+      createdAt: '',
+      updatedAt: '',
+    );
+  }
+
   factory Location.fromJson(Map<String, dynamic> json) {
     return Location(
       id: json['id'],
       name: json['name'].toString(),
       country: json['country'].toString(),
       isItAFarm: json['is_it_a_farm'].toString(),
-      farmAndFarmingSystemComplement:
-          json['farm_and_farming_system_complement'].toString(),
+      farmAndFarmingSystemComplement: json['farm_and_farming_system_complement'].toString(),
       farmAndFarmingSystem: json['farm_and_farming_system'].toString(),
-      farmAndFarmingSystemDetails:
-          json['farm_and_farming_system_details'].toString(),
+      farmAndFarmingSystemDetails: json['farm_and_farming_system_details'].toString(),
       whatIsYourDream: json['what_is_your_dream'].toString(),
       description: json['description'].toString(),
       hideMyLocation: json['hide_my_location'].toString(),
