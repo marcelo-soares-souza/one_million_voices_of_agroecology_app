@@ -28,7 +28,6 @@ class _ImageInputState extends State<ImageInput> {
     });
   }
 
-//Image Picker function to get image from camera
   Future _getImageFromCamera() async {
     final pickedFile = await imagePicker.pickImage(source: ImageSource.camera, maxWidth: 1980);
 

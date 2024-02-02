@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map_supercluster/flutter_map_supercluster.dart';
+import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
+import 'package:one_million_voices_of_agroecology_app/helpers/location_helper.dart';
 
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/location_details.dart';
@@ -33,16 +34,12 @@ class _MapWidget extends State<MapWidget> {
           final latitude = double.parse(location.latitude);
           final longitude = double.parse(location.longitude);
 
-          _markers.add(Marker(
-            key: Key(id.toString()),
-            child: const Icon(
-              FontAwesomeIcons.seedling,
-              color: Colors.green,
-              size: 30.0,
+          _markers.add(
+            LocationHelper.buildMarker(
+              id.toString(),
+              LatLng(latitude, longitude),
             ),
-            point: LatLng(latitude, longitude),
-            alignment: Alignment.topCenter,
-          ));
+          );
         }
       }
 
@@ -87,29 +84,18 @@ class _MapWidget extends State<MapWidget> {
           minZoom: 1.0,
           maxZoom: 16.0,
           initialZoom: 3.0,
-          interactionOptions: InteractionOptions(
-            enableMultiFingerGestureRace: true,
-            flags: InteractiveFlag.doubleTapDragZoom |
-                InteractiveFlag.doubleTapZoom |
-                InteractiveFlag.drag |
-                InteractiveFlag.flingAnimation |
-                InteractiveFlag.pinchZoom |
-                InteractiveFlag.scrollWheelZoom,
-          ),
+          interactionOptions: Config.interactionOptions,
         ),
         children: [
           TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            urlTemplate: Config.osmURL,
           ),
           SuperclusterLayer.immutable(
             initialMarkers: _markers,
             indexBuilder: IndexBuilders.computeWithOriginalMarkers,
             onMarkerTap: (marker) {
-              int id = int.parse(
-                  marker.key.toString().replaceAll(RegExp('[^0-9]'), ''));
-              final Location location =
-                  _locations.where((l) => l.id == id).first;
-
+              int id = int.parse(marker.key.toString().replaceAll(RegExp('[^0-9]'), ''));
+              final Location location = _locations.where((l) => l.id == id).first;
               selectLocation(context, location);
             },
             builder: (context, position, markerCount, extraClusterData) {

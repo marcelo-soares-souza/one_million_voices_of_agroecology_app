@@ -2,7 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/location_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
@@ -18,6 +21,8 @@ class NewLocation extends StatefulWidget {
 }
 
 class _NewLocation extends State<NewLocation> {
+  bool _isLoading = true;
+
   final LocationHelper _locationHelper = LocationHelper();
   late Location _location;
   late Position? _currentPosition;
@@ -25,6 +30,7 @@ class _NewLocation extends State<NewLocation> {
   var _isSending = false;
   bool _isLoggedIn = false;
   File? _selectedImage;
+  Marker? _marker;
 
   void _checkIfIsLoggedIn() async {
     if (await AuthService.isLoggedIn()) {
@@ -39,6 +45,19 @@ class _NewLocation extends State<NewLocation> {
     _checkIfIsLoggedIn();
     _location = Location.initLocation();
     _getCurrentPosition();
+    _marker = LocationHelper.buildMarker(
+        _location.id.toString(),
+        LatLng(
+          double.parse(_location.latitude),
+          double.parse(
+            _location.longitude,
+          ),
+        ));
+
+    setState(() {
+      _isLoading = false;
+    });
+
     super.initState();
   }
 
@@ -96,105 +115,131 @@ class _NewLocation extends State<NewLocation> {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = Center(
-      child: Text(
-        'You need to login to add a new record',
-        style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
-      ),
-    );
+    Widget content = const Center(child: CircularProgressIndicator());
 
-    if (_isLoggedIn) {
-      content = SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                TextFormField(
-                  maxLength: 64,
-                  style: const TextStyle(color: Colors.white),
-                  validator: (value) => FormHelper.validateInputSize(value, 1, 64),
-                  decoration: const InputDecoration(
-                    label: Text('Name'),
-                  ),
-                  onSaved: (value) => _location.name = value!,
-                ),
-                DropdownButtonFormField(
-                  items: LocationHelper.dropDownCountries,
-                  value: _location.country,
-                  onChanged: (value) => _location.country = value!,
-                  decoration: const InputDecoration(
-                    label: Text('Country'),
-                    filled: false,
-                    fillColor: Colors.blueAccent,
-                  ),
-                  dropdownColor: Colors.black,
-                ),
-                const SizedBox(height: 16),
-                DropdownButtonFormField(
-                  items: FormHelper.dropDownYesNo,
-                  value: 'true',
-                  onChanged: (value) => _location.isItAFarm = value!,
-                  decoration: const InputDecoration(
-                    label: Text('Is it a farm?'),
-                    filled: false,
-                    fillColor: Colors.blueAccent,
-                  ),
-                  dropdownColor: Colors.black,
-                ),
-                const SizedBox(height: 16),
-                const Text('What do you have on your farm?', style: TextStyle(color: Colors.grey, fontSize: 13)),
-                for (final key in _locationHelper.farmAndFarmingSystemComplementValues.keys) ...[
-                  CheckboxListTile(
-                    title: Text(key),
-                    value: _locationHelper.farmAndFarmingSystemComplementValues[key],
-                    onChanged: (value) =>
-                        setState(() => _locationHelper.farmAndFarmingSystemComplementValues[key] = value!),
-                  )
-                ],
-                TextFormField(
-                  maxLength: 512,
-                  minLines: 2,
-                  maxLines: null,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
-                    label: Text('Description'),
-                  ),
-                  onSaved: (value) => _location.description = value!,
-                ),
-                const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 13)),
-                const SizedBox(height: 16),
-                ImageInput(onPickImage: (image) => _selectedImage = image),
-                //
-                // Buttons
-                //
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: _isSending ? null : () => _formKey.currentState!.reset(),
-                      child: const Text('Reset'),
-                    ),
-                    ElevatedButton(
-                      onPressed: _isSending ? null : _saveItem,
-                      child: _isSending
-                          ? const SizedBox(
-                              height: 16,
-                              width: 16,
-                              child: CircularProgressIndicator(),
-                            )
-                          : const Text('Add'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+    if (!_isLoading) {
+      content = Center(
+        child: Text(
+          'You need to login to add a new record',
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
         ),
       );
-    }
 
+      if (_isLoggedIn) {
+        content = SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  const Text('Location Name', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                  TextFormField(
+                    maxLength: 64,
+                    style: const TextStyle(color: Colors.white),
+                    validator: (value) => FormHelper.validateInputSize(value, 1, 64),
+                    onSaved: (value) => _location.name = value!,
+                  ),
+                  const Text('Country', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                  DropdownButtonFormField(
+                    items: LocationHelper.dropDownCountries,
+                    value: _location.country,
+                    onChanged: (value) => _location.country = value!,
+                    decoration: const InputDecoration(
+                      filled: false,
+                      fillColor: Colors.blueAccent,
+                    ),
+                    dropdownColor: Colors.black,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('Is it a farm?', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                  DropdownButtonFormField(
+                    items: FormHelper.dropDownYesNo,
+                    value: 'true',
+                    onChanged: (value) => _location.isItAFarm = value!,
+                    decoration: const InputDecoration(
+                      filled: false,
+                      fillColor: Colors.blueAccent,
+                    ),
+                    dropdownColor: Colors.black,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('What do you have on your farm?', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                  for (final key in _locationHelper.farmAndFarmingSystemComplementValues.keys) ...[
+                    CheckboxListTile(
+                      title: Text(key),
+                      value: _locationHelper.farmAndFarmingSystemComplementValues[key],
+                      onChanged: (value) =>
+                          setState(() => _locationHelper.farmAndFarmingSystemComplementValues[key] = value!),
+                    )
+                  ],
+                  const Text('Description', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                  TextFormField(
+                    maxLength: 512,
+                    minLines: 2,
+                    maxLines: null,
+                    style: const TextStyle(color: Colors.white),
+                    onSaved: (value) => _location.description = value!,
+                  ),
+                  const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                  const SizedBox(height: 16),
+                  ImageInput(onPickImage: (image) => _selectedImage = image),
+                  const SizedBox(height: 16),
+                  const Text('Location', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 300,
+                    child: FlutterMap(
+                      options: MapOptions(
+                        initialCenter: const LatLng(16.0, 16.0),
+                        minZoom: 1.0,
+                        maxZoom: 16.0,
+                        initialZoom: 2.0,
+                        interactionOptions: Config.interactionOptions,
+                        onTap: (position, latlon) {
+                          setState(() {
+                            _location.latitude = latlon.latitude.toString();
+                            _location.longitude = latlon.longitude.toString();
+                            _marker = LocationHelper.buildMarker(_location.id.toString(), latlon);
+                          });
+                        },
+                      ),
+                      children: [
+                        TileLayer(urlTemplate: Config.osmURL),
+                        MarkerLayer(markers: [_marker!])
+                      ],
+                    ),
+                  ),
+                  //
+                  // Buttons
+                  //
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: _isSending ? null : () => _formKey.currentState!.reset(),
+                        child: const Text('Reset'),
+                      ),
+                      ElevatedButton(
+                        onPressed: _isSending ? null : _saveItem,
+                        child: _isSending
+                            ? const SizedBox(
+                                height: 16,
+                                width: 16,
+                                child: CircularProgressIndicator(),
+                              )
+                            : const Text('Add'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
+    }
     return Scaffold(
         appBar: AppBar(
           title: const Text('Add a new Location'),
