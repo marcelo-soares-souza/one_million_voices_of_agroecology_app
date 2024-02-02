@@ -80,4 +80,30 @@ class LocationService {
     }
     return {'status': 'failed', 'message': 'An error occured. Please login again.'};
   }
+
+  static Future<Map<String, String>> sendMediaToLocation(GalleryItem galleryItem) async {
+    bool isTokenValid = await AuthService.validateToken();
+
+    if (isTokenValid) {
+      final galleryItemJson = galleryItem.toJson();
+
+      final body = json.encode(galleryItemJson);
+
+      debugPrint('[DEBUG]: sendMediaToLocation body: $body');
+
+      final res = await httpClient.post(Config.getURI('/locations/${galleryItem.locationId}/medias.json'), body: body);
+
+      debugPrint('[DEBUG]: statusCode ${res.statusCode}');
+      debugPrint('[DEBUG]: Body ${res.body}');
+
+      var message = json.decode(res.body);
+
+      var error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
+
+      if (res.statusCode != 201) return {'status': 'failed', 'message': error};
+
+      return {'status': 'success', 'message': 'Location added'};
+    }
+    return {'status': 'failed', 'message': 'An error occured. Please login again.'};
+  }
 }

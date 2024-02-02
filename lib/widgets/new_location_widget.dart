@@ -80,7 +80,7 @@ class _NewLocation extends State<NewLocation> {
         _location.base64Image = imageBase64;
       }
 
-      debugPrint('[DEBUG] Base64: $imageBase64');
+      // debugPrint('[DEBUG] Base64: $imageBase64');
 
       final Map<String, String> response = await LocationService.sendLocation(_location);
 

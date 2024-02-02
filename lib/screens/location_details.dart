@@ -5,6 +5,7 @@ import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
 import 'package:one_million_voices_of_agroecology_app/services/location_service.dart';
+import 'package:one_million_voices_of_agroecology_app/widgets/new_media_widget.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/text_block_widget.dart';
 
 class LocationDetailsScreen extends StatefulWidget {
@@ -19,7 +20,7 @@ class LocationDetailsScreen extends StatefulWidget {
 }
 
 class _LocationDetailsScreen extends State<LocationDetailsScreen> {
-  // bool isFavorite = false;
+  bool _sendMedia = false;
   bool _isLoading = true;
   int _selectedPageIndex = 0;
   late List<GalleryItem> _gallery;
@@ -31,15 +32,15 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
     setState(() => _isLoading = false);
   }
 
-  // void _setFavorite(Location location) {
-  //   setState(() {
-  //     isFavorite = true;
-  //   });
-  // }
-
   void _selectPage(int index) {
     setState(() {
+      _isLoading = true;
       _selectedPageIndex = index;
+      _sendMedia = false;
+
+      if (_selectedPageIndex == 1) {
+        _retrieveGallery();
+      }
     });
   }
 
@@ -94,7 +95,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                 label: 'Responsible for Information',
                 value: _location.responsibleForInformation,
               ),
-            ] else if (_selectedPageIndex == 1) ...[
+            ] else if (_selectedPageIndex == 1 && _sendMedia == false) ...[
               //
               // Gallery
               //
@@ -156,7 +157,12 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                ]
+                ],
+            ] else if (_selectedPageIndex == 1 && _sendMedia == true) ...[
+              NewMediaWidget(
+                locationId: widget.location.id.toString(),
+                onSetPage: _selectPage,
+              )
             ]
           ],
         ),
@@ -164,9 +170,17 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.location.name),
-      ),
+      appBar: AppBar(title: Text(widget.location.name), actions: [
+        if (_selectedPageIndex == 1)
+          IconButton(
+              icon: const Icon(FontAwesomeIcons.plus),
+              onPressed: () {
+                _selectPage(1);
+                setState(() {
+                  _sendMedia = true;
+                });
+              })
+      ]),
       body: activePage,
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
