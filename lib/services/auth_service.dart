@@ -19,9 +19,6 @@ class AuthService {
     final res = await httpClient.post(
       Config.getURI('/login.json'),
       body: jsonEncode({'email': email, 'password': password}),
-      headers: {
-        'Content-Type': 'application/json',
-      },
     );
 
     if (res.statusCode != 200) return false;
@@ -55,18 +52,31 @@ class AuthService {
 
   static Future<bool> isLoggedIn() async {
     try {
-      if (!await storage.containsKey(key: 'email')) return false;
+      if (!await storage.containsKey(key: 'email') || !await storage.containsKey(key: 'token')) return false;
 
       String email = (await storage.read(key: 'email'))!;
+      String token = (await storage.read(key: 'token'))!;
+
+      if (email.isEmpty || token.isEmpty) return false;
 
       debugPrint('[DEBUG]: isLoggedIn E-Mail $email');
-
-      if (email.isEmpty) return false;
+      debugPrint('[DEBUG]: isLoggedIn Token $token');
 
       return true;
     } catch (e) {
       debugPrint('[DEBUG]: isLoggedIn ERROR $e');
       return false;
     }
+  }
+
+  static Future<bool> validateToken() async {
+    final res = await httpClient.post(Config.getURI('/validate_jwt_token.json'));
+
+    debugPrint('[DEBUG]: validateToken statusCode ${res.statusCode}');
+    debugPrint('[DEBUG]: validateToken body ${res.body}');
+
+    if (res.statusCode != 200) return false;
+
+    return true;
   }
 }

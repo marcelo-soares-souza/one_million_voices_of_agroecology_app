@@ -46,7 +46,7 @@ class _LoginScreen extends State<LoginScreen> {
           surfaceTintColor: Colors.white,
         ),
         inputTheme: const InputDecorationTheme(
-          fillColor: Color.fromARGB(255, 12, 104, 0),
+          fillColor: Colors.green,
           filled: true,
           contentPadding: EdgeInsets.all(10),
           focusedBorder: OutlineInputBorder(

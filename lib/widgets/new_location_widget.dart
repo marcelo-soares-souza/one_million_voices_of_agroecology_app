@@ -3,6 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/location_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
+import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
 import 'package:one_million_voices_of_agroecology_app/services/location_service.dart';
 
 class NewLocation extends StatefulWidget {
@@ -18,9 +19,19 @@ class _NewLocation extends State<NewLocation> {
   late Position? _currentPosition;
   final _formKey = GlobalKey<FormState>();
   var _isSending = false;
+  bool _isLoggedIn = false;
+
+  void _checkIfIsLoggedIn() async {
+    if (await AuthService.isLoggedIn()) {
+      setState(() {
+        _isLoggedIn = true;
+      });
+    }
+  }
 
   @override
   void initState() {
+    _checkIfIsLoggedIn();
     _location = Location.initLocation();
     _getCurrentPosition();
     super.initState();
@@ -38,23 +49,48 @@ class _NewLocation extends State<NewLocation> {
           .toList()
           .join(', ');
 
-      await LocationService.sendLocation(_location);
+      final Map<String, String> response = await LocationService.sendLocation(_location);
 
-      if (!context.mounted) {
-        return;
+      String status = response['status'].toString();
+      String message = response['message'].toString();
+
+      if (status == 'success') {
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.green,
+        ));
+
+        if (!context.mounted) {
+          return;
+        }
+
+        Navigator.of(context).pop();
+      } else {
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('An error occured: $message'),
+          backgroundColor: Colors.green,
+        ));
+
+        setState(() {
+          _isSending = false;
+        });
       }
-
-      Navigator.of(context).pop();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add a new Location'),
+    Widget content = Center(
+      child: Text(
+        'You need to login to add a new record',
+        style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
       ),
-      body: SingleChildScrollView(
+    );
+
+    if (_isLoggedIn) {
+      content = SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Form(
@@ -139,8 +175,14 @@ class _NewLocation extends State<NewLocation> {
             ),
           ),
         ),
-      ),
-    );
+      );
+    }
+
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Add a new Location'),
+        ),
+        body: content);
   }
 
   Future<bool> _handleLocationPermission() async {
@@ -150,8 +192,10 @@ class _NewLocation extends State<NewLocation> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Location services are disabled. Please enable the services')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Location services are disabled. Please enable the services'),
+        backgroundColor: Colors.green,
+      ));
       return false;
     }
     permission = await Geolocator.checkPermission();
@@ -159,14 +203,19 @@ class _NewLocation extends State<NewLocation> {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Location permissions are denied')));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Location permissions are denied'),
+          backgroundColor: Colors.green,
+        ));
         return false;
       }
     }
     if (permission == LocationPermission.deniedForever) {
       // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Location permissions are permanently denied, we cannot request permissions.')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Location permissions are permanently denied, we cannot request permissions.'),
+        backgroundColor: Colors.green,
+      ));
       return false;
     }
     return true;

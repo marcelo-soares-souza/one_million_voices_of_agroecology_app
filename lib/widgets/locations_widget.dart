@@ -8,9 +8,7 @@ import 'package:one_million_voices_of_agroecology_app/widgets/location_item_widg
 class LocationsWidget extends StatefulWidget {
   const LocationsWidget({super.key});
   @override
-  State<LocationsWidget> createState() {
-    return _LocationsWidget();
-  }
+  State<LocationsWidget> createState() => _LocationsWidget();
 }
 
 class _LocationsWidget extends State<LocationsWidget> {
@@ -32,9 +30,7 @@ class _LocationsWidget extends State<LocationsWidget> {
       _locations = await LocationService.retrieveAllLocations();
 
       if (_locations.isNotEmpty) {
-        setState(() {
-          _isLoading = false;
-        });
+        setState(() => _isLoading = false);
       }
     } catch (e) {
       throw Exception('[LocationsWidget] Error: $e');

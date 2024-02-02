@@ -7,7 +7,6 @@ class Config {
   static const String aboutPage = 'https://$omvUrl/about';
 
   // static const String omvUrl = '10.0.2.2:3000';
-  static const headers = {'Content-Type': 'application/json'};
 
   static Uri getURI(String page) {
     return Uri.https(omvUrl, page);

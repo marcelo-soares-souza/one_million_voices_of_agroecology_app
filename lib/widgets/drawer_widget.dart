@@ -21,6 +21,17 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     try {
       bool loggedIn = await AuthService.isLoggedIn();
 
+      if (loggedIn) {
+        bool tokenIsValid = await AuthService.validateToken();
+        isLoggedIn = tokenIsValid;
+      }
+
+      debugPrint('[DEBUG]: isLoggedIn $loggedIn');
+
+      if (!loggedIn) {
+        await AuthService.logout();
+      }
+
       setState(() {
         isLoggedIn = loggedIn;
       });
@@ -38,8 +49,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       setState(() {
         isLoggedIn = false;
       });
-      debugPrint('[DEBUG]: _logout $logoutSuccess');
 
+      debugPrint('[DEBUG]: _logout $logoutSuccess');
       widget.onSelectScreen('map');
     } else {
       debugPrint('[DEBUG]: _logout ERROR');
@@ -63,10 +74,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               gradient: LinearGradient(
                 colors: [
                   Theme.of(context).colorScheme.primaryContainer,
-                  Theme.of(context)
-                      .colorScheme
-                      .primaryContainer
-                      .withOpacity(0.8)
+                  Theme.of(context).colorScheme.primaryContainer.withOpacity(0.8)
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -88,9 +96,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               color: Theme.of(context).colorScheme.onBackground,
             ),
             title: Text('Map',
-                style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                    fontSize: 24)),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(color: Theme.of(context).colorScheme.onBackground, fontSize: 24)),
             onTap: () {
               widget.onSelectScreen('map');
             },
@@ -102,9 +111,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               color: Theme.of(context).colorScheme.onBackground,
             ),
             title: Text('Locations',
-                style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                    fontSize: 24)),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(color: Theme.of(context).colorScheme.onBackground, fontSize: 24)),
             onTap: () {
               widget.onSelectScreen('locations');
             },
@@ -116,25 +126,25 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               color: Theme.of(context).colorScheme.onBackground,
             ),
             title: Text('Practices',
-                style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                    fontSize: 24)),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(color: Theme.of(context).colorScheme.onBackground, fontSize: 24)),
             onTap: () {
               widget.onSelectScreen('practices');
             },
           ),
           ListTile(
             leading: Icon(
-              isLoggedIn
-                  ? FontAwesomeIcons.rightFromBracket
-                  : FontAwesomeIcons.rightToBracket,
+              isLoggedIn ? FontAwesomeIcons.rightFromBracket : FontAwesomeIcons.rightToBracket,
               size: 26,
               color: Theme.of(context).colorScheme.onBackground,
             ),
             title: Text(isLoggedIn ? 'Logout' : 'Login',
-                style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                    fontSize: 24)),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(color: Theme.of(context).colorScheme.onBackground, fontSize: 24)),
             onTap: () {
               isLoggedIn ? _logout() : widget.onSelectScreen('login');
             },
@@ -146,9 +156,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               color: Theme.of(context).colorScheme.onBackground,
             ),
             title: Text('About',
-                style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                    fontSize: 24)),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(color: Theme.of(context).colorScheme.onBackground, fontSize: 24)),
             onTap: () {
               widget.onSelectScreen('about');
             },

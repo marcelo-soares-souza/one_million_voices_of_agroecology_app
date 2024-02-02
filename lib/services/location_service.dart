@@ -6,6 +6,7 @@ import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/custom_interceptor.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
+import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
 
 class LocationService {
   static InterceptedClient httpClient = InterceptedClient.build(
@@ -36,8 +37,7 @@ class LocationService {
   static Future<List<GalleryItem>> retrieveLocationGallery(String id) async {
     final List<GalleryItem> gallery = [];
 
-    final res =
-        await httpClient.get(Config.getURI('/locations/$id/gallery.json'));
+    final res = await httpClient.get(Config.getURI('/locations/$id/gallery.json'));
 
     debugPrint('[DEBUG]: statusCode ${res.statusCode}');
     debugPrint('[DEBUG]: body ${res.body}');
@@ -52,25 +52,32 @@ class LocationService {
     return gallery;
   }
 
-  static Future<bool> sendLocation(Location location) async {
-    final locationJson = location.toJson();
+  static Future<Map<String, String>> sendLocation(Location location) async {
+    bool isTokenValid = await AuthService.validateToken();
 
-    locationJson.remove('id');
-    locationJson.remove('created_at');
-    locationJson.remove('updated_at');
+    if (isTokenValid) {
+      final locationJson = location.toJson();
 
-    final body = json.encode(locationJson);
+      locationJson.remove('id');
+      locationJson.remove('created_at');
+      locationJson.remove('updated_at');
 
-    debugPrint('[DEBUG]: sendLocation body: $body');
+      final body = json.encode(locationJson);
 
-    final res = await httpClient.post(
-      Config.getURI('/locations.json'),
-      headers: Config.headers,
-      body: body,
-    );
+      debugPrint('[DEBUG]: sendLocation body: $body');
 
-    debugPrint('[DEBUG]: Token ${res.body}');
+      final res = await httpClient.post(Config.getURI('/locations.json'), body: body);
 
-    return true;
+      debugPrint('[DEBUG]: statusCode ${res.statusCode}');
+      debugPrint('[DEBUG]: Body ${res.body}');
+
+      var message = json.decode(res.body);
+      var error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
+
+      if (res.statusCode != 201) return {'status': 'failed', 'message': error};
+
+      return {'status': 'success', 'message': 'Location added'};
+    }
+    return {'status': 'failed', 'message': 'An error occured. Please login again.'};
   }
 }

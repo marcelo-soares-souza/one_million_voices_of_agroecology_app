@@ -26,15 +26,9 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
   late Location _location;
 
   void _retrieveGallery() async {
-    _location =
-        await LocationService.retrieveLocation(widget.location.id.toString());
-
-    _gallery = await LocationService.retrieveLocationGallery(
-        widget.location.id.toString());
-
-    setState(() {
-      _isLoading = false;
-    });
+    _location = await LocationService.retrieveLocation(widget.location.id.toString());
+    _gallery = await LocationService.retrieveLocationGallery(widget.location.id.toString());
+    setState(() => _isLoading = false);
   }
 
   // void _setFavorite(Location location) {
@@ -86,8 +80,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
               ),
               TextBlockWidget(
                 label: 'Farm and Farming System',
-                value:
-                    '${_location.farmAndFarmingSystem} - ${_location.farmAndFarmingSystemComplement}',
+                value: '${_location.farmAndFarmingSystem} - ${_location.farmAndFarmingSystemComplement}',
               ),
               TextBlockWidget(
                 label: 'Details of the farming system',

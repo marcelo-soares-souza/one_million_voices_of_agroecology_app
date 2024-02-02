@@ -9,6 +9,8 @@ class CustomInterceptor implements InterceptorContract {
   Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
     String? token = '';
 
+    request.headers['Content-Type'] = "application/json";
+
     try {
       if (await storage.containsKey(key: 'token')) {
         token = await storage.read(key: 'token');
@@ -27,9 +29,9 @@ class CustomInterceptor implements InterceptorContract {
   }
 
   @override
-  Future<BaseResponse> interceptResponse(
-      {required BaseResponse response}) async {
+  Future<BaseResponse> interceptResponse({required BaseResponse response}) async {
     // debugPrint('[DEBUG]: interceptResponse ${response.toString()}');
+    response.headers['Content-Type'] = "application/json";
 
     return response;
   }
