@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
@@ -5,6 +8,7 @@ import 'package:one_million_voices_of_agroecology_app/helpers/location_helper.da
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
 import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
 import 'package:one_million_voices_of_agroecology_app/services/location_service.dart';
+import 'package:one_million_voices_of_agroecology_app/widgets/image_input.dart';
 
 class NewLocation extends StatefulWidget {
   const NewLocation({super.key});
@@ -20,6 +24,7 @@ class _NewLocation extends State<NewLocation> {
   final _formKey = GlobalKey<FormState>();
   var _isSending = false;
   bool _isLoggedIn = false;
+  File? _selectedImage;
 
   void _checkIfIsLoggedIn() async {
     if (await AuthService.isLoggedIn()) {
@@ -48,6 +53,15 @@ class _NewLocation extends State<NewLocation> {
           .map((entry) => entry.key)
           .toList()
           .join(', ');
+
+      String imageBase64 = '';
+
+      if (_selectedImage != null) {
+        imageBase64 = base64Encode(_selectedImage!.readAsBytesSync());
+        _location.base64Image = imageBase64;
+      }
+
+      debugPrint('[DEBUG] Base64: $imageBase64');
 
       final Map<String, String> response = await LocationService.sendLocation(_location);
 
@@ -149,6 +163,9 @@ class _NewLocation extends State<NewLocation> {
                   ),
                   onSaved: (value) => _location.description = value!,
                 ),
+                const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                const SizedBox(height: 16),
+                ImageInput(onPickImage: (image) => _selectedImage = image),
                 //
                 // Buttons
                 //

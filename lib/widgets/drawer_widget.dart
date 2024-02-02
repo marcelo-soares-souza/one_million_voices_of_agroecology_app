@@ -23,17 +23,19 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
       if (loggedIn) {
         bool tokenIsValid = await AuthService.validateToken();
+        debugPrint('[DEBUG]: isLoggedIn $tokenIsValid');
+
         isLoggedIn = tokenIsValid;
       }
 
-      debugPrint('[DEBUG]: isLoggedIn $loggedIn');
+      debugPrint('[DEBUG]: isLoggedIn $isLoggedIn');
 
-      if (!loggedIn) {
+      if (!isLoggedIn) {
         await AuthService.logout();
       }
 
       setState(() {
-        isLoggedIn = loggedIn;
+        isLoggedIn = isLoggedIn;
       });
     } catch (e) {
       debugPrint('[DEBUG]: _checkIfLoggedIn ERROR $e');

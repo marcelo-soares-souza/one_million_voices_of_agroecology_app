@@ -16,6 +16,7 @@ class Location {
   String imageUrl;
   String createdAt;
   String updatedAt;
+  String base64Image;
 
   Location({
     required this.id,
@@ -35,7 +36,7 @@ class Location {
     required this.url,
     required this.createdAt,
     required this.updatedAt,
-  });
+  }) : base64Image = '';
 
   static Location initLocation() {
     return Location(
@@ -82,7 +83,7 @@ class Location {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    var json = {
       'id': id,
       'name': name,
       'country': country,
@@ -101,5 +102,11 @@ class Location {
       'created_at': createdAt,
       'updated_at': updatedAt,
     };
+
+    if (base64Image.isNotEmpty) {
+      json['base64Image'] = base64Image;
+    }
+
+    return json;
   }
 }
