@@ -127,12 +127,12 @@ class _NewMediaWidget extends State<NewMediaWidget> {
                   ),
                   const SizedBox(height: 16),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           fixedSize: const Size(128, 36),
-                          textStyle: const TextStyle(fontSize: 20),
+                          textStyle: const TextStyle(fontSize: 21),
                         ),
                         onPressed: _isSending ? null : _saveItem,
                         child: _isSending

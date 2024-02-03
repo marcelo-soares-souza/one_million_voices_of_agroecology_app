@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:http_interceptor/http/intercepted_client.dart';
+import 'package:latlong2/latlong.dart';
 import 'dart:convert';
 
 import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
@@ -154,5 +155,19 @@ class LocationService {
       return {'status': 'success', 'message': 'Media removed'};
     }
     return {'status': 'failed', 'message': 'An error occured. Please login again.'};
+  }
+
+  static Future<LatLng> getCoordinates(String countryISOName) async {
+    final params = {'country': countryISOName};
+    final res = await httpClient.get(Config.getURI('/coordinates.json'), params: params);
+
+    var message = json.decode(res.body);
+
+    double latitude = message['latitude'] as double;
+    double longitude = message['longitude'] as double;
+
+    LatLng coordinates = LatLng(latitude, longitude);
+
+    return coordinates;
   }
 }

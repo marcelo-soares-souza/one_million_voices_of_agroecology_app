@@ -29,6 +29,29 @@ class LocationHelper {
     return countryItems;
   }
 
+  static List<DropdownMenuItem<String>> get dropDownFarmAndFarmingSystemOptions {
+    List<String> options = [
+      "",
+      "Mainly Home Consumption",
+      "Mixed Home Consumption and Commercial",
+      "Mainly commercial",
+      "Other",
+      "I am not sure",
+    ];
+
+    List<DropdownMenuItem<String>> farmAndFarmingSystemItems = [];
+    for (var option in options) {
+      farmAndFarmingSystemItems.add(
+        DropdownMenuItem(
+          value: option,
+          child: Text(option),
+        ),
+      );
+    }
+
+    return farmAndFarmingSystemItems;
+  }
+
   static Marker buildMarker(String id, LatLng point) => Marker(
         key: Key(id),
         point: point,

@@ -26,6 +26,8 @@ class _NewLocation extends State<NewLocation> {
   final LocationHelper _locationHelper = LocationHelper();
   late Location _location;
   late Position? _currentPosition;
+  late LatLng _initialCenter;
+  MapController mapController = MapController();
   final _formKey = GlobalKey<FormState>();
   var _isSending = false;
   bool _isLoggedIn = false;
@@ -34,9 +36,7 @@ class _NewLocation extends State<NewLocation> {
 
   void _checkIfIsLoggedIn() async {
     if (await AuthService.isLoggedIn()) {
-      setState(() {
-        _isLoggedIn = true;
-      });
+      setState(() => _isLoggedIn = true);
     }
   }
 
@@ -45,18 +45,11 @@ class _NewLocation extends State<NewLocation> {
     _checkIfIsLoggedIn();
     _location = Location.initLocation();
     _getCurrentPosition();
-    _marker = LocationHelper.buildMarker(
-        _location.id.toString(),
-        LatLng(
-          double.parse(_location.latitude),
-          double.parse(
-            _location.longitude,
-          ),
-        ));
+    LatLng coordinates = LatLng(double.parse(_location.latitude), double.parse(_location.longitude));
+    _marker = LocationHelper.buildMarker(_location.id.toString(), coordinates);
+    _initialCenter = coordinates;
 
-    setState(() {
-      _isLoading = false;
-    });
+    setState(() => _isLoading = false);
 
     super.initState();
   }
@@ -113,6 +106,17 @@ class _NewLocation extends State<NewLocation> {
     }
   }
 
+  void _updateCoordinates() async {
+    LatLng coordinates = await LocationService.getCoordinates(_location.country);
+
+    setState(() {
+      _location.latitude = coordinates.latitude.toString();
+      _location.longitude = coordinates.longitude.toString();
+      _marker = LocationHelper.buildMarker(_location.id.toString(), coordinates);
+    });
+    mapController.move(coordinates, 5);
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget content = const Center(child: CircularProgressIndicator());
@@ -134,26 +138,31 @@ class _NewLocation extends State<NewLocation> {
               child: Column(
                 children: [
                   const SizedBox(height: 10),
-                  const Text('Location Name', style: TextStyle(color: Colors.grey, fontSize: 16)),
+                  const Text('Location Name', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
                     maxLength: 64,
                     style: const TextStyle(color: Colors.white),
                     validator: (value) => FormHelper.validateInputSize(value, 1, 64),
                     onSaved: (value) => _location.name = value!,
                   ),
-                  const Text('Country', style: TextStyle(color: Colors.grey, fontSize: 16)),
+                  const Text('Country', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: LocationHelper.dropDownCountries,
                     value: _location.country,
-                    onChanged: (value) => _location.country = value!,
+                    onChanged: (value) {
+                      setState(() {
+                        _location.country = value!;
+                      });
+                      _updateCoordinates();
+                    },
                     decoration: const InputDecoration(
                       filled: false,
                       fillColor: Colors.blueAccent,
                     ),
                     dropdownColor: Colors.black,
                   ),
-                  const SizedBox(height: 16),
-                  const Text('Is it a farm?', style: TextStyle(color: Colors.grey, fontSize: 16)),
+                  const SizedBox(height: 21),
+                  const Text('Is it a farm?', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: FormHelper.dropDownYesNo,
                     value: 'true',
@@ -164,8 +173,8 @@ class _NewLocation extends State<NewLocation> {
                     ),
                     dropdownColor: Colors.black,
                   ),
-                  const SizedBox(height: 16),
-                  const Text('What do you have on your farm?', style: TextStyle(color: Colors.grey, fontSize: 16)),
+                  const SizedBox(height: 21),
+                  const Text('What do you have on your farm?', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   for (final key in _locationHelper.farmAndFarmingSystemComplementValues.keys) ...[
                     CheckboxListTile(
                       title: Text(key),
@@ -174,8 +183,33 @@ class _NewLocation extends State<NewLocation> {
                           setState(() => _locationHelper.farmAndFarmingSystemComplementValues[key] = value!),
                     )
                   ],
-                  const SizedBox(height: 16),
-                  const Text('Description', style: TextStyle(color: Colors.grey, fontSize: 16)),
+                  const SizedBox(height: 21),
+                  const Text('What\'s the main purpose?', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  DropdownButtonFormField(
+                    items: LocationHelper.dropDownFarmAndFarmingSystemOptions,
+                    value: '',
+                    onChanged: (value) => _location.farmAndFarmingSystem = value!,
+                    decoration: const InputDecoration(
+                      filled: false,
+                      fillColor: Colors.blueAccent,
+                    ),
+                    dropdownColor: Colors.black,
+                  ),
+                  const SizedBox(height: 30),
+                  const Text('What is your dream?', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  TextFormField(
+                    maxLength: 512,
+                    minLines: 2,
+                    maxLines: null,
+                    style: const TextStyle(color: Colors.white),
+                    onSaved: (value) => _location.whatIsYourDream = value!,
+                  ),
+                  const SizedBox(height: 21),
+                  const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  const SizedBox(height: 21),
+                  ImageInput(onPickImage: (image) => _selectedImage = image),
+                  const SizedBox(height: 20),
+                  const Text('Description', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
                     maxLength: 512,
                     minLines: 2,
@@ -183,19 +217,28 @@ class _NewLocation extends State<NewLocation> {
                     style: const TextStyle(color: Colors.white),
                     onSaved: (value) => _location.description = value!,
                   ),
-                  const SizedBox(height: 16),
-                  const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 16)),
-                  const SizedBox(height: 16),
-                  ImageInput(onPickImage: (image) => _selectedImage = image),
-                  const SizedBox(height: 16),
-                  const Text('Location', style: TextStyle(color: Colors.grey, fontSize: 16)),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 21),
+                  // const Text('Hide my Location the on Map?', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  // DropdownButtonFormField(
+                  //   items: FormHelper.dropDownYesNo,
+                  //   value: 'false',
+                  //   onChanged: (value) => _location.hideMyLocation = value!,
+                  //   decoration: const InputDecoration(
+                  //     filled: false,
+                  //     fillColor: Colors.blueAccent,
+                  //   ),
+                  //   dropdownColor: Colors.black,
+                  // ),
+                  const SizedBox(height: 21),
+                  const Text('Location', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  const SizedBox(height: 21),
                   SizedBox(
                     width: double.infinity,
                     height: 300,
                     child: FlutterMap(
+                      mapController: mapController,
                       options: MapOptions(
-                        initialCenter: const LatLng(16.0, 16.0),
+                        initialCenter: _initialCenter,
                         minZoom: 1.0,
                         maxZoom: 16.0,
                         initialZoom: 2.0,
@@ -219,17 +262,17 @@ class _NewLocation extends State<NewLocation> {
                   //
                   const SizedBox(height: 10),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           fixedSize: const Size(128, 36),
-                          textStyle: const TextStyle(fontSize: 20),
+                          textStyle: const TextStyle(fontSize: 21),
                         ),
                         onPressed: _isSending ? null : _saveItem,
                         child: _isSending
                             ? const SizedBox(
-                                height: 16,
+                                height: 21,
                                 width: 16,
                                 child: CircularProgressIndicator(),
                               )
