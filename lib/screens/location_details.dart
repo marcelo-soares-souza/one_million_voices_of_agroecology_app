@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 
@@ -119,54 +120,66 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                 )
               ] else
                 for (final i in _gallery) ...[
-                  Dismissible(
-                      key: ValueKey(i.id),
-                      onDismissed: (direction) => _removeGalleryItem(i),
-                      child: Stack(
-                        children: [
-                          CachedNetworkImage(
-                            height: 300,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => const Center(
-                                child: SizedBox(
-                              width: 30.0,
-                              height: 30.0,
-                              child: CircularProgressIndicator(),
-                            )),
-                            imageUrl: i.imageUrl,
-                          ),
-                          if (i.description.length > 4)
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: Container(
-                                color: Colors.black54,
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 6,
-                                  horizontal: 44,
-                                ),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      i.description,
-                                      maxLines: 2,
-                                      textAlign: TextAlign.center,
-                                      softWrap: true,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                  Slidable(
+                    key: ValueKey(i.id),
+                    endActionPane: ActionPane(
+                      motion: const ScrollMotion(),
+                      children: [
+                        SlidableAction(
+                          onPressed: (onPressed) => _removeGalleryItem(i),
+                          label: 'Delete',
+                          icon: Icons.delete,
+                          backgroundColor: const Color(0xFFFE4A49),
+                          foregroundColor: Colors.white,
+                        )
+                      ],
+                    ),
+                    child: Stack(
+                      children: [
+                        CachedNetworkImage(
+                          height: 300,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => const Center(
+                              child: SizedBox(
+                            width: 30.0,
+                            height: 30.0,
+                            child: CircularProgressIndicator(),
+                          )),
+                          imageUrl: i.imageUrl,
+                        ),
+                        if (i.description.length > 4)
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              color: Colors.black54,
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 6,
+                                horizontal: 44,
                               ),
-                            )
-                        ],
-                      )),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    i.description,
+                                    maxLines: 2,
+                                    textAlign: TextAlign.center,
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                      ],
+                    ),
+                  ),
                   const SizedBox(height: 20),
                 ],
             ] else if (_selectedPageIndex == 1 && _sendMedia == true) ...[

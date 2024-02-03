@@ -74,7 +74,7 @@ class LocationService {
       var message = json.decode(res.body);
       var error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
 
-      if (res.statusCode != 201) return {'status': 'failed', 'message': error};
+      if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
       return {'status': 'success', 'message': 'Location added'};
     }
@@ -104,7 +104,7 @@ class LocationService {
 
       var error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
 
-      if (res.statusCode != 201) return {'status': 'failed', 'message': error};
+      if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
       return {'status': 'success', 'message': 'Location added'};
     }
@@ -127,10 +127,9 @@ class LocationService {
         error = message['error'] ? message['error'].toString().replaceAll('{', '').replaceAll('}', '') : '';
       }
 
-      if (res.statusCode != 201) return {'status': 'failed', 'message': error};
-      if (res.statusCode != 204) return {'status': 'failed', 'message': error};
+      if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
-      return {'status': 'success', 'message': 'Media removed'};
+      return {'status': 'success', 'message': 'Location removed'};
     }
     return {'status': 'failed', 'message': 'An error occured. Please login again.'};
   }
@@ -151,8 +150,7 @@ class LocationService {
         error = message['error'] ? message['error'].toString().replaceAll('{', '').replaceAll('}', '') : '';
       }
 
-      if (res.statusCode != 201) return {'status': 'failed', 'message': error};
-      if (res.statusCode != 204) return {'status': 'failed', 'message': error};
+      if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
       return {'status': 'success', 'message': 'Media removed'};
     }

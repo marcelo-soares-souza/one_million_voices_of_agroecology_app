@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/location_details.dart';
@@ -47,6 +48,10 @@ class _LocationsWidget extends State<LocationsWidget> {
 
   void _removeLocation(Location location) async {
     Map<String, String> response = await LocationService.removeLocation(location.id);
+
+    debugPrint(response.toString());
+    debugPrint(response.toString());
+    debugPrint(response.toString());
     if (response['status'] == 'success') setState(() => _locations.remove(location));
   }
 
@@ -59,11 +64,25 @@ class _LocationsWidget extends State<LocationsWidget> {
     } else {
       content = ListView.builder(
         itemCount: _locations.length,
-        itemBuilder: (ctx, index) => Dismissible(
+        itemBuilder: (ctx, index) => Slidable(
+          endActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            children: [
+              SlidableAction(
+                onPressed: (onPressed) => _removeLocation(_locations[index]),
+                label: 'Delete',
+                icon: Icons.delete,
+                backgroundColor: const Color(0xFFFE4A49),
+                foregroundColor: Colors.white,
+              )
+            ],
+          ),
           key: ValueKey(_locations[index].id),
-          onDismissed: (direction) => _removeLocation(_locations[index]),
           child: LocationItemWidget(
-              key: ObjectKey(_locations[index].id), location: _locations[index], onSelectLocation: selectLocation),
+            key: ObjectKey(_locations[index].id),
+            location: _locations[index],
+            onSelectLocation: selectLocation,
+          ),
         ),
       );
     }
