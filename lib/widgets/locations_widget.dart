@@ -45,6 +45,11 @@ class _LocationsWidget extends State<LocationsWidget> {
     super.initState();
   }
 
+  void _removeLocation(Location location) async {
+    Map<String, String> response = await LocationService.removeLocation(location.id);
+    if (response['status'] == 'success') setState(() => _locations.remove(location));
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget content = const Center(child: Text('No locations'));
@@ -54,10 +59,11 @@ class _LocationsWidget extends State<LocationsWidget> {
     } else {
       content = ListView.builder(
         itemCount: _locations.length,
-        itemBuilder: (ctx, index) => LocationItemWidget(
-          key: ObjectKey(_locations[index].id),
-          location: _locations[index],
-          onSelectLocation: selectLocation,
+        itemBuilder: (ctx, index) => Dismissible(
+          key: ValueKey(_locations[index].id),
+          onDismissed: (direction) => _removeLocation(_locations[index]),
+          child: LocationItemWidget(
+              key: ObjectKey(_locations[index].id), location: _locations[index], onSelectLocation: selectLocation),
         ),
       );
     }

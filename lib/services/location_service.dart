@@ -111,6 +111,30 @@ class LocationService {
     return {'status': 'failed', 'message': 'An error occured. Please login again.'};
   }
 
+  static Future<Map<String, String>> removeLocation(int locationId) async {
+    bool isTokenValid = await AuthService.validateToken();
+
+    if (isTokenValid) {
+      final res = await httpClient.delete(Config.getURI('/locations/$locationId.json'));
+
+      debugPrint('[DEBUG]: statusCode ${res.statusCode}');
+      debugPrint('[DEBUG]: Body ${res.body}');
+
+      String error = '';
+
+      if (res.body.isNotEmpty) {
+        var message = json.decode(res.body);
+        error = message['error'] ? message['error'].toString().replaceAll('{', '').replaceAll('}', '') : '';
+      }
+
+      if (res.statusCode != 201) return {'status': 'failed', 'message': error};
+      if (res.statusCode != 204) return {'status': 'failed', 'message': error};
+
+      return {'status': 'success', 'message': 'Media removed'};
+    }
+    return {'status': 'failed', 'message': 'An error occured. Please login again.'};
+  }
+
   static Future<Map<String, String>> removeGalleryItem(int locationId, int mediaId) async {
     bool isTokenValid = await AuthService.validateToken();
 

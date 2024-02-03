@@ -33,8 +33,8 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
   }
 
   void _removeGalleryItem(GalleryItem galleryItem) async {
-    setState(() => _gallery.remove(galleryItem));
-    await LocationService.removeGalleryItem(widget.location.id, galleryItem.id);
+    Map<String, String> response = await LocationService.removeGalleryItem(widget.location.id, galleryItem.id);
+    if (response['status'] == 'success') setState(() => _gallery.remove(galleryItem));
   }
 
   void _selectPage(int index) {
