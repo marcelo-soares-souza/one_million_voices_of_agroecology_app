@@ -133,14 +133,15 @@ class _NewLocation extends State<NewLocation> {
               key: _formKey,
               child: Column(
                 children: [
-                  const Text('Location Name', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                  const SizedBox(height: 10),
+                  const Text('Location Name', style: TextStyle(color: Colors.grey, fontSize: 16)),
                   TextFormField(
                     maxLength: 64,
                     style: const TextStyle(color: Colors.white),
                     validator: (value) => FormHelper.validateInputSize(value, 1, 64),
                     onSaved: (value) => _location.name = value!,
                   ),
-                  const Text('Country', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                  const Text('Country', style: TextStyle(color: Colors.grey, fontSize: 16)),
                   DropdownButtonFormField(
                     items: LocationHelper.dropDownCountries,
                     value: _location.country,
@@ -152,7 +153,7 @@ class _NewLocation extends State<NewLocation> {
                     dropdownColor: Colors.black,
                   ),
                   const SizedBox(height: 16),
-                  const Text('Is it a farm?', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                  const Text('Is it a farm?', style: TextStyle(color: Colors.grey, fontSize: 16)),
                   DropdownButtonFormField(
                     items: FormHelper.dropDownYesNo,
                     value: 'true',
@@ -164,7 +165,7 @@ class _NewLocation extends State<NewLocation> {
                     dropdownColor: Colors.black,
                   ),
                   const SizedBox(height: 16),
-                  const Text('What do you have on your farm?', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                  const Text('What do you have on your farm?', style: TextStyle(color: Colors.grey, fontSize: 16)),
                   for (final key in _locationHelper.farmAndFarmingSystemComplementValues.keys) ...[
                     CheckboxListTile(
                       title: Text(key),
@@ -173,7 +174,8 @@ class _NewLocation extends State<NewLocation> {
                           setState(() => _locationHelper.farmAndFarmingSystemComplementValues[key] = value!),
                     )
                   ],
-                  const Text('Description', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                  const SizedBox(height: 16),
+                  const Text('Description', style: TextStyle(color: Colors.grey, fontSize: 16)),
                   TextFormField(
                     maxLength: 512,
                     minLines: 2,
@@ -181,11 +183,12 @@ class _NewLocation extends State<NewLocation> {
                     style: const TextStyle(color: Colors.white),
                     onSaved: (value) => _location.description = value!,
                   ),
-                  const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                  const SizedBox(height: 16),
+                  const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 16)),
                   const SizedBox(height: 16),
                   ImageInput(onPickImage: (image) => _selectedImage = image),
                   const SizedBox(height: 16),
-                  const Text('Location', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                  const Text('Location', style: TextStyle(color: Colors.grey, fontSize: 16)),
                   const SizedBox(height: 16),
                   SizedBox(
                     width: double.infinity,
@@ -214,14 +217,15 @@ class _NewLocation extends State<NewLocation> {
                   //
                   // Buttons
                   //
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      TextButton(
-                        onPressed: _isSending ? null : () => _formKey.currentState!.reset(),
-                        child: const Text('Reset'),
-                      ),
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: const Size(128, 36),
+                          textStyle: const TextStyle(fontSize: 20),
+                        ),
                         onPressed: _isSending ? null : _saveItem,
                         child: _isSending
                             ? const SizedBox(
@@ -233,6 +237,7 @@ class _NewLocation extends State<NewLocation> {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),

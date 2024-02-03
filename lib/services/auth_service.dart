@@ -31,6 +31,7 @@ class AuthService {
 
     await storage.write(key: 'token', value: data['token'].toString());
     await storage.write(key: 'email', value: email);
+    await storage.write(key: 'account_id', value: data['account_id'].toString());
 
     return true;
   }
@@ -39,9 +40,11 @@ class AuthService {
     try {
       await storage.delete(key: 'token');
       await storage.delete(key: 'email');
+      await storage.delete(key: 'account_id');
 
       debugPrint('[DEBUG]: E-Mail: ${await storage.containsKey(key: 'email')}');
       debugPrint('[DEBUG]: Token: ${await storage.containsKey(key: 'token')}');
+      debugPrint('[DEBUG]: Account ID: ${await storage.containsKey(key: 'account_id')}');
 
       return true;
     } catch (e) {
@@ -56,11 +59,13 @@ class AuthService {
 
       String email = (await storage.read(key: 'email'))!;
       String token = (await storage.read(key: 'token'))!;
+      String accountId = (await storage.read(key: 'account_id'))!;
 
       if (email.isEmpty || token.isEmpty) return false;
 
       debugPrint('[DEBUG]: isLoggedIn E-Mail $email');
       debugPrint('[DEBUG]: isLoggedIn Token $token');
+      debugPrint('[DEBUG]: isLoggedIn Account ID $accountId');
 
       return true;
     } catch (e) {

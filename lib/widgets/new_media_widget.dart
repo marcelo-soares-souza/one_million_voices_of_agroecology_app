@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
+import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
 import 'package:one_million_voices_of_agroecology_app/services/location_service.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/image_input.dart';
 
@@ -18,16 +20,27 @@ class NewMediaWidget extends StatefulWidget {
 class _NewMediaWidget extends State<NewMediaWidget> {
   bool _isLoading = true;
   var _isSending = false;
+  bool _isLoggedIn = false;
 
   // bool _isLoggedIn = false;
   final _formKey = GlobalKey<FormState>();
   File? _selectedImage;
   late GalleryItem _galleryItem;
 
+  void _checkIfIsLoggedIn() async {
+    if (await AuthService.isLoggedIn()) {
+      setState(() {
+        _isLoggedIn = true;
+      });
+    }
+  }
+
   @override
   void initState() {
+    _checkIfIsLoggedIn();
     _galleryItem = GalleryItem.initGalleryItem();
     _isLoading = false;
+
     super.initState();
   }
 
@@ -80,45 +93,64 @@ class _NewMediaWidget extends State<NewMediaWidget> {
     Widget content = const Center(child: CircularProgressIndicator());
 
     if (!_isLoading) {
-      content = SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 13)),
-                const SizedBox(height: 16),
-                ImageInput(onPickImage: (image) => _selectedImage = image),
-                const SizedBox(height: 16),
-                const Text('Description', style: TextStyle(color: Colors.grey, fontSize: 13)),
-                TextFormField(
-                  style: const TextStyle(color: Colors.white),
-                  onSaved: (value) => _galleryItem.description = value!,
+      if (!_isLoggedIn) {
+        content = Column(children: [
+          const SizedBox(height: 200),
+          Center(
+              child: Text(
+            textAlign: TextAlign.center,
+            'You need to login to add a new photo',
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed: _isSending ? null : _saveItem,
-                      child: _isSending
-                          ? const SizedBox(
-                              height: 16,
-                              width: 16,
-                              child: CircularProgressIndicator(),
-                            )
-                          : const Text('Add'),
-                    ),
-                  ],
-                ),
-              ],
+          ))
+        ]);
+      } else {
+        content = SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 16)),
+                  const SizedBox(height: 16),
+                  ImageInput(onPickImage: (image) => _selectedImage = image),
+                  const SizedBox(height: 16),
+                  const Text('Description', style: TextStyle(color: Colors.grey, fontSize: 16)),
+                  TextFormField(
+                    maxLength: 64,
+                    style: const TextStyle(color: Colors.white),
+                    onSaved: (value) => _galleryItem.description = value!,
+                    validator: (value) => FormHelper.validateInputSize(value, 4, 64),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: const Size(128, 36),
+                          textStyle: const TextStyle(fontSize: 20),
+                        ),
+                        onPressed: _isSending ? null : _saveItem,
+                        child: _isSending
+                            ? const SizedBox(
+                                height: 16,
+                                width: 16,
+                                child: CircularProgressIndicator(),
+                              )
+                            : const Text('Add'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      );
+        );
+      }
     }
 
     return content;

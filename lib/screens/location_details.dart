@@ -40,14 +40,16 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
 
       if (_selectedPageIndex == 1) {
         _retrieveGallery();
+      } else {
+        setState(() => _isLoading = false);
       }
     });
   }
 
   @override
   void initState() {
-    super.initState();
     _retrieveGallery();
+    super.initState();
   }
 
   @override
@@ -57,6 +59,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
       activePage = SingleChildScrollView(
         child: Column(
           children: [
+            const SizedBox(height: 4),
             if (_selectedPageIndex == 0) ...[
               CachedNetworkImage(
                 height: 250,
@@ -162,7 +165,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
               NewMediaWidget(
                 locationId: widget.location.id.toString(),
                 onSetPage: _selectPage,
-              )
+              ),
             ]
           ],
         ),
@@ -170,17 +173,20 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.location.name), actions: [
-        if (_selectedPageIndex == 1)
-          IconButton(
-              icon: const Icon(FontAwesomeIcons.plus),
-              onPressed: () {
-                _selectPage(1);
-                setState(() {
-                  _sendMedia = true;
-                });
-              })
-      ]),
+      appBar: AppBar(
+        title: Text(widget.location.name),
+        actions: [
+          if (_selectedPageIndex == 1)
+            IconButton(
+                icon: const Icon(FontAwesomeIcons.camera),
+                onPressed: () {
+                  _selectPage(1);
+                  setState(() {
+                    _sendMedia = true;
+                  });
+                })
+        ],
+      ),
       body: activePage,
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
