@@ -32,6 +32,11 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
     setState(() => _isLoading = false);
   }
 
+  void _removeGalleryItem(GalleryItem galleryItem) async {
+    setState(() => _gallery.remove(galleryItem));
+    await LocationService.removeGalleryItem(widget.location.id, galleryItem.id);
+  }
+
   void _selectPage(int index) {
     setState(() {
       _isLoading = true;
@@ -114,51 +119,54 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                 )
               ] else
                 for (final i in _gallery) ...[
-                  Stack(
-                    children: [
-                      CachedNetworkImage(
-                        height: 300,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => const Center(
-                            child: SizedBox(
-                          width: 30.0,
-                          height: 30.0,
-                          child: CircularProgressIndicator(),
-                        )),
-                        imageUrl: i.imageUrl,
-                      ),
-                      if (i.description.length > 5)
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            color: Colors.black54,
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 6,
-                              horizontal: 44,
-                            ),
-                            child: Column(
-                              children: [
-                                Text(
-                                  i.description,
-                                  maxLines: 2,
-                                  textAlign: TextAlign.center,
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
+                  Dismissible(
+                      key: ValueKey(i.id),
+                      onDismissed: (direction) => _removeGalleryItem(i),
+                      child: Stack(
+                        children: [
+                          CachedNetworkImage(
+                            height: 300,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => const Center(
+                                child: SizedBox(
+                              width: 30.0,
+                              height: 30.0,
+                              child: CircularProgressIndicator(),
+                            )),
+                            imageUrl: i.imageUrl,
                           ),
-                        )
-                    ],
-                  ),
+                          if (i.description.length > 4)
+                            Positioned(
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: Container(
+                                color: Colors.black54,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 6,
+                                  horizontal: 44,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      i.description,
+                                      maxLines: 2,
+                                      textAlign: TextAlign.center,
+                                      softWrap: true,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                        ],
+                      )),
                   const SizedBox(height: 20),
                 ],
             ] else if (_selectedPageIndex == 1 && _sendMedia == true) ...[

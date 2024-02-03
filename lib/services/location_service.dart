@@ -34,10 +34,10 @@ class LocationService {
     return location;
   }
 
-  static Future<List<GalleryItem>> retrieveLocationGallery(String id) async {
+  static Future<List<GalleryItem>> retrieveLocationGallery(String locationId) async {
     final List<GalleryItem> gallery = [];
 
-    final res = await httpClient.get(Config.getURI('/locations/$id/gallery.json'));
+    final res = await httpClient.get(Config.getURI('/locations/$locationId/gallery.json'));
 
     debugPrint('[DEBUG]: statusCode ${res.statusCode}');
     debugPrint('[DEBUG]: body ${res.body}');
@@ -87,6 +87,10 @@ class LocationService {
     if (isTokenValid) {
       final galleryItemJson = galleryItem.toJson();
 
+      galleryItemJson.remove('id');
+      galleryItemJson.remove('created_at');
+      galleryItemJson.remove('updated_at');
+
       final body = json.encode(galleryItemJson);
 
       debugPrint('[DEBUG]: sendMediaToLocation body: $body');
@@ -103,6 +107,30 @@ class LocationService {
       if (res.statusCode != 201) return {'status': 'failed', 'message': error};
 
       return {'status': 'success', 'message': 'Location added'};
+    }
+    return {'status': 'failed', 'message': 'An error occured. Please login again.'};
+  }
+
+  static Future<Map<String, String>> removeGalleryItem(int locationId, int mediaId) async {
+    bool isTokenValid = await AuthService.validateToken();
+
+    if (isTokenValid) {
+      final res = await httpClient.delete(Config.getURI('/locations/$locationId/medias/$mediaId.json'));
+
+      debugPrint('[DEBUG]: statusCode ${res.statusCode}');
+      debugPrint('[DEBUG]: Body ${res.body}');
+
+      String error = '';
+
+      if (res.body.isNotEmpty) {
+        var message = json.decode(res.body);
+        error = message['error'] ? message['error'].toString().replaceAll('{', '').replaceAll('}', '') : '';
+      }
+
+      if (res.statusCode != 201) return {'status': 'failed', 'message': error};
+      if (res.statusCode != 204) return {'status': 'failed', 'message': error};
+
+      return {'status': 'success', 'message': 'Media removed'};
     }
     return {'status': 'failed', 'message': 'An error occured. Please login again.'};
   }
