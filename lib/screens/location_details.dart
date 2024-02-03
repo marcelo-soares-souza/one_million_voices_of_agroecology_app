@@ -11,8 +11,10 @@ import 'package:one_million_voices_of_agroecology_app/widgets/text_block_widget.
 
 class LocationDetailsScreen extends StatefulWidget {
   final Location location;
+  final void Function(Location location) onRemoveLocation;
+  static dynamic _dummyOnRemoveLocation(Location location) {}
 
-  const LocationDetailsScreen({super.key, required this.location});
+  const LocationDetailsScreen({super.key, required this.location, this.onRemoveLocation = _dummyOnRemoveLocation});
 
   @override
   State<LocationDetailsScreen> createState() {
@@ -128,7 +130,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                         SlidableAction(
                           onPressed: (onPressed) => _removeGalleryItem(i),
                           label: 'Delete',
-                          icon: Icons.delete,
+                          icon: FontAwesomeIcons.trash,
                           backgroundColor: const Color(0xFFFE4A49),
                           foregroundColor: Colors.white,
                         )
@@ -205,6 +207,13 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                   setState(() {
                     _sendMedia = true;
                   });
+                })
+          else if (_selectedPageIndex == 0)
+            IconButton(
+                icon: const Icon(FontAwesomeIcons.trash),
+                onPressed: () {
+                  widget.onRemoveLocation(widget.location);
+                  Navigator.of(context).pop();
                 })
         ],
       ),

@@ -120,8 +120,7 @@ class LocationService {
       debugPrint('[DEBUG]: statusCode ${res.statusCode}');
       debugPrint('[DEBUG]: Body ${res.body}');
 
-      String error = '';
-
+      String error = 'Generic Error. Please try again.';
       if (res.body.isNotEmpty) {
         var message = json.decode(res.body);
         error = message['error'] ? message['error'].toString().replaceAll('{', '').replaceAll('}', '') : '';

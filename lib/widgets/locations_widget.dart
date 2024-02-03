@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/location_details.dart';
@@ -19,9 +20,7 @@ class _LocationsWidget extends State<LocationsWidget> {
   void selectLocation(BuildContext context, Location location) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => LocationDetailsScreen(
-          location: location,
-        ),
+        builder: (ctx) => LocationDetailsScreen(location: location, onRemoveLocation: _removeLocation),
       ),
     );
   }
@@ -48,9 +47,6 @@ class _LocationsWidget extends State<LocationsWidget> {
 
   void _removeLocation(Location location) async {
     Map<String, String> response = await LocationService.removeLocation(location.id);
-
-    debugPrint(response.toString());
-    debugPrint(response.toString());
     debugPrint(response.toString());
     if (response['status'] == 'success') setState(() => _locations.remove(location));
   }
@@ -71,7 +67,7 @@ class _LocationsWidget extends State<LocationsWidget> {
               SlidableAction(
                 onPressed: (onPressed) => _removeLocation(_locations[index]),
                 label: 'Delete',
-                icon: Icons.delete,
+                icon: FontAwesomeIcons.trash,
                 backgroundColor: const Color(0xFFFE4A49),
                 foregroundColor: Colors.white,
               )
