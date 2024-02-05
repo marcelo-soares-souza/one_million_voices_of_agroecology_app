@@ -61,16 +61,32 @@ class _LocationsWidget extends State<LocationsWidget> {
       content = ListView.builder(
         itemCount: _locations.length,
         itemBuilder: (ctx, index) => Slidable(
+          startActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            children: [
+              if (_locations[index].hasPermission) ...[
+                SlidableAction(
+                  onPressed: (onPressed) => selectLocation(context, _locations[index]),
+                  label: 'Edit',
+                  icon: FontAwesomeIcons.edit,
+                  backgroundColor: const Color(0xFF4A90E2),
+                  foregroundColor: Colors.white,
+                ),
+              ]
+            ],
+          ),
           endActionPane: ActionPane(
             motion: const ScrollMotion(),
             children: [
-              SlidableAction(
-                onPressed: (onPressed) => _removeLocation(_locations[index]),
-                label: 'Delete',
-                icon: FontAwesomeIcons.trash,
-                backgroundColor: const Color(0xFFFE4A49),
-                foregroundColor: Colors.white,
-              )
+              if (_locations[index].hasPermission) ...[
+                SlidableAction(
+                  onPressed: (onPressed) => _removeLocation(_locations[index]),
+                  label: 'Delete',
+                  icon: FontAwesomeIcons.trash,
+                  backgroundColor: const Color(0xFFFE4A49),
+                  foregroundColor: Colors.white,
+                )
+              ]
             ],
           ),
           key: ValueKey(_locations[index].id),

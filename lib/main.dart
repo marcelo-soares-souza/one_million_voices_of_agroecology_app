@@ -16,6 +16,7 @@ class OneMillionVoicesofAgroecologyApp extends StatelessWidget {
       title: Config.title,
       theme: Config.mainTheme,
       home: const HomeScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

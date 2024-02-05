@@ -30,21 +30,20 @@ class LocationHelper {
   }
 
   static List<DropdownMenuItem<String>> get dropDownFarmAndFarmingSystemOptions {
-    List<String> options = [
-      "",
-      "Mainly Home Consumption",
-      "Mixed Home Consumption and Commercial",
-      "Mainly commercial",
-      "Other",
-      "I am not sure",
-    ];
+    Map<String, String> options = {
+      "Mainly Home Consumption": "Mainly Home Consumption",
+      "Mixed Home Consumption and Commercial": "Mixed Home Consumption and Commercial",
+      "Mainly commercial": "Mainly commercial",
+      "Other": "Other",
+      "I am not sure": "I am not sure",
+    };
 
     List<DropdownMenuItem<String>> farmAndFarmingSystemItems = [];
-    for (var option in options) {
+    for (var option in options.entries) {
       farmAndFarmingSystemItems.add(
         DropdownMenuItem(
-          value: option,
-          child: Text(option),
+          value: option.key,
+          child: Text(option.key),
         ),
       );
     }

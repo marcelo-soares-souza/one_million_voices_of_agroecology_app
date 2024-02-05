@@ -22,7 +22,9 @@ class LocationService {
     final res = await httpClient.get(Config.getURI('locations.json'));
 
     for (final location in json.decode(res.body.toString())) {
-      locations.add(Location.fromJson(location));
+      Location l = Location.fromJson(location);
+      l.hasPermission = await AuthService.hasPermission(l.accountId);
+      locations.add(l);
     }
 
     return locations;
@@ -31,6 +33,7 @@ class LocationService {
   static Future<Location> retrieveLocation(String id) async {
     final res = await httpClient.get(Config.getURI('/locations/$id.json'));
     Location location = Location.fromJson(json.decode(res.body.toString()));
+    location.hasPermission = await AuthService.hasPermission(location.accountId);
 
     return location;
   }
@@ -107,7 +110,7 @@ class LocationService {
 
       if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
-      return {'status': 'success', 'message': 'Location added'};
+      return {'status': 'success', 'message': 'Media added'};
     }
     return {'status': 'failed', 'message': 'An error occured. Please login again.'};
   }

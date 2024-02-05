@@ -84,4 +84,11 @@ class AuthService {
 
     return true;
   }
+
+  static Future<bool> hasPermission(int accountId) async {
+    if (!await storage.containsKey(key: 'account_id') || !await storage.containsKey(key: 'token')) return false;
+    var storedAccountId = await storage.read(key: 'account_id');
+    if (accountId.toString() != storedAccountId) return false;
+    return true;
+  }
 }

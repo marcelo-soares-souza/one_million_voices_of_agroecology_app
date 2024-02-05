@@ -17,6 +17,8 @@ class Location {
   String createdAt;
   String updatedAt;
   String base64Image;
+  int accountId;
+  bool hasPermission;
 
   Location({
     required this.id,
@@ -34,9 +36,11 @@ class Location {
     required this.longitude,
     required this.responsibleForInformation,
     required this.url,
+    required this.accountId,
     required this.createdAt,
     required this.updatedAt,
-  }) : base64Image = '';
+  })  : base64Image = '',
+        hasPermission = false;
 
   static Location initLocation() {
     return Location(
@@ -55,6 +59,7 @@ class Location {
       longitude: '-47.89',
       responsibleForInformation: '',
       url: '',
+      accountId: 0,
       createdAt: '',
       updatedAt: '',
     );
@@ -77,6 +82,7 @@ class Location {
       responsibleForInformation: json['responsible_for_information'].toString(),
       url: json['url'].toString(),
       imageUrl: json['image_url'].toString(),
+      accountId: json['account_id'],
       createdAt: json['created_at'].toString(),
       updatedAt: json['updated_at'].toString(),
     );

@@ -2,9 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 
+import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
+import 'package:one_million_voices_of_agroecology_app/screens/home.dart';
 import 'package:one_million_voices_of_agroecology_app/services/location_service.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/new_media_widget.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/text_block_widget.dart';
@@ -60,9 +61,50 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
     super.initState();
   }
 
+  Future<void> _showAlertDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          titleTextStyle: TextStyle(color: Theme.of(context).primaryColor),
+          contentTextStyle: TextStyle(color: Theme.of(context).secondaryHeaderColor),
+          title: const Text('Delete this Location'),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are you sure?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Yes'),
+              onPressed: () {
+                widget.onRemoveLocation(widget.location);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (ctx) => const HomeScreen()),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget activePage = const Center(child: CircularProgressIndicator());
+
     if (!_isLoading) {
       activePage = SingleChildScrollView(
         child: Column(
@@ -127,13 +169,14 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                     endActionPane: ActionPane(
                       motion: const ScrollMotion(),
                       children: [
-                        SlidableAction(
-                          onPressed: (onPressed) => _removeGalleryItem(i),
-                          label: 'Delete',
-                          icon: FontAwesomeIcons.trash,
-                          backgroundColor: const Color(0xFFFE4A49),
-                          foregroundColor: Colors.white,
-                        )
+                        if (_location.hasPermission)
+                          SlidableAction(
+                            onPressed: (onPressed) => _removeGalleryItem(i),
+                            label: 'Delete',
+                            icon: FontAwesomeIcons.trash,
+                            backgroundColor: const Color(0xFFFE4A49),
+                            foregroundColor: Colors.white,
+                          )
                       ],
                     ),
                     child: Stack(
@@ -199,22 +242,22 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
       appBar: AppBar(
         title: Text(widget.location.name),
         actions: [
-          if (_selectedPageIndex == 1)
-            IconButton(
-                icon: const Icon(FontAwesomeIcons.camera),
-                onPressed: () {
-                  _selectPage(1);
-                  setState(() {
-                    _sendMedia = true;
-                  });
-                })
-          else if (_selectedPageIndex == 0)
-            IconButton(
+          if (!_isLoading && _location.hasPermission) ...[
+            if (_selectedPageIndex == 1)
+              IconButton(
+                  icon: const Icon(FontAwesomeIcons.camera),
+                  onPressed: () {
+                    _selectPage(1);
+                    setState(() {
+                      _sendMedia = true;
+                    });
+                  })
+            else if (_selectedPageIndex == 0 && _location.hasPermission)
+              IconButton(
                 icon: const Icon(FontAwesomeIcons.trash),
-                onPressed: () {
-                  widget.onRemoveLocation(widget.location);
-                  Navigator.of(context).pop();
-                })
+                onPressed: _showAlertDialog,
+              )
+          ]
         ],
       ),
       body: activePage,

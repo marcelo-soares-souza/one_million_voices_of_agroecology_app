@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
 import 'package:one_million_voices_of_agroecology_app/services/location_service.dart';
@@ -123,7 +122,6 @@ class _NewMediaWidget extends State<NewMediaWidget> {
                     maxLength: 64,
                     style: const TextStyle(color: Colors.white),
                     onSaved: (value) => _galleryItem.description = value!,
-                    validator: (value) => FormHelper.validateInputSize(value, 4, 64),
                   ),
                   const SizedBox(height: 16),
                   Row(
