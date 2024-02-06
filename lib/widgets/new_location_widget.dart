@@ -26,7 +26,7 @@ class _NewLocation extends State<NewLocation> {
   final LocationHelper _locationHelper = LocationHelper();
   late Location _location;
   late Position? _currentPosition;
-  LatLng _initialCenter = const LatLng(16.0, 16.0);
+  final LatLng _initialCenter = const LatLng(16.0, 16.0);
   MapController mapController = MapController();
   final _formKey = GlobalKey<FormState>();
   var _isSending = false;
@@ -238,7 +238,7 @@ class _NewLocation extends State<NewLocation> {
                       ),
                       children: [
                         TileLayer(urlTemplate: Config.osmURL),
-                        MarkerLayer(markers: [_marker!])
+                        MarkerLayer(markers: [_marker])
                       ],
                     ),
                   ),

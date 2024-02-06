@@ -36,6 +36,11 @@ class AuthService {
     return true;
   }
 
+  static Future<String> getCurrentAccountId() async {
+    if (!await storage.containsKey(key: 'account_id') || !await storage.containsKey(key: 'token')) return '0';
+    return (await storage.read(key: 'account_id'))!;
+  }
+
   static Future<bool> logout() async {
     try {
       await storage.delete(key: 'token');

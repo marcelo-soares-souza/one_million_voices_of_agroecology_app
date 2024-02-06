@@ -3,8 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
+import 'package:one_million_voices_of_agroecology_app/models/location.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
+import 'package:one_million_voices_of_agroecology_app/services/location_service.dart';
 import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/image_input.dart';
 
@@ -17,7 +19,8 @@ class NewPractice extends StatefulWidget {
 
 class _NewPractice extends State<NewPractice> {
   bool _isLoading = true;
-  late Practice _practice;
+  Practice _practice = Practice.initPractice();
+  List<Location> _locations = [];
   final _formKey = GlobalKey<FormState>();
   var _isSending = false;
   bool _isLoggedIn = false;
@@ -29,14 +32,36 @@ class _NewPractice extends State<NewPractice> {
     }
   }
 
+  void _retrieveLocations() async {
+    String accountId = await AuthService.getCurrentAccountId();
+    List<Location> locations = await LocationService.retrieveAllLocationsByAccount(accountId);
+    setState(() => _locations = locations);
+  }
+
   @override
   void initState() {
     _checkIfIsLoggedIn();
+    _retrieveLocations();
+
     _practice = Practice.initPractice();
 
     setState(() => _isLoading = false);
 
     super.initState();
+  }
+
+  List<DropdownMenuItem<String>> get dropDownLocations {
+    List<DropdownMenuItem<String>> locationItems = [];
+    for (var location in _locations) {
+      locationItems.add(
+        DropdownMenuItem(
+          value: location.id.toString(),
+          child: Text(location.name),
+        ),
+      );
+    }
+
+    return locationItems;
   }
 
   void _saveItem() async {
@@ -51,6 +76,8 @@ class _NewPractice extends State<NewPractice> {
         imageBase64 = base64Encode(_selectedImage!.readAsBytesSync());
         _practice.base64Image = imageBase64;
       }
+
+      _practice.accountId = await AuthService.getCurrentAccountId();
 
       final Map<String, String> response = await PracticeService.sendPractice(_practice);
       String status = response['status'].toString();
@@ -103,6 +130,22 @@ class _NewPractice extends State<NewPractice> {
               child: Column(
                 children: [
                   const SizedBox(height: 10),
+                  const Text('Location', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  DropdownButtonFormField(
+                    items: dropDownLocations,
+                    value: _locations.isEmpty ? null : _locations[0].id.toString(),
+                    onChanged: (value) {
+                      setState(() {
+                        _practice.locationId = value!;
+                      });
+                    },
+                    decoration: const InputDecoration(
+                      filled: false,
+                      fillColor: Colors.blueAccent,
+                    ),
+                    dropdownColor: Theme.of(context).colorScheme.background,
+                  ),
+                  const SizedBox(height: 21),
                   const Text('Practice Name', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
                     maxLength: 64,

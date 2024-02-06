@@ -45,7 +45,10 @@ class Practice {
   String knowledgeSourceDetails;
   String knowledgeTimingDetails;
 
+  String accountId;
+  String locationId;
   String base64Image;
+  bool hasPermission;
 
   String createdAt;
   String updatedAt;
@@ -136,7 +139,10 @@ class Practice {
     required this.knowledgeTimingDetails,
     required this.createdAt,
     required this.updatedAt,
-  }) : base64Image = '';
+  })  : base64Image = '',
+        accountId = '',
+        locationId = '',
+        hasPermission = false;
 
   factory Practice.fromJson(Map<String, dynamic> json) {
     return Practice(
@@ -227,6 +233,14 @@ class Practice {
 
     if (base64Image.isNotEmpty) {
       json['base64Image'] = base64Image;
+    }
+
+    if (accountId.isNotEmpty) {
+      json['account_id'] = int.parse(accountId);
+    }
+
+    if (locationId.isNotEmpty) {
+      json['location_id'] = int.parse(locationId);
     }
 
     return json;

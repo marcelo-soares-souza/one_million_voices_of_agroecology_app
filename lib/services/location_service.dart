@@ -56,6 +56,20 @@ class LocationService {
     return gallery;
   }
 
+  static Future<List<Location>> retrieveAllLocationsByAccount(String accountId) async {
+    final List<Location> locations = [];
+
+    final res = await httpClient.get(Config.getURI('/accounts/$accountId/locations.json'));
+
+    for (final location in json.decode(res.body.toString())) {
+      Location l = Location.fromJson(location);
+      l.hasPermission = await AuthService.hasPermission(l.accountId);
+      locations.add(l);
+    }
+
+    return locations;
+  }
+
   static Future<Map<String, String>> sendLocation(Location location) async {
     bool isTokenValid = await AuthService.validateToken();
 
