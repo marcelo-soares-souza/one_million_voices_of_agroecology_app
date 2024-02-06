@@ -21,7 +21,9 @@ class PracticeService {
     final res = await httpClient.get(Config.getURI('practices.json'));
 
     for (final practice in json.decode(res.body.toString())) {
-      practices.add(Practice.fromJson(practice));
+      Practice p = Practice.fromJson(practice);
+      p.hasPermission = await AuthService.hasPermission(int.parse(p.accountId));
+      practices.add(p);
     }
 
     return practices;
@@ -74,6 +76,28 @@ class PracticeService {
       if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
       return {'status': 'success', 'message': 'Practice added'};
+    }
+    return {'status': 'failed', 'message': 'An error occured. Please login again.'};
+  }
+
+  static Future<Map<String, String>> removePractice(int practiceId) async {
+    bool isTokenValid = await AuthService.validateToken();
+
+    if (isTokenValid) {
+      final res = await httpClient.delete(Config.getURI('/practices/$practiceId.json'));
+
+      debugPrint('[DEBUG]: statusCode ${res.statusCode}');
+      debugPrint('[DEBUG]: Body ${res.body}');
+
+      String error = 'Generic Error. Please try again.';
+      if (res.body.isNotEmpty) {
+        var message = json.decode(res.body);
+        error = message['error'] ? message['error'].toString().replaceAll('{', '').replaceAll('}', '') : '';
+      }
+
+      if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
+
+      return {'status': 'success', 'message': 'Practice removed'};
     }
     return {'status': 'failed', 'message': 'An error occured. Please login again.'};
   }

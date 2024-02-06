@@ -137,11 +137,11 @@ class Practice {
     required this.uptakeMotivation,
     required this.knowledgeSourceDetails,
     required this.knowledgeTimingDetails,
+    required this.accountId,
+    required this.locationId,
     required this.createdAt,
     required this.updatedAt,
   })  : base64Image = '',
-        accountId = '',
-        locationId = '',
         hasPermission = false;
 
   factory Practice.fromJson(Map<String, dynamic> json) {
@@ -190,6 +190,8 @@ class Practice {
       uptakeMotivation: json['uptake_motivation'].toString(),
       knowledgeSourceDetails: json['knowledge_source_details'].toString(),
       knowledgeTimingDetails: json['knowledge_timing_details'].toString(),
+      locationId: json['location_id'].toString(),
+      accountId: json['account_id'].toString(),
       createdAt: json['created_at'].toString(),
       updatedAt: json['updated_at'].toString(),
     );
@@ -227,20 +229,14 @@ class Practice {
       'uptakeMotivation': uptakeMotivation,
       'knowledgeSourceDetails': knowledgeSourceDetails,
       'knowledgeTimingDetails': knowledgeTimingDetails,
+      'account_id': int.parse(accountId),
+      'location_id': int.parse(locationId),
       'createdAt': createdAt,
       'updatedAt': updatedAt,
     };
 
     if (base64Image.isNotEmpty) {
       json['base64Image'] = base64Image;
-    }
-
-    if (accountId.isNotEmpty) {
-      json['account_id'] = int.parse(accountId);
-    }
-
-    if (locationId.isNotEmpty) {
-      json['location_id'] = int.parse(locationId);
     }
 
     return json;
@@ -382,6 +378,8 @@ class Practice {
       uptakeMotivation: '',
       knowledgeSourceDetails: '',
       knowledgeTimingDetails: '',
+      locationId: '',
+      accountId: '',
       createdAt: '',
       updatedAt: '',
     );

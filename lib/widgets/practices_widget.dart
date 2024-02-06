@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/practice_details.dart';
@@ -15,7 +17,7 @@ class PracticesWidget extends StatefulWidget {
 
 class _PracticesWidget extends State<PracticesWidget> {
   bool _isLoading = true;
-  late final List<Practice> _practices;
+  List<Practice> _practices = [];
 
   void selectPractice(BuildContext context, Practice practice) {
     Navigator.of(context).push(
@@ -49,6 +51,12 @@ class _PracticesWidget extends State<PracticesWidget> {
     super.initState();
   }
 
+  void _removePractice(Practice practice) async {
+    Map<String, String> response = await PracticeService.removePractice(practice.id);
+    debugPrint(response.toString());
+    if (response['status'] == 'success') setState(() => _practices.remove(practice));
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget content = const Center(child: Text('No practices'));
@@ -58,10 +66,41 @@ class _PracticesWidget extends State<PracticesWidget> {
     } else {
       content = ListView.builder(
         itemCount: _practices.length,
-        itemBuilder: (ctx, index) => PracticeItemWidget(
-          key: ObjectKey(_practices[index].id),
-          practice: _practices[index],
-          onSelectPractice: selectPractice,
+        itemBuilder: (ctx, index) => Slidable(
+          startActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            children: [
+              if (_practices[index].hasPermission) ...[
+                SlidableAction(
+                  onPressed: (onPressed) => selectPractice(context, _practices[index]),
+                  label: 'Edit',
+                  icon: FontAwesomeIcons.penToSquare,
+                  backgroundColor: const Color(0xFF4A90E2),
+                  foregroundColor: Colors.white,
+                ),
+              ]
+            ],
+          ),
+          endActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            children: [
+              if (_practices[index].hasPermission) ...[
+                SlidableAction(
+                  onPressed: (onPressed) => _removePractice(_practices[index]),
+                  label: 'Delete',
+                  icon: FontAwesomeIcons.trash,
+                  backgroundColor: const Color(0xFFFE4A49),
+                  foregroundColor: Colors.white,
+                )
+              ]
+            ],
+          ),
+          key: ValueKey(_practices[index].id),
+          child: PracticeItemWidget(
+            key: ObjectKey(_practices[index].id),
+            practice: _practices[index],
+            onSelectPractice: selectPractice,
+          ),
         ),
       );
     }
