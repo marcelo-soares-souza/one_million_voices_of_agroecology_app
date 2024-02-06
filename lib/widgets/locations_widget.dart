@@ -68,7 +68,7 @@ class _LocationsWidget extends State<LocationsWidget> {
                 SlidableAction(
                   onPressed: (onPressed) => selectLocation(context, _locations[index]),
                   label: 'Edit',
-                  icon: FontAwesomeIcons.edit,
+                  icon: FontAwesomeIcons.penToSquare,
                   backgroundColor: const Color(0xFF4A90E2),
                   foregroundColor: Colors.white,
                 ),

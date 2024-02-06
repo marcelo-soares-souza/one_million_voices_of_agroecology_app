@@ -1,9 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Config {
-  static const bool debugMode = false;
+  static const bool debugMode = kReleaseMode ? false : true;
 
   static const String title = 'One Million Voices of Agroecology';
   static const String omvUrl = debugMode ? '10.0.2.2:3000' : 'dev.agroecologymap.org';

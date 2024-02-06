@@ -45,9 +45,6 @@ class _NewLocation extends State<NewLocation> {
     _checkIfIsLoggedIn();
     _location = Location.initLocation();
     _getCurrentPosition();
-    LatLng coordinates = LatLng(double.parse(_location.latitude), double.parse(_location.longitude));
-    _marker = LocationHelper.buildMarker(_location.id.toString(), coordinates);
-    _initialCenter = coordinates;
 
     setState(() => _isLoading = false);
 
@@ -339,6 +336,10 @@ class _NewLocation extends State<NewLocation> {
         _currentPosition = position;
         _location.latitude = _currentPosition?.latitude.toString() ?? '-15.75';
         _location.longitude = _currentPosition?.longitude.toString() ?? '-47.89';
+
+        LatLng coordinates = LatLng(double.parse(_location.latitude), double.parse(_location.longitude));
+        _marker = LocationHelper.buildMarker(_location.id.toString(), coordinates);
+        _initialCenter = coordinates;
       });
     });
   }

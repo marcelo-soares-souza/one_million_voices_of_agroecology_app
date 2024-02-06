@@ -1,7 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
+import 'package:one_million_voices_of_agroecology_app/helpers/location_helper.dart';
 
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
@@ -29,10 +33,18 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
   int _selectedPageIndex = 0;
   late List<GalleryItem> _gallery;
   late Location _location;
+  Marker? _marker;
 
   void _retrieveGallery() async {
     _location = await LocationService.retrieveLocation(widget.location.id.toString());
     _gallery = await LocationService.retrieveLocationGallery(widget.location.id.toString());
+
+    _marker = LocationHelper.buildMarker(
+        _location.id.toString(),
+        LatLng(
+          double.parse(_location.latitude),
+          double.parse(_location.longitude),
+        ));
     setState(() => _isLoading = false);
   }
 
@@ -143,6 +155,34 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
               TextBlockWidget(
                 label: 'What is your dream ',
                 value: _location.whatIsYourDream,
+              ),
+              Text(
+                overflow: TextOverflow.ellipsis,
+                'Location',
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 300,
+                  child: FlutterMap(
+                    options: MapOptions(
+                      initialCenter: LatLng(double.parse(_location.latitude), double.parse(_location.longitude)),
+                      minZoom: 1.0,
+                      maxZoom: 16.0,
+                      initialZoom: 2.0,
+                      interactionOptions: Config.interactionOptions,
+                    ),
+                    children: [
+                      TileLayer(urlTemplate: Config.osmURL),
+                      MarkerLayer(markers: [_marker!])
+                    ],
+                  ),
+                ),
               ),
               TextBlockWidget(
                 label: 'Responsible for Information',
