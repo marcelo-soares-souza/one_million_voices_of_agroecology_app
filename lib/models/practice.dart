@@ -45,6 +45,8 @@ class Practice {
   String knowledgeSourceDetails;
   String knowledgeTimingDetails;
 
+  String base64Image;
+
   String createdAt;
   String updatedAt;
 
@@ -56,14 +58,11 @@ class Practice {
 
   final whatYouDo = {
     'Where it is realized?': 'whereItIsRealized',
-    'Practical implementation of the practice':
-        'practicalImplementationOfThePractice',
+    'Practical implementation of the practice': 'practicalImplementationOfThePractice',
     'Type of agroecological practice': 'typeOfAgroecologicalPractice',
-    'Why you use and what you expect from this practice':
-        'whyYouUseAndWhatYouExpectFromThisPractice',
+    'Why you use and what you expect from this practice': 'whyYouUseAndWhatYouExpectFromThisPractice',
     'Land Size': 'landSize',
-    'Substitution of less ecological alternative':
-        'substitutionOfLessEcologicalAlternative',
+    'Substitution of less ecological alternative': 'substitutionOfLessEcologicalAlternative',
   };
 
   final characterises = {
@@ -73,16 +72,12 @@ class Practice {
 
   final evaluates = {
     'General performance of practice': 'generalPerformanceOfPractice',
-    'Unintended positive side effects of practice':
-        'unintendedPositiveSideEffectsOfPractice',
-    'Unintended negative side effect of practice':
-        'unintendedNegativeSideEffectOfPractice',
-    'Knowledge and skills required for practice':
-        'knowledgeAndSkillsRequiredForPractice',
+    'Unintended positive side effects of practice': 'unintendedPositiveSideEffectsOfPractice',
+    'Unintended negative side effect of practice': 'unintendedNegativeSideEffectOfPractice',
+    'Knowledge and skills required for practice': 'knowledgeAndSkillsRequiredForPractice',
     'Labour required for practice': 'labourRequiredForPractice',
     'Cost associated with practice': 'costAssociatedWithPractice',
-    'Does it work in degraded environments?':
-        'doesItWorkInDegradedEnvironments',
+    'Does it work in degraded environments?': 'doesItWorkInDegradedEnvironments',
     'Does it help restore land?': 'doesItHelpRestoreLand',
     'Climate change vulnerability effects': 'climateChangeVulnerabilityEffects',
     'Time requirements': 'timeRequirements',
@@ -141,7 +136,7 @@ class Practice {
     required this.knowledgeTimingDetails,
     required this.createdAt,
     required this.updatedAt,
-  });
+  }) : base64Image = '';
 
   factory Practice.fromJson(Map<String, dynamic> json) {
     return Practice(
@@ -153,57 +148,35 @@ class Practice {
       imageUrl: json['image_url'].toString(),
       whereItIsRealized: json['where_it_is_realized'].toString(),
       summaryDescription: json['summary_description'].toString(),
-      practicalImplementationOfThePractice:
-          json['practical_implementation_of_the_practice'].toString(),
-      typeOfAgroecologicalPractice:
-          json['type_of_agroecological_practice'].toString(),
-      whyYouUseAndWhatYouExpectFromThisPractice:
-          json['why_you_use_and_what_you_expect_from_this_practice'].toString(),
+      practicalImplementationOfThePractice: json['practical_implementation_of_the_practice'].toString(),
+      typeOfAgroecologicalPractice: json['type_of_agroecological_practice'].toString(),
+      whyYouUseAndWhatYouExpectFromThisPractice: json['why_you_use_and_what_you_expect_from_this_practice'].toString(),
       landSize: json['land_size'].toString(),
-      substitutionOfLessEcologicalAlternative:
-          json['substitution_of_less_ecological_alternative'].toString(),
-      agroecologyPrinciplesAddressed:
-          json['agroecology_principles_addressed'].toString(),
-      foodSystemComponentsAddressed:
-          json['food_system_components_addressed'].toString(),
-      generalPerformanceOfPractice:
-          json['general_performance_of_practice'].toString(),
-      unintendedPositiveSideEffectsOfPractice:
-          json['unintended_positive_side_effects_of_practice'].toString(),
-      unintendedNegativeSideEffectOfPractice:
-          json['unintended_negative_side_effect_of_practice'].toString(),
-      knowledgeAndSkillsRequiredForPractice:
-          json['knowledge_and_skills_required_for_practice'].toString(),
-      labourRequiredForPractice:
-          json['labour_required_for_practice'].toString(),
-      costAssociatedWithPractice:
-          json['cost_associated_with_practice'].toString(),
-      doesItWorkInDegradedEnvironments:
-          json['does_it_work_in_degraded_environments'].toString(),
+      substitutionOfLessEcologicalAlternative: json['substitution_of_less_ecological_alternative'].toString(),
+      agroecologyPrinciplesAddressed: json['agroecology_principles_addressed'].toString(),
+      foodSystemComponentsAddressed: json['food_system_components_addressed'].toString(),
+      generalPerformanceOfPractice: json['general_performance_of_practice'].toString(),
+      unintendedPositiveSideEffectsOfPractice: json['unintended_positive_side_effects_of_practice'].toString(),
+      unintendedNegativeSideEffectOfPractice: json['unintended_negative_side_effect_of_practice'].toString(),
+      knowledgeAndSkillsRequiredForPractice: json['knowledge_and_skills_required_for_practice'].toString(),
+      labourRequiredForPractice: json['labour_required_for_practice'].toString(),
+      costAssociatedWithPractice: json['cost_associated_with_practice'].toString(),
+      doesItWorkInDegradedEnvironments: json['does_it_work_in_degraded_environments'].toString(),
       doesItHelpRestoreLand: json['does_it_help_restore_land'].toString(),
-      climateChangeVulnerabilityEffects:
-          json['climate_change_vulnerability_effects'].toString(),
+      climateChangeVulnerabilityEffects: json['climate_change_vulnerability_effects'].toString(),
       timeRequirements: json['time_requirements'].toString(),
-      generalPerformanceOfPracticeDetails:
-          json['general_performance_of_practice_details'].toString(),
+      generalPerformanceOfPracticeDetails: json['general_performance_of_practice_details'].toString(),
       unintendedPositiveSideEffectsOfPracticeDetails:
-          json['unintended_positive_side_effects_of_practice_details']
-              .toString(),
+          json['unintended_positive_side_effects_of_practice_details'].toString(),
       unintendedNegativeSideEffectOfPracticeDetails:
-          json['unintended_negative_side_effect_of_practice_details']
-              .toString(),
+          json['unintended_negative_side_effect_of_practice_details'].toString(),
       knowledgeAndSkillsRequiredForPracticeDetails:
           json['knowledge_and_skills_required_for_practice_details'].toString(),
-      labourRequiredForPracticeDetails:
-          json['labour_required_for_practice_details'].toString(),
-      costAssociatedWithPracticeDetails:
-          json['cost_associated_with_practice_details'].toString(),
-      doesItWorkInDegradedEnvironmentsDetails:
-          json['does_it_work_in_degraded_environments_details'].toString(),
-      doesItHelpRestoreLandDetails:
-          json['does_it_help_restore_land_details'].toString(),
-      climateChangeVulnerabilityEffectsDetails:
-          json['climate_change_vulnerability_effects_details'].toString(),
+      labourRequiredForPracticeDetails: json['labour_required_for_practice_details'].toString(),
+      costAssociatedWithPracticeDetails: json['cost_associated_with_practice_details'].toString(),
+      doesItWorkInDegradedEnvironmentsDetails: json['does_it_work_in_degraded_environments_details'].toString(),
+      doesItHelpRestoreLandDetails: json['does_it_help_restore_land_details'].toString(),
+      climateChangeVulnerabilityEffectsDetails: json['climate_change_vulnerability_effects_details'].toString(),
       timeRequirementsDetails: json['time_requirements_details'].toString(),
       knowledgeSource: json['knowledge_source'].toString(),
       knowledgeTiming: json['knowledge_timing'].toString(),
@@ -214,6 +187,49 @@ class Practice {
       createdAt: json['created_at'].toString(),
       updatedAt: json['updated_at'].toString(),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    var json = {
+      'id': id,
+      'name': name,
+      'location': location,
+      'responsibleForInformation': responsibleForInformation,
+      'url': url,
+      'imageUrl': imageUrl,
+      'whereItIsRealized': whereItIsRealized,
+      'summaryDescription': summaryDescription,
+      'practicalImplementationOfThePractice': practicalImplementationOfThePractice,
+      'typeOfAgroecologicalPractice': typeOfAgroecologicalPractice,
+      'whyYouUseAndWhatYouExpectFromThisPractice': whyYouUseAndWhatYouExpectFromThisPractice,
+      'doesItHelpRestoreLand': doesItHelpRestoreLand,
+      'climateChangeVulnerabilityEffects': climateChangeVulnerabilityEffects,
+      'timeRequirements': timeRequirements,
+      'generalPerformanceOfPracticeDetails': generalPerformanceOfPracticeDetails,
+      'unintendedPositiveSideEffectsOfPracticeDetails': unintendedPositiveSideEffectsOfPracticeDetails,
+      'unintendedNegativeSideEffectOfPracticeDetails': unintendedNegativeSideEffectOfPracticeDetails,
+      'knowledgeAndSkillsRequiredForPracticeDetails': knowledgeAndSkillsRequiredForPracticeDetails,
+      'labourRequiredForPracticeDetails': labourRequiredForPracticeDetails,
+      'costAssociatedWithPracticeDetails': costAssociatedWithPracticeDetails,
+      'doesItWorkInDegradedEnvironmentsDetails': doesItWorkInDegradedEnvironmentsDetails,
+      'doesItHelpRestoreLandDetails': doesItHelpRestoreLandDetails,
+      'climateChangeVulnerabilityEffectsDetails': climateChangeVulnerabilityEffectsDetails,
+      'timeRequirementsDetails': timeRequirementsDetails,
+      'knowledgeSource': knowledgeSource,
+      'knowledgeTiming': knowledgeTiming,
+      'knowledgeProducts': knowledgeProducts,
+      'uptakeMotivation': uptakeMotivation,
+      'knowledgeSourceDetails': knowledgeSourceDetails,
+      'knowledgeTimingDetails': knowledgeTimingDetails,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+    };
+
+    if (base64Image.isNotEmpty) {
+      json['base64Image'] = base64Image;
+    }
+
+    return json;
   }
 
   dynamic getFieldByName(String fieldName) {
@@ -307,5 +323,53 @@ class Practice {
       default:
         throw Exception('Invalid field name: $fieldName');
     }
+  }
+
+  static Practice initPractice() {
+    return Practice(
+      id: 0,
+      name: '',
+      location: '',
+      responsibleForInformation: '',
+      url: '',
+      imageUrl: '',
+      whereItIsRealized: '',
+      summaryDescription: '',
+      practicalImplementationOfThePractice: '',
+      typeOfAgroecologicalPractice: '',
+      whyYouUseAndWhatYouExpectFromThisPractice: '',
+      landSize: '',
+      substitutionOfLessEcologicalAlternative: '',
+      agroecologyPrinciplesAddressed: '',
+      foodSystemComponentsAddressed: '',
+      generalPerformanceOfPractice: '',
+      unintendedPositiveSideEffectsOfPractice: '',
+      unintendedNegativeSideEffectOfPractice: '',
+      knowledgeAndSkillsRequiredForPractice: '',
+      labourRequiredForPractice: '',
+      costAssociatedWithPractice: '',
+      doesItWorkInDegradedEnvironments: '',
+      doesItHelpRestoreLand: '',
+      climateChangeVulnerabilityEffects: '',
+      timeRequirements: '',
+      generalPerformanceOfPracticeDetails: '',
+      unintendedPositiveSideEffectsOfPracticeDetails: '',
+      unintendedNegativeSideEffectOfPracticeDetails: '',
+      knowledgeAndSkillsRequiredForPracticeDetails: '',
+      labourRequiredForPracticeDetails: '',
+      costAssociatedWithPracticeDetails: '',
+      doesItWorkInDegradedEnvironmentsDetails: '',
+      doesItHelpRestoreLandDetails: '',
+      climateChangeVulnerabilityEffectsDetails: '',
+      timeRequirementsDetails: '',
+      knowledgeSource: '',
+      knowledgeTiming: '',
+      knowledgeProducts: '',
+      uptakeMotivation: '',
+      knowledgeSourceDetails: '',
+      knowledgeTimingDetails: '',
+      createdAt: '',
+      updatedAt: '',
+    );
   }
 }

@@ -8,6 +8,7 @@ import 'package:one_million_voices_of_agroecology_app/screens/map.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/practices.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/drawer_widget.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/new_location_widget.dart';
+import 'package:one_million_voices_of_agroecology_app/widgets/new_practice_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,6 +25,19 @@ class _HomeScreenState extends State<HomeScreen> {
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => const NewLocation(),
+      ),
+    );
+
+    setState(() {
+      activePage = const MapScreen();
+      activePageTitle = 'Map';
+    });
+  }
+
+  void _addPractice() async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => const NewPractice(),
       ),
     );
 
@@ -83,9 +97,14 @@ class _HomeScreenState extends State<HomeScreen> {
           style: Theme.of(context).textTheme.titleLarge,
         ),
         actions: [
-          if (activePageTitle == 'Practices' || activePageTitle == 'Locations')
+          if (activePageTitle == 'Locations')
             IconButton(
               onPressed: _addLocation,
+              icon: const Icon(FontAwesomeIcons.plus),
+            ),
+          if (activePageTitle == 'Practices')
+            IconButton(
+              onPressed: _addPractice,
               icon: const Icon(FontAwesomeIcons.plus),
             ),
         ],

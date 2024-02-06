@@ -26,13 +26,13 @@ class _NewLocation extends State<NewLocation> {
   final LocationHelper _locationHelper = LocationHelper();
   late Location _location;
   late Position? _currentPosition;
-  late LatLng _initialCenter;
+  LatLng _initialCenter = const LatLng(16.0, 16.0);
   MapController mapController = MapController();
   final _formKey = GlobalKey<FormState>();
   var _isSending = false;
   bool _isLoggedIn = false;
   File? _selectedImage;
-  Marker? _marker;
+  Marker _marker = LocationHelper.buildMarker('', const LatLng(16.0, 16.0));
 
   void _checkIfIsLoggedIn() async {
     if (await AuthService.isLoggedIn()) {
@@ -42,9 +42,9 @@ class _NewLocation extends State<NewLocation> {
 
   @override
   void initState() {
+    _getCurrentPosition();
     _checkIfIsLoggedIn();
     _location = Location.initLocation();
-    _getCurrentPosition();
 
     setState(() => _isLoading = false);
 
@@ -215,18 +215,6 @@ class _NewLocation extends State<NewLocation> {
                     onSaved: (value) => _location.description = value!,
                   ),
                   const SizedBox(height: 21),
-                  // const Text('Hide my Location the on Map?', style: TextStyle(color: Colors.grey, fontSize: 18)),
-                  // DropdownButtonFormField(
-                  //   items: FormHelper.dropDownYesNo,
-                  //   value: 'false',
-                  //   onChanged: (value) => _location.hideMyLocation = value!,
-                  //   decoration: const InputDecoration(
-                  //     filled: false,
-                  //     fillColor: Colors.blueAccent,
-                  //   ),
-                  //   dropdownColor: Colors.black,
-                  // ),
-                  const SizedBox(height: 21),
                   const Text('Location', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   const SizedBox(height: 21),
                   SizedBox(
@@ -331,16 +319,19 @@ class _NewLocation extends State<NewLocation> {
   Future<void> _getCurrentPosition() async {
     final hasPermission = await _handleLocationPermission();
     if (!hasPermission) return;
+
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) {
       setState(() {
         _currentPosition = position;
         _location.latitude = _currentPosition?.latitude.toString() ?? '-15.75';
         _location.longitude = _currentPosition?.longitude.toString() ?? '-47.89';
-
-        LatLng coordinates = LatLng(double.parse(_location.latitude), double.parse(_location.longitude));
-        _marker = LocationHelper.buildMarker(_location.id.toString(), coordinates);
-        _initialCenter = coordinates;
       });
+    });
+
+    setState(() {
+      LatLng coordinates = LatLng(double.parse(_location.latitude), double.parse(_location.longitude));
+      _marker = LocationHelper.buildMarker(_location.id.toString(), coordinates);
+      mapController.move(coordinates, 3);
     });
   }
 }

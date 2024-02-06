@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:http_interceptor/http/intercepted_client.dart';
 import 'dart:convert';
 
@@ -5,6 +6,7 @@ import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/custom_interceptor.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
+import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
 
 class PracticeService {
   static InterceptedClient httpClient = InterceptedClient.build(
@@ -35,8 +37,7 @@ class PracticeService {
   static Future<List<GalleryItem>> retrievePracticeGallery(String id) async {
     final List<GalleryItem> gallery = [];
 
-    final res =
-        await httpClient.get(Config.getURI('/practices/$id/gallery.json'));
+    final res = await httpClient.get(Config.getURI('/practices/$id/gallery.json'));
 
     var data = json.decode(res.body.toString());
 
@@ -46,5 +47,34 @@ class PracticeService {
       }
     }
     return gallery;
+  }
+
+  static Future<Map<String, String>> sendPractice(Practice practice) async {
+    bool isTokenValid = await AuthService.validateToken();
+
+    if (isTokenValid) {
+      final practiceJson = practice.toJson();
+
+      practiceJson.remove('id');
+      practiceJson.remove('created_at');
+      practiceJson.remove('updated_at');
+
+      final body = json.encode(practiceJson);
+
+      debugPrint('[DEBUG]: sendPractice body: $body');
+
+      final res = await httpClient.post(Config.getURI('/practices.json'), body: body);
+
+      debugPrint('[DEBUG]: statusCode ${res.statusCode}');
+      debugPrint('[DEBUG]: Body ${res.body}');
+
+      var message = json.decode(res.body);
+      var error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
+
+      if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
+
+      return {'status': 'success', 'message': 'Practice added'};
+    }
+    return {'status': 'failed', 'message': 'An error occured. Please login again.'};
   }
 }
