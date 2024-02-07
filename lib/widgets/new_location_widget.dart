@@ -42,13 +42,11 @@ class _NewLocation extends State<NewLocation> {
 
   @override
   void initState() {
+    super.initState();
     _getCurrentPosition();
     _checkIfIsLoggedIn();
     _location = Location.initLocation();
-
     setState(() => _isLoading = false);
-
-    super.initState();
   }
 
   void _saveItem() async {

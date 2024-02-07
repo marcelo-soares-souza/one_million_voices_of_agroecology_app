@@ -2,25 +2,21 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
-import 'package:one_million_voices_of_agroecology_app/models/location.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
-import 'package:one_million_voices_of_agroecology_app/services/location_service.dart';
 import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
-import 'package:one_million_voices_of_agroecology_app/widgets/image_input.dart';
 
-class NewPractice extends StatefulWidget {
-  const NewPractice({super.key});
+class NewWhatYouDos extends StatefulWidget {
+  final String practiceId;
+  const NewWhatYouDos({super.key, required this.practiceId});
 
   @override
-  State<NewPractice> createState() => _NewPractice();
+  State<NewWhatYouDos> createState() => _NewWhatYouDos();
 }
 
-class _NewPractice extends State<NewPractice> {
+class _NewWhatYouDos extends State<NewWhatYouDos> {
   bool _isLoading = true;
-  final Practice _practice = Practice.initPractice();
-  List<Location> _locations = [];
+  Practice _practice = Practice.initPractice();
   final _formKey = GlobalKey<FormState>();
   var _isSending = false;
   bool _isLoggedIn = false;
@@ -32,33 +28,17 @@ class _NewPractice extends State<NewPractice> {
     }
   }
 
-  void _retrieveLocations() async {
-    String accountId = await AuthService.getCurrentAccountId();
-    List<Location> locations = await LocationService.retrieveAllLocationsByAccount(accountId);
-    setState(() => _locations = locations);
+  void _retrieveFullPractice() async {
+    _practice = await PracticeService.retrievePractice(widget.practiceId);
+    debugPrint(_practice.summaryDescription);
   }
 
   @override
   void initState() {
     super.initState();
     _checkIfIsLoggedIn();
-    _retrieveLocations();
-
+    _retrieveFullPractice();
     setState(() => _isLoading = false);
-  }
-
-  List<DropdownMenuItem<String>> get dropDownLocations {
-    List<DropdownMenuItem<String>> locationItems = [];
-    for (var location in _locations) {
-      locationItems.add(
-        DropdownMenuItem(
-          value: location.id.toString(),
-          child: Text(location.name),
-        ),
-      );
-    }
-
-    return locationItems;
   }
 
   void _saveItem() async {
@@ -67,9 +47,6 @@ class _NewPractice extends State<NewPractice> {
 
       setState(() => _isSending = true);
 
-      _practice.accountId = await AuthService.getCurrentAccountId();
-      _practice.locationId = _practice.locationId.isNotEmpty ? _practice.locationId : _locations[0].id.toString();
-
       String imageBase64 = '';
 
       if (_selectedImage != null) {
@@ -77,8 +54,9 @@ class _NewPractice extends State<NewPractice> {
         _practice.base64Image = imageBase64;
       }
 
-      final Map<String, String> response = await PracticeService.sendPractice(_practice);
+      _practice.accountId = await AuthService.getCurrentAccountId();
 
+      final Map<String, String> response = await PracticeService.sendPractice(_practice);
       String status = response['status'].toString();
       String message = response['message'].toString();
 
@@ -128,35 +106,14 @@ class _NewPractice extends State<NewPractice> {
               key: _formKey,
               child: Column(
                 children: [
-                  const SizedBox(height: 10),
-                  const Text('Location', style: TextStyle(color: Colors.grey, fontSize: 18)),
-                  DropdownButtonFormField(
-                    items: dropDownLocations,
-                    value: _locations.isNotEmpty ? _locations[0].id.toString() : null,
-                    onChanged: (value) {
-                      setState(() {
-                        _practice.locationId = value!;
-                      });
-                    },
-                    decoration: const InputDecoration(
-                      filled: false,
-                      fillColor: Colors.blueAccent,
-                    ),
-                    dropdownColor: Theme.of(context).colorScheme.background,
-                  ),
                   const SizedBox(height: 21),
-                  const Text('Practice Name', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  const Text('Summary description', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    initialValue: _practice.summaryDescription.isNotEmpty ? _practice.summaryDescription : '',
                     maxLength: 64,
                     style: const TextStyle(color: Colors.white),
-                    validator: (value) => FormHelper.validateInputSize(value, 1, 64),
-                    onSaved: (value) => _practice.name = value!,
+                    onSaved: (value) => _practice.summaryDescription = value!,
                   ),
-                  const SizedBox(height: 21),
-                  const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 18)),
-                  const SizedBox(height: 21),
-                  ImageInput(onPickImage: (image) => _selectedImage = image),
-                  const SizedBox(height: 20),
                   //
                   // Buttons
                   //
@@ -176,7 +133,7 @@ class _NewPractice extends State<NewPractice> {
                                 width: 16,
                                 child: CircularProgressIndicator(),
                               )
-                            : const Text('Add'),
+                            : const Text('Save'),
                       ),
                     ],
                   ),
@@ -188,10 +145,6 @@ class _NewPractice extends State<NewPractice> {
         );
       }
     }
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Add a new Practice'),
-        ),
-        body: content);
+    return content;
   }
 }

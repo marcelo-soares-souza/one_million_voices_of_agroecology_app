@@ -57,8 +57,8 @@ class _MapWidget extends State<MapWidget> {
 
   @override
   void initState() {
-    _loadMarkers();
     super.initState();
+    _loadMarkers();
   }
 
   void selectLocation(BuildContext context, Location location) {

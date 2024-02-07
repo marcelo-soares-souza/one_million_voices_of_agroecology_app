@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
+import 'package:one_million_voices_of_agroecology_app/widgets/new_what_you_dos_widget.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/text_block_widget.dart';
 
 class PracticeDetailsScreen extends StatefulWidget {
@@ -18,10 +19,10 @@ class PracticeDetailsScreen extends StatefulWidget {
 }
 
 class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
-  // bool isFavorite = false;
   bool _isLoading = true;
   int _selectedPageIndex = 0;
-  late Practice _practice;
+  String _selectedPageOperation = '';
+  Practice _practice = Practice.initPractice();
   late List<GalleryItem> _gallery;
 
   late List<Widget> mainBlock;
@@ -31,8 +32,7 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
   late List<Widget> acknowledgeBlock;
 
   void _retrieveFullPractice() async {
-    _practice =
-        await PracticeService.retrievePractice(widget.practice.id.toString());
+    _practice = await PracticeService.retrievePractice(widget.practice.id.toString());
 
     mainBlock = <Widget>[
       for (final i in _practice.main.entries)
@@ -79,23 +79,17 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
           )
     ];
 
-    _gallery = await PracticeService.retrievePracticeGallery(
-        widget.practice.id.toString());
+    _gallery = await PracticeService.retrievePracticeGallery(widget.practice.id.toString());
 
     setState(() {
       _isLoading = false;
     });
   }
 
-  // void _setFavorite(Practice practice) {
-  //   setState(() {
-  //     isFavorite = true;
-  //   });
-  // }
-
-  void _selectPage(int index) {
+  void _selectPage(int index, [String operation = '']) {
     setState(() {
       _selectedPageIndex = index;
+      _selectedPageOperation = operation.isNotEmpty ? operation : '';
     });
   }
 
@@ -127,7 +121,9 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
                 imageUrl: widget.practice.imageUrl,
               ),
             ],
-            if (_selectedPageIndex == 0 && mainBlock.isNotEmpty)
+            if (_selectedPageOperation == 'add') ...[
+              if (_selectedPageIndex == 1) SizedBox(child: NewWhatYouDos(practiceId: _practice.id.toString()))
+            ] else if (_selectedPageIndex == 0 && mainBlock.isNotEmpty)
               ...mainBlock
             else if (_selectedPageIndex == 1 && whatYouDoBlock.isNotEmpty)
               ...whatYouDoBlock
@@ -219,22 +215,12 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.practice.name),
-        // actions: [
-        //   IconButton(
-        //     onPressed: () {
-        //       _setFavorite(widget.practice);
-        //     },
-        //     icon: AnimatedSwitcher(
-        //       duration: const Duration(milliseconds: 500),
-        //       child: Icon(isFavorite ? Icons.star : Icons.star_border,
-        //           key: ValueKey(isFavorite)),
-        //       transitionBuilder: (child, animation) => RotationTransition(
-        //         turns: animation,
-        //         child: child,
-        //       ),
-        //     ),
-        //   )
-        // ],
+        actions: [
+          if (!_isLoading && _practice.hasPermission) ...[
+            if (_selectedPageIndex == 1 && _selectedPageOperation != 'add')
+              IconButton(icon: const Icon(FontAwesomeIcons.plus), onPressed: () => _selectPage(1, 'add'))
+          ]
+        ],
       ),
       body: activePage,
       bottomNavigationBar: BottomNavigationBar(

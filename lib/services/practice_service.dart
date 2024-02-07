@@ -32,6 +32,7 @@ class PracticeService {
   static Future<Practice> retrievePractice(String id) async {
     final res = await httpClient.get(Config.getURI('/practices/$id.json'));
     Practice practice = Practice.fromJson(json.decode(res.body.toString()));
+    practice.hasPermission = await AuthService.hasPermission(int.parse(practice.accountId));
 
     return practice;
   }
@@ -53,7 +54,6 @@ class PracticeService {
 
   static Future<Map<String, String>> sendPractice(Practice practice) async {
     bool isTokenValid = await AuthService.validateToken();
-
     if (isTokenValid) {
       final practiceJson = practice.toJson();
 

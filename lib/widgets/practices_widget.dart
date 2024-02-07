@@ -47,8 +47,8 @@ class _PracticesWidget extends State<PracticesWidget> {
 
   @override
   void initState() {
-    _loadPractices();
     super.initState();
+    _loadPractices();
   }
 
   void _removePractice(Practice practice) async {

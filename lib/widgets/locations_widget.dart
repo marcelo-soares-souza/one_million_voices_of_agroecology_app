@@ -41,8 +41,8 @@ class _LocationsWidget extends State<LocationsWidget> {
 
   @override
   void initState() {
-    _loadLocations();
     super.initState();
+    _loadLocations();
   }
 
   void _removeLocation(Location location) async {

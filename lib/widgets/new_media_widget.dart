@@ -36,11 +36,10 @@ class _NewMediaWidget extends State<NewMediaWidget> {
 
   @override
   void initState() {
+    super.initState();
     _checkIfIsLoggedIn();
     _galleryItem = GalleryItem.initGalleryItem();
     _isLoading = false;
-
-    super.initState();
   }
 
   void _saveItem() async {

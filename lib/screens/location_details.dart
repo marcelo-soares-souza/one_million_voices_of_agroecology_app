@@ -69,8 +69,8 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
 
   @override
   void initState() {
-    _retrieveGallery();
     super.initState();
+    _retrieveGallery();
   }
 
   Future<void> _showAlertDialog() async {
