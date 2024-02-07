@@ -47,16 +47,8 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
 
       setState(() => _isSending = true);
 
-      String imageBase64 = '';
+      final Map<String, String> response = await PracticeService.updatePractice(_practice);
 
-      if (_selectedImage != null) {
-        imageBase64 = base64Encode(_selectedImage!.readAsBytesSync());
-        _practice.base64Image = imageBase64;
-      }
-
-      _practice.accountId = await AuthService.getCurrentAccountId();
-
-      final Map<String, String> response = await PracticeService.sendPractice(_practice);
       String status = response['status'].toString();
       String message = response['message'].toString();
 

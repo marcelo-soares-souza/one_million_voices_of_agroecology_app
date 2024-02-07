@@ -80,6 +80,33 @@ class PracticeService {
     return {'status': 'failed', 'message': 'An error occured. Please login again.'};
   }
 
+  static Future<Map<String, String>> updatePractice(Practice practice) async {
+    bool isTokenValid = await AuthService.validateToken();
+    if (isTokenValid) {
+      final practiceJson = practice.toJson();
+
+      practiceJson.remove('created_at');
+      practiceJson.remove('updated_at');
+
+      final body = json.encode(practiceJson);
+
+      debugPrint('[DEBUG]: sendPractice body: $body');
+
+      final res = await httpClient.put(Config.getURI('/practices.json'), body: body);
+
+      debugPrint('[DEBUG]: statusCode ${res.statusCode}');
+      debugPrint('[DEBUG]: Body ${res.body}');
+
+      var message = json.decode(res.body);
+      var error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
+
+      if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
+
+      return {'status': 'success', 'message': 'Practice added'};
+    }
+    return {'status': 'failed', 'message': 'An error occured. Please login again.'};
+  }
+
   static Future<Map<String, String>> removePractice(int practiceId) async {
     bool isTokenValid = await AuthService.validateToken();
 
