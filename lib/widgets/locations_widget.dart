@@ -47,8 +47,13 @@ class _LocationsWidget extends State<LocationsWidget> {
 
   void _removeLocation(Location location) async {
     Map<String, String> response = await LocationService.removeLocation(location.id);
-    debugPrint(response.toString());
     if (response['status'] == 'success') setState(() => _locations.remove(location));
+
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text('Location Removed'),
+      backgroundColor: Colors.green,
+    ));
   }
 
   @override

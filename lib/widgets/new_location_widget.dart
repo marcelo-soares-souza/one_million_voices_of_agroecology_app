@@ -161,7 +161,7 @@ class _NewLocation extends State<NewLocation> {
                   const Text('Is it a farm?', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: FormHelper.dropDownYesNo,
-                    value: 'true',
+                    value: 'Yes',
                     onChanged: (value) => _location.isItAFarm = value!,
                     decoration: const InputDecoration(
                       filled: false,

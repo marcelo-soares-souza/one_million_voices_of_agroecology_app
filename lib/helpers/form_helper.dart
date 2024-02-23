@@ -10,8 +10,8 @@ class FormHelper {
 
   static List<DropdownMenuItem<String>> get dropDownYesNo {
     List<DropdownMenuItem<String>> yesNoItems = [];
-    yesNoItems.add(const DropdownMenuItem(value: 'true', child: Text('Yes')));
-    yesNoItems.add(const DropdownMenuItem(value: 'false', child: Text('No')));
+    yesNoItems.add(const DropdownMenuItem(value: 'Yes', child: Text('Yes')));
+    yesNoItems.add(const DropdownMenuItem(value: 'No', child: Text('No')));
     return yesNoItems;
   }
 }

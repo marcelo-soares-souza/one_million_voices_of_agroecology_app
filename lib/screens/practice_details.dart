@@ -45,7 +45,7 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
 
     whatYouDoBlock = <Widget>[
       for (final i in _practice.whatYouDo.entries)
-        if (_practice.getFieldByName(i.value).length > 0)
+        if (_practice.getFieldByName(i.value).isNotEmpty)
           TextBlockWidget(
             label: i.key,
             value: _practice.getFieldByName(i.value),

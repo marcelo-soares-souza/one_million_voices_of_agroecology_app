@@ -102,7 +102,7 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
                   const Text('Where it is realized?', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: PracticeHelper.dropDownWhereItIsRealizedOptions,
-                    value: 'On-farm',
+                    value: widget.practice.whereItIsRealized.isNotEmpty ? widget.practice.whereItIsRealized : 'On-farm',
                     onChanged: (value) => _whatYouDo.whereItIsRealized = value!,
                     decoration: const InputDecoration(
                       filled: false,
@@ -118,6 +118,16 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
                     maxLength: 4096,
                     style: const TextStyle(color: Colors.white),
                     onSaved: (value) => _whatYouDo.summaryDescriptionOfAgroecologicalPractice = value!,
+                  ),
+                  const SizedBox(height: 21),
+                  const Text('Type of agroecological practice', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  TextFormField(
+                    initialValue: widget.practice.typeOfAgroecologicalPractice.isNotEmpty
+                        ? widget.practice.typeOfAgroecologicalPractice
+                        : '',
+                    maxLength: 4096,
+                    style: const TextStyle(color: Colors.white),
+                    onSaved: (value) => _whatYouDo.typeOfAgroecologicalPractice = value!,
                   ),
                   const SizedBox(height: 21),
                   const Text('Implementing the practice', style: TextStyle(color: Colors.grey, fontSize: 18)),
@@ -141,7 +151,9 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
                       style: TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: FormHelper.dropDownYesNo,
-                    value: 'true',
+                    value: widget.practice.substitutionOfLessEcologicalAlternative.isNotEmpty
+                        ? widget.practice.substitutionOfLessEcologicalAlternative
+                        : 'Yes',
                     onChanged: (value) => _whatYouDo.substitutionOfLessEcologicalAlternative = value!,
                     decoration: const InputDecoration(
                       filled: false,
@@ -149,7 +161,7 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
                     ),
                     dropdownColor: Theme.of(context).colorScheme.background,
                   ),
-                  const SizedBox(height: 21),
+                  const SizedBox(height: 30),
                   const Text('Why you use and what you expect from this practice?',
                       style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(

@@ -121,7 +121,7 @@ class PracticeService {
 
       debugPrint('[DEBUG]: updateWhatYouDo body: $body');
 
-      final res = await httpClient.put(Config.getURI('/what_you_dos.json'), body: body);
+      final res = await httpClient.post(Config.getURI('/what_you_dos.json'), body: body);
 
       debugPrint('[DEBUG]: statusCode ${res.statusCode}');
       debugPrint('[DEBUG]: Body ${res.body}');
@@ -131,7 +131,7 @@ class PracticeService {
 
       if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
-      return {'status': 'success', 'message': 'Practice added'};
+      return {'status': 'success', 'message': 'What You Do Updated'};
     }
     return {'status': 'failed', 'message': 'An error occured. Please login again.'};
   }

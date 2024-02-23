@@ -53,8 +53,13 @@ class _PracticesWidget extends State<PracticesWidget> {
 
   void _removePractice(Practice practice) async {
     Map<String, String> response = await PracticeService.removePractice(practice.id);
-    debugPrint(response.toString());
     if (response['status'] == 'success') setState(() => _practices.remove(practice));
+
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text('Practice Removed'),
+      backgroundColor: Colors.green,
+    ));
   }
 
   @override

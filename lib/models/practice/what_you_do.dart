@@ -52,9 +52,9 @@ class WhatYouDo {
       typeOfAgroecologicalPractice: '',
       practicalImplementationOfThePractice: '',
       whyYouUseAndWhatYouExpectFromThisPractice: '',
-      whereItIsRealized: '',
+      whereItIsRealized: 'On-farm',
       landSize: 0.0,
-      substitutionOfLessEcologicalAlternative: '',
+      substitutionOfLessEcologicalAlternative: 'Yes',
       substitutionOfLessEcologicalAlternativeDetails: '',
       unitOfMeasure: '',
     );
