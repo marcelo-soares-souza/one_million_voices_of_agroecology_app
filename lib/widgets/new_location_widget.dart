@@ -68,37 +68,20 @@ class _NewLocation extends State<NewLocation> {
         _location.base64Image = imageBase64;
       }
 
-      // debugPrint('[DEBUG] Base64: $imageBase64');
-
       final Map<String, String> response = await LocationService.sendLocation(_location);
 
       String status = response['status'].toString();
       String message = response['message'].toString();
 
+      if (!mounted) return;
+
       if (status == 'success') {
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(message),
-          backgroundColor: Colors.green,
-        ));
-
-        if (!context.mounted) {
-          return;
-        }
-
-        // ignore: use_build_context_synchronously
+        FormHelper.infoMessage(context, message);
         Navigator.of(context).pop();
       } else {
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('An error occured: $message'),
-          backgroundColor: Colors.green,
-        ));
-
-        setState(() {
-          _isSending = false;
-        });
+        FormHelper.errorMessage(context, 'An error occured: $message');
       }
+      setState(() => _isSending = false);
     }
   }
 
@@ -285,31 +268,24 @@ class _NewLocation extends State<NewLocation> {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Location services are disabled. Please enable the services'),
-        backgroundColor: Colors.green,
-      ));
+      if (!mounted) return false;
+      FormHelper.infoMessage(context, 'Location services are disabled. Please enable the services');
       return false;
     }
+
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Location permissions are denied'),
-          backgroundColor: Colors.green,
-        ));
+        if (!mounted) return false;
+        FormHelper.infoMessage(context, 'Location permissions are denied');
         return false;
       }
     }
+
     if (permission == LocationPermission.deniedForever) {
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Location permissions are permanently denied, we cannot request permissions.'),
-        backgroundColor: Colors.green,
-      ));
+      if (!mounted) return false;
+      FormHelper.infoMessage(context, 'Location permissions are permanently denied, we cannot request permissions.');
       return false;
     }
     return true;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
 
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/practice_details.dart';
@@ -55,11 +56,8 @@ class _PracticesWidget extends State<PracticesWidget> {
     Map<String, String> response = await PracticeService.removePractice(practice.id);
     if (response['status'] == 'success') setState(() => _practices.remove(practice));
 
-    // ignore: use_build_context_synchronously
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text('Practice Removed'),
-      backgroundColor: Colors.green,
-    ));
+    if (!mounted) return;
+    FormHelper.infoMessage(context, 'Practice Removed');
   }
 
   @override

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
 import 'package:one_million_voices_of_agroecology_app/services/location_service.dart';
@@ -62,23 +63,15 @@ class _NewMediaWidget extends State<NewMediaWidget> {
       String status = response['status'].toString();
       String message = response['message'].toString();
 
-      if (status == 'success') {
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(message),
-          backgroundColor: Colors.green,
-        ));
+      if (!mounted) return;
 
-        if (!context.mounted) {
-          return;
-        }
+      if (status == 'success') {
+        FormHelper.infoMessage(context, message);
+        Navigator.of(context).pop();
       } else {
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('An error occured: $message'),
-          backgroundColor: Colors.green,
-        ));
+        FormHelper.errorMessage(context, 'An error occured: $message');
       }
+
       setState(() {
         widget.onSetPage(1);
         _isSending = false;

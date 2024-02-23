@@ -82,30 +82,15 @@ class _NewPractice extends State<NewPractice> {
       String status = response['status'].toString();
       String message = response['message'].toString();
 
+      if (!mounted) return;
+
       if (status == 'success') {
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(message),
-          backgroundColor: Colors.green,
-        ));
-
-        if (!context.mounted) {
-          return;
-        }
-
-        // ignore: use_build_context_synchronously
+        FormHelper.infoMessage(context, message);
         Navigator.of(context).pop();
       } else {
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('An error occured: $message'),
-          backgroundColor: Colors.green,
-        ));
-
-        setState(() {
-          _isSending = false;
-        });
+        FormHelper.errorMessage(context, 'An error occured: $message');
       }
+      setState(() => _isSending = false);
     }
   }
 

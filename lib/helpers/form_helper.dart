@@ -14,4 +14,18 @@ class FormHelper {
     yesNoItems.add(const DropdownMenuItem(value: 'No', child: Text('No')));
     return yesNoItems;
   }
+
+  static infoMessage(context, message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.green,
+    ));
+  }
+
+  static errorMessage(context, message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red,
+    ));
+  }
 }

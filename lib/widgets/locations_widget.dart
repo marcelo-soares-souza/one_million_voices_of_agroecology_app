@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
 
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/location_details.dart';
@@ -49,11 +50,8 @@ class _LocationsWidget extends State<LocationsWidget> {
     Map<String, String> response = await LocationService.removeLocation(location.id);
     if (response['status'] == 'success') setState(() => _locations.remove(location));
 
-    // ignore: use_build_context_synchronously
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text('Location Removed'),
-      backgroundColor: Colors.green,
-    ));
+    if (!mounted) return;
+    FormHelper.infoMessage(context, 'Location Removed');
   }
 
   @override
