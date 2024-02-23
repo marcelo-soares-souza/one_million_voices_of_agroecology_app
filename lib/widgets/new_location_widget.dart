@@ -86,6 +86,7 @@ class _NewLocation extends State<NewLocation> {
           return;
         }
 
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pop();
       } else {
         // ignore: use_build_context_synchronously

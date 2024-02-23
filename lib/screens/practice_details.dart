@@ -122,7 +122,10 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
               ),
             ],
             if (_selectedPageOperation == 'add') ...[
-              if (_selectedPageIndex == 1) SizedBox(child: NewWhatYouDos(practiceId: _practice.id.toString()))
+              if (_selectedPageIndex == 1)
+                SizedBox(child: NewWhatYouDos(practice: _practice))
+              else if (_selectedPageIndex == 2)
+                SizedBox(child: NewWhatYouDos(practice: _practice))
             ] else if (_selectedPageIndex == 0 && mainBlock.isNotEmpty)
               ...mainBlock
             else if (_selectedPageIndex == 1 && whatYouDoBlock.isNotEmpty)
@@ -218,7 +221,9 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
         actions: [
           if (!_isLoading && _practice.hasPermission) ...[
             if (_selectedPageIndex == 1 && _selectedPageOperation != 'add')
-              IconButton(icon: const Icon(FontAwesomeIcons.plus), onPressed: () => _selectPage(1, 'add'))
+              IconButton(icon: const Icon(FontAwesomeIcons.penToSquare), onPressed: () => _selectPage(1, 'add'))
+            else if (_selectedPageIndex == 2 && _selectedPageOperation != 'add')
+              IconButton(icon: const Icon(FontAwesomeIcons.penToSquare), onPressed: () => _selectPage(2, 'add'))
           ]
         ],
       ),

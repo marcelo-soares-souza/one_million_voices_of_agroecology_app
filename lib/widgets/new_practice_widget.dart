@@ -93,6 +93,7 @@ class _NewPractice extends State<NewPractice> {
           return;
         }
 
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pop();
       } else {
         // ignore: use_build_context_synchronously

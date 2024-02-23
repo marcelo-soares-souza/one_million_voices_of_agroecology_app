@@ -1,14 +1,14 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
+import 'package:one_million_voices_of_agroecology_app/helpers/practice_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
+import 'package:one_million_voices_of_agroecology_app/models/practice/what_you_do.dart';
 import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
 import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
 
 class NewWhatYouDos extends StatefulWidget {
-  final String practiceId;
-  const NewWhatYouDos({super.key, required this.practiceId});
+  final Practice practice;
+  const NewWhatYouDos({super.key, required this.practice});
 
   @override
   State<NewWhatYouDos> createState() => _NewWhatYouDos();
@@ -17,10 +17,10 @@ class NewWhatYouDos extends StatefulWidget {
 class _NewWhatYouDos extends State<NewWhatYouDos> {
   bool _isLoading = true;
   Practice _practice = Practice.initPractice();
+  final WhatYouDo _whatYouDo = WhatYouDo.initWhatYouDo();
   final _formKey = GlobalKey<FormState>();
   var _isSending = false;
   bool _isLoggedIn = false;
-  File? _selectedImage;
 
   void _checkIfIsLoggedIn() async {
     if (await AuthService.isLoggedIn()) {
@@ -28,17 +28,15 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
     }
   }
 
-  void _retrieveFullPractice() async {
-    _practice = await PracticeService.retrievePractice(widget.practiceId);
-    debugPrint(_practice.summaryDescription);
-  }
-
   @override
   void initState() {
     super.initState();
     _checkIfIsLoggedIn();
-    _retrieveFullPractice();
-    setState(() => _isLoading = false);
+
+    setState(() {
+      _practice = widget.practice;
+      _isLoading = false;
+    });
   }
 
   void _saveItem() async {
@@ -46,8 +44,9 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
       _formKey.currentState!.save();
 
       setState(() => _isSending = true);
+      _whatYouDo.practiceId = _practice.id;
 
-      final Map<String, String> response = await PracticeService.updatePractice(_practice);
+      final Map<String, String> response = await PracticeService.updateWhatYouDo(_whatYouDo);
 
       String status = response['status'].toString();
       String message = response['message'].toString();
@@ -63,6 +62,7 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
           return;
         }
 
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pop();
       } else {
         // ignore: use_build_context_synchronously
@@ -99,13 +99,68 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
               child: Column(
                 children: [
                   const SizedBox(height: 21),
+                  const Text('Where it is realized?', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  DropdownButtonFormField(
+                    items: PracticeHelper.dropDownWhereItIsRealizedOptions,
+                    value: 'On-farm',
+                    onChanged: (value) => _whatYouDo.whereItIsRealized = value!,
+                    decoration: const InputDecoration(
+                      filled: false,
+                      fillColor: Colors.blueAccent,
+                    ),
+                    dropdownColor: Theme.of(context).colorScheme.background,
+                  ),
+                  const SizedBox(height: 21),
                   const Text('Summary description', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
-                    initialValue: _practice.summaryDescription.isNotEmpty ? _practice.summaryDescription : '',
-                    maxLength: 64,
+                    initialValue:
+                        widget.practice.summaryDescription.isNotEmpty ? widget.practice.summaryDescription : '',
+                    maxLength: 4096,
                     style: const TextStyle(color: Colors.white),
-                    onSaved: (value) => _practice.summaryDescription = value!,
+                    onSaved: (value) => _whatYouDo.summaryDescriptionOfAgroecologicalPractice = value!,
                   ),
+                  const SizedBox(height: 21),
+                  const Text('Implementing the practice', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  TextFormField(
+                    initialValue: widget.practice.practicalImplementationOfThePractice.isNotEmpty
+                        ? widget.practice.practicalImplementationOfThePractice
+                        : '',
+                    maxLength: 4096,
+                    style: const TextStyle(color: Colors.white),
+                    onSaved: (value) => _whatYouDo.practicalImplementationOfThePractice = value!,
+                    decoration: InputDecoration(
+                      hintText: 'How do you do prepare and/or implement the practice?',
+                      hintStyle: TextStyle(
+                        color: Colors.grey.withOpacity(0.4),
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 21),
+                  const Text('Substitution of less ecological alternative?',
+                      style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  DropdownButtonFormField(
+                    items: FormHelper.dropDownYesNo,
+                    value: 'true',
+                    onChanged: (value) => _whatYouDo.substitutionOfLessEcologicalAlternative = value!,
+                    decoration: const InputDecoration(
+                      filled: false,
+                      fillColor: Colors.blueAccent,
+                    ),
+                    dropdownColor: Theme.of(context).colorScheme.background,
+                  ),
+                  const SizedBox(height: 21),
+                  const Text('Why you use and what you expect from this practice?',
+                      style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  TextFormField(
+                    initialValue: widget.practice.whyYouUseAndWhatYouExpectFromThisPractice.isNotEmpty
+                        ? widget.practice.whyYouUseAndWhatYouExpectFromThisPractice
+                        : '',
+                    maxLength: 4096,
+                    style: const TextStyle(color: Colors.white),
+                    onSaved: (value) => _whatYouDo.whyYouUseAndWhatYouExpectFromThisPractice = value!,
+                  ),
+
                   //
                   // Buttons
                   //
@@ -137,6 +192,7 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
         );
       }
     }
+
     return content;
   }
 }
