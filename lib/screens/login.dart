@@ -46,15 +46,16 @@ class _LoginScreen extends State<LoginScreen> {
           surfaceTintColor: Colors.white,
         ),
         inputTheme: const InputDecorationTheme(
-          fillColor: Colors.green,
+          fillColor: Color.fromARGB(255, 99, 180, 101),
           filled: true,
           contentPadding: EdgeInsets.all(10),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: BorderSide(color: Colors.black),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: BorderSide(color: Colors.black),
           ),
+          labelStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
       logo: const AssetImage('assets/images/logo.png'),
