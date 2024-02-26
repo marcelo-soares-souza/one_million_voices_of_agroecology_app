@@ -9,6 +9,8 @@ import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/location_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
+import 'package:one_million_voices_of_agroecology_app/screens/home.dart';
+import 'package:one_million_voices_of_agroecology_app/screens/locations.dart';
 import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
 import 'package:one_million_voices_of_agroecology_app/services/location_service.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/image_input.dart';
@@ -77,7 +79,15 @@ class _NewLocation extends State<NewLocation> {
 
       if (status == 'success') {
         FormHelper.infoMessage(context, message);
-        Navigator.of(context).pop();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(
+              activePage: LocationsScreen(),
+              activePageTitle: 'Locations',
+            ),
+          ),
+        );
       } else {
         FormHelper.errorMessage(context, 'An error occured: $message');
       }

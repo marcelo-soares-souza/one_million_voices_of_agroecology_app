@@ -11,7 +11,10 @@ import 'package:one_million_voices_of_agroecology_app/widgets/new_location_widge
 import 'package:one_million_voices_of_agroecology_app/widgets/new_practice_widget.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final Widget activePage;
+  final String activePageTitle;
+
+  const HomeScreen({super.key, this.activePage = const MapScreen(), this.activePageTitle = 'Map'});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -29,8 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     setState(() {
-      activePage = const MapScreen();
-      activePageTitle = 'Map';
+      activePage = const LocationsScreen();
+      activePageTitle = 'Locations';
     });
   }
 
@@ -42,8 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     setState(() {
-      activePage = const MapScreen();
-      activePageTitle = 'Map';
+      activePage = const PracticesScreen();
+      activePageTitle = 'Practices';
     });
   }
 
@@ -86,6 +89,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    activePage = widget.activePage;
+    activePageTitle = widget.activePageTitle;
   }
 
   @override
