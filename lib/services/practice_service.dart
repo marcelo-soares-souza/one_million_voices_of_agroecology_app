@@ -6,6 +6,7 @@ import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/custom_interceptor.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
+import 'package:one_million_voices_of_agroecology_app/models/practice/characterises.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice/what_you_do.dart';
 import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
 
@@ -132,6 +133,34 @@ class PracticeService {
       if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
       return {'status': 'success', 'message': 'What You Do Updated'};
+    }
+    return {'status': 'failed', 'message': 'An error occured. Please login again.'};
+  }
+
+  static Future<Map<String, String>> updateCharacterises(Characterises characterises) async {
+    bool isTokenValid = await AuthService.validateToken();
+    if (isTokenValid) {
+      final characterisesJson = characterises.toJson();
+
+      characterisesJson.remove('id');
+      characterisesJson.remove('created_at');
+      characterisesJson.remove('updated_at');
+
+      final body = json.encode(characterisesJson);
+
+      debugPrint('[DEBUG]: updateCharacterises body: $body');
+
+      final res = await httpClient.post(Config.getURI('/characterises.json'), body: body);
+
+      debugPrint('[DEBUG]: statusCode ${res.statusCode}');
+      debugPrint('[DEBUG]: Body ${res.body}');
+
+      var message = json.decode(res.body);
+      var error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
+
+      if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
+
+      return {'status': 'success', 'message': 'Characterise Updated'};
     }
     return {'status': 'failed', 'message': 'An error occured. Please login again.'};
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/practice_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
-import 'package:one_million_voices_of_agroecology_app/models/practice/what_you_do.dart';
+import 'package:one_million_voices_of_agroecology_app/models/practice/characterises.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/home.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/practices.dart';
 import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
@@ -19,10 +19,11 @@ class NewCharacterises extends StatefulWidget {
 class _NewCharacterises extends State<NewCharacterises> {
   bool _isLoading = true;
   Practice _practice = Practice.initPractice();
-  final WhatYouDo _whatYouDo = WhatYouDo.initWhatYouDo();
+  final Characterises _characterises = Characterises.initCharacterises();
   final _formKey = GlobalKey<FormState>();
   var _isSending = false;
   bool _isLoggedIn = false;
+  final PracticeHelper _practiceHelper = PracticeHelper();
 
   void _checkIfIsLoggedIn() async {
     if (await AuthService.isLoggedIn()) {
@@ -37,6 +38,15 @@ class _NewCharacterises extends State<NewCharacterises> {
 
     setState(() {
       _practice = widget.practice;
+
+      _practice.agroecologyPrinciplesAddressed.split(',').forEach((element) {
+        _practiceHelper.agroecologyPrinciplesAddressedValues[element.trim()] = true;
+      });
+
+      _practice.foodSystemComponentsAddressed.split(',').forEach((element) {
+        _practiceHelper.foodSystemComponentsAddressedValues[element.trim()] = true;
+      });
+
       _isLoading = false;
     });
   }
@@ -46,9 +56,22 @@ class _NewCharacterises extends State<NewCharacterises> {
       _formKey.currentState!.save();
 
       setState(() => _isSending = true);
-      _whatYouDo.practiceId = _practice.id;
 
-      final Map<String, String> response = await PracticeService.updateWhatYouDo(_whatYouDo);
+      _characterises.agroecologyPrinciplesAddressed = _practiceHelper.agroecologyPrinciplesAddressedValues.entries
+          .where((entry) => entry.value == true)
+          .map((entry) => entry.key)
+          .toList()
+          .join(', ');
+
+      _characterises.foodSystemComponentsAddressed = _practiceHelper.foodSystemComponentsAddressedValues.entries
+          .where((entry) => entry.value == true)
+          .map((entry) => entry.key)
+          .toList()
+          .join(', ');
+
+      _characterises.practiceId = _practice.id;
+
+      final Map<String, String> response = await PracticeService.updateCharacterises(_characterises);
 
       String status = response['status'].toString();
       String message = response['message'].toString();
@@ -94,80 +117,25 @@ class _NewCharacterises extends State<NewCharacterises> {
               child: Column(
                 children: [
                   const SizedBox(height: 21),
-                  const Text('Where it is realized?', style: TextStyle(color: Colors.grey, fontSize: 18)),
-                  DropdownButtonFormField(
-                    items: PracticeHelper.dropDownWhereItIsRealizedOptions,
-                    value: widget.practice.whereItIsRealized.isNotEmpty ? widget.practice.whereItIsRealized : 'On-farm',
-                    onChanged: (value) => _whatYouDo.whereItIsRealized = value!,
-                    decoration: const InputDecoration(
-                      filled: false,
-                      fillColor: Colors.blueAccent,
-                    ),
-                    dropdownColor: Theme.of(context).colorScheme.background,
-                  ),
+                  const Text('Agroecology principles invoked?', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  for (final key in _practiceHelper.agroecologyPrinciplesAddressedValues.keys) ...[
+                    CheckboxListTile(
+                      title: Text(key),
+                      value: _practiceHelper.agroecologyPrinciplesAddressedValues[key],
+                      onChanged: (value) =>
+                          setState(() => _practiceHelper.agroecologyPrinciplesAddressedValues[key] = value!),
+                    )
+                  ],
                   const SizedBox(height: 21),
-                  const Text('Summary description', style: TextStyle(color: Colors.grey, fontSize: 18)),
-                  TextFormField(
-                    initialValue:
-                        widget.practice.summaryDescription.isNotEmpty ? widget.practice.summaryDescription : '',
-                    maxLength: 4096,
-                    style: const TextStyle(color: Colors.white),
-                    onSaved: (value) => _whatYouDo.summaryDescriptionOfAgroecologicalPractice = value!,
-                  ),
-                  const SizedBox(height: 21),
-                  const Text('Type of agroecological practice', style: TextStyle(color: Colors.grey, fontSize: 18)),
-                  TextFormField(
-                    initialValue: widget.practice.typeOfAgroecologicalPractice.isNotEmpty
-                        ? widget.practice.typeOfAgroecologicalPractice
-                        : '',
-                    maxLength: 4096,
-                    style: const TextStyle(color: Colors.white),
-                    onSaved: (value) => _whatYouDo.typeOfAgroecologicalPractice = value!,
-                  ),
-                  const SizedBox(height: 21),
-                  const Text('Implementing the practice', style: TextStyle(color: Colors.grey, fontSize: 18)),
-                  TextFormField(
-                    initialValue: widget.practice.practicalImplementationOfThePractice.isNotEmpty
-                        ? widget.practice.practicalImplementationOfThePractice
-                        : '',
-                    maxLength: 4096,
-                    style: const TextStyle(color: Colors.white),
-                    onSaved: (value) => _whatYouDo.practicalImplementationOfThePractice = value!,
-                    decoration: InputDecoration(
-                      hintText: 'How do you do prepare and/or implement the practice?',
-                      hintStyle: TextStyle(
-                        color: Colors.grey.withOpacity(0.4),
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 21),
-                  const Text('Substitution of less ecological alternative?',
-                      style: TextStyle(color: Colors.grey, fontSize: 18)),
-                  DropdownButtonFormField(
-                    items: FormHelper.dropDownYesNo,
-                    value: widget.practice.substitutionOfLessEcologicalAlternative.isNotEmpty
-                        ? widget.practice.substitutionOfLessEcologicalAlternative
-                        : 'Yes',
-                    onChanged: (value) => _whatYouDo.substitutionOfLessEcologicalAlternative = value!,
-                    decoration: const InputDecoration(
-                      filled: false,
-                      fillColor: Colors.blueAccent,
-                    ),
-                    dropdownColor: Theme.of(context).colorScheme.background,
-                  ),
-                  const SizedBox(height: 30),
-                  const Text('Why you use and what you expect from this practice?',
-                      style: TextStyle(color: Colors.grey, fontSize: 18)),
-                  TextFormField(
-                    initialValue: widget.practice.whyYouUseAndWhatYouExpectFromThisPractice.isNotEmpty
-                        ? widget.practice.whyYouUseAndWhatYouExpectFromThisPractice
-                        : '',
-                    maxLength: 4096,
-                    style: const TextStyle(color: Colors.white),
-                    onSaved: (value) => _whatYouDo.whyYouUseAndWhatYouExpectFromThisPractice = value!,
-                  ),
-
+                  const Text('Food system components addressed?', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  for (final key in _practiceHelper.foodSystemComponentsAddressedValues.keys) ...[
+                    CheckboxListTile(
+                      title: Text(key),
+                      value: _practiceHelper.foodSystemComponentsAddressedValues[key],
+                      onChanged: (value) =>
+                          setState(() => _practiceHelper.foodSystemComponentsAddressedValues[key] = value!),
+                    )
+                  ],
                   //
                   // Buttons
                   //
