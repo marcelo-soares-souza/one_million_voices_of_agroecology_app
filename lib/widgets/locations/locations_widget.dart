@@ -6,7 +6,7 @@ import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/location_details.dart';
 import 'package:one_million_voices_of_agroecology_app/services/location_service.dart';
-import 'package:one_million_voices_of_agroecology_app/widgets/location_item_widget.dart';
+import 'package:one_million_voices_of_agroecology_app/widgets/locations/location_item_widget.dart';
 
 class LocationsWidget extends StatefulWidget {
   const LocationsWidget({super.key});

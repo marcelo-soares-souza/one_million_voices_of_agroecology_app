@@ -7,8 +7,8 @@ import 'package:one_million_voices_of_agroecology_app/screens/login.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/map.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/practices.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/drawer_widget.dart';
-import 'package:one_million_voices_of_agroecology_app/widgets/new_location_widget.dart';
-import 'package:one_million_voices_of_agroecology_app/widgets/new_practice_widget.dart';
+import 'package:one_million_voices_of_agroecology_app/widgets/locations/new_location_widget.dart';
+import 'package:one_million_voices_of_agroecology_app/widgets/practices/new_practice_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   final Widget activePage;

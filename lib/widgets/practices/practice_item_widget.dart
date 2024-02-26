@@ -1,14 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../models/practice.dart';
+import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
 
 class PracticeItemWidget extends StatelessWidget {
   final Practice practice;
   final void Function(BuildContext context, Practice practice) onSelectPractice;
 
-  const PracticeItemWidget(
-      {super.key, required this.practice, required this.onSelectPractice});
+  const PracticeItemWidget({super.key, required this.practice, required this.onSelectPractice});
 
   @override
   Widget build(BuildContext context) {

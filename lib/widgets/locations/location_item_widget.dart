@@ -1,14 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../models/location.dart';
+import 'package:one_million_voices_of_agroecology_app/models/location.dart';
 
 class LocationItemWidget extends StatelessWidget {
   final Location location;
   final void Function(BuildContext context, Location location) onSelectLocation;
 
-  const LocationItemWidget(
-      {super.key, required this.location, required this.onSelectLocation});
+  const LocationItemWidget({super.key, required this.location, required this.onSelectLocation});
 
   @override
   Widget build(BuildContext context) {
