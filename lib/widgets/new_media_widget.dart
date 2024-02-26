@@ -22,7 +22,6 @@ class _NewMediaWidget extends State<NewMediaWidget> {
   var _isSending = false;
   bool _isLoggedIn = false;
 
-  // bool _isLoggedIn = false;
   final _formKey = GlobalKey<FormState>();
   File? _selectedImage;
   late GalleryItem _galleryItem;
@@ -66,7 +65,7 @@ class _NewMediaWidget extends State<NewMediaWidget> {
       if (!mounted) return;
 
       if (status == 'success') {
-        FormHelper.infoMessage(context, message);
+        FormHelper.successMessage(context, message);
         Navigator.of(context).pop();
       } else {
         FormHelper.errorMessage(context, 'An error occured: $message');

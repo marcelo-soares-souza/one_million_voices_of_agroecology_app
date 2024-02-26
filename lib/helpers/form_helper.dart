@@ -15,10 +15,17 @@ class FormHelper {
     return yesNoItems;
   }
 
-  static infoMessage(context, message) {
+  static successMessage(context, message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
       backgroundColor: Colors.green,
+    ));
+  }
+
+  static infoMessage(context, message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.blue,
     ));
   }
 

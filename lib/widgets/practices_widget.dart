@@ -57,7 +57,7 @@ class _PracticesWidget extends State<PracticesWidget> {
     if (response['status'] == 'success') setState(() => _practices.remove(practice));
 
     if (!mounted) return;
-    FormHelper.infoMessage(context, 'Practice Removed');
+    FormHelper.successMessage(context, 'Practice Removed');
   }
 
   @override

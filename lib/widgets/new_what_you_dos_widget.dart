@@ -3,6 +3,8 @@ import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/practice_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice/what_you_do.dart';
+import 'package:one_million_voices_of_agroecology_app/screens/home.dart';
+import 'package:one_million_voices_of_agroecology_app/screens/practices.dart';
 import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
 import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
 
@@ -54,8 +56,16 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
       if (!mounted) return;
 
       if (status == 'success') {
-        FormHelper.infoMessage(context, message);
-        Navigator.of(context).pop();
+        FormHelper.successMessage(context, message);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(
+              activePage: PracticesScreen(),
+              activePageTitle: 'Practices',
+            ),
+          ),
+        );
       } else {
         FormHelper.errorMessage(context, 'An error occured: $message');
       }

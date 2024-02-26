@@ -51,7 +51,7 @@ class _LocationsWidget extends State<LocationsWidget> {
     if (response['status'] == 'success') setState(() => _locations.remove(location));
 
     if (!mounted) return;
-    FormHelper.infoMessage(context, 'Location Removed');
+    FormHelper.successMessage(context, 'Location Removed');
   }
 
   @override

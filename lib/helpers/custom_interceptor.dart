@@ -16,9 +16,6 @@ class CustomInterceptor implements InterceptorContract {
 
       request.headers['Authorization'] = 'Bearer $token';
       request.headers['Content-Type'] = "application/json";
-
-      // debugPrint('[DEBUG]: Token $token');
-      // debugPrint('[DEBUG]: interceptRequest ${request.toString()}');
     } catch (e) {
       debugPrint('[DEBUG]: interceptRequest ERROR $e');
     }

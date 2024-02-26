@@ -87,7 +87,7 @@ class _NewPractice extends State<NewPractice> {
       if (!mounted) return;
 
       if (status == 'success') {
-        FormHelper.infoMessage(context, message);
+        FormHelper.successMessage(context, message);
         Navigator.push(
           context,
           MaterialPageRoute(

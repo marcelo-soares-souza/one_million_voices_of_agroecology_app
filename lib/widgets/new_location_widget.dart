@@ -78,7 +78,7 @@ class _NewLocation extends State<NewLocation> {
       if (!mounted) return;
 
       if (status == 'success') {
-        FormHelper.infoMessage(context, message);
+        FormHelper.successMessage(context, message);
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -288,14 +288,14 @@ class _NewLocation extends State<NewLocation> {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         if (!mounted) return false;
-        FormHelper.infoMessage(context, 'Location permissions are denied');
+        FormHelper.errorMessage(context, 'Location permissions are denied');
         return false;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       if (!mounted) return false;
-      FormHelper.infoMessage(context, 'Location permissions are permanently denied, we cannot request permissions.');
+      FormHelper.errorMessage(context, 'Location permissions are permanently denied, we cannot request permissions.');
       return false;
     }
     return true;
