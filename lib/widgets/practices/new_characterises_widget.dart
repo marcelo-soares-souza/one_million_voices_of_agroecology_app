@@ -40,11 +40,17 @@ class _NewCharacterises extends State<NewCharacterises> {
       _practice = widget.practice;
 
       _practice.agroecologyPrinciplesAddressed.split(',').forEach((element) {
-        _practiceHelper.agroecologyPrinciplesAddressedValues[element.trim()] = true;
+        String key = element.trim();
+        if (key.isNotEmpty) {
+          _practiceHelper.agroecologyPrinciplesAddressedValues[key] = true;
+        }
       });
 
       _practice.foodSystemComponentsAddressed.split(',').forEach((element) {
-        _practiceHelper.foodSystemComponentsAddressedValues[element.trim()] = true;
+        String key = element.trim();
+        if (key.isNotEmpty) {
+          _practiceHelper.foodSystemComponentsAddressedValues[element.trim()] = true;
+        }
       });
 
       _isLoading = false;
