@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
+import 'package:one_million_voices_of_agroecology_app/widgets/new_media_widget.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/practices/new_acknowledge_widget.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/practices/new_characterises_widget.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/practices/new_evaluate_widget.dart';
@@ -133,6 +134,13 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
                 SizedBox(child: NewEvaluate(practice: _practice))
               else if (_selectedPageIndex == 4)
                 SizedBox(child: NewAcknowledge(practice: _practice))
+              else if (_selectedPageIndex == 5)
+                SizedBox(
+                  child: NewMediaWidget(
+                    practiceId: _practice.id.toString(),
+                    onSetPage: _selectPage,
+                  ),
+                )
             ] else if (_selectedPageIndex == 0 && mainBlock.isNotEmpty)
               ...mainBlock
             else if (_selectedPageIndex == 1 && whatYouDoBlock.isNotEmpty)
@@ -235,6 +243,8 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
               IconButton(icon: const Icon(FontAwesomeIcons.penToSquare), onPressed: () => _selectPage(3, 'add'))
             else if (_selectedPageIndex == 4 && _selectedPageOperation != 'add')
               IconButton(icon: const Icon(FontAwesomeIcons.penToSquare), onPressed: () => _selectPage(4, 'add'))
+            else if (_selectedPageIndex == 5 && _selectedPageOperation != 'add')
+              IconButton(icon: const Icon(FontAwesomeIcons.camera), onPressed: () => _selectPage(5, 'add'))
           ]
         ],
       ),

@@ -21,7 +21,7 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
   Practice _practice = Practice.initPractice();
   final WhatYouDo _whatYouDo = WhatYouDo.initWhatYouDo();
   final _formKey = GlobalKey<FormState>();
-  var _isSending = false;
+  bool _isSending = false;
   bool _isLoggedIn = false;
 
   void _checkIfIsLoggedIn() async {

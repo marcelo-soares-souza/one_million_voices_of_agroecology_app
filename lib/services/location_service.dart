@@ -111,9 +111,22 @@ class LocationService {
 
       final body = json.encode(galleryItemJson);
 
+      String to = '';
+      int id = 0;
+
+      if (galleryItem.locationId.isNotEmpty) {
+        to = 'locations';
+        id = int.parse(galleryItem.locationId);
+        galleryItemJson.remove('practice_id');
+      } else if (galleryItem.practiceId.isNotEmpty) {
+        to = 'practices';
+        id = int.parse(galleryItem.practiceId);
+        galleryItemJson.remove('location_id');
+      }
+
       debugPrint('[DEBUG]: sendMediaToLocation body: $body');
 
-      final res = await httpClient.post(Config.getURI('/locations/${galleryItem.locationId}/medias.json'), body: body);
+      final res = await httpClient.post(Config.getURI('/$to/$id/medias.json'), body: body);
 
       debugPrint('[DEBUG]: statusCode ${res.statusCode}');
       debugPrint('[DEBUG]: Body ${res.body}');

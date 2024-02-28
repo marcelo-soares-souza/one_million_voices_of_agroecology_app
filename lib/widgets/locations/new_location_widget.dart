@@ -31,7 +31,7 @@ class _NewLocation extends State<NewLocation> {
   final LatLng _initialCenter = const LatLng(16.0, 16.0);
   MapController mapController = MapController();
   final _formKey = GlobalKey<FormState>();
-  var _isSending = false;
+  bool _isSending = false;
   bool _isLoggedIn = false;
   File? _selectedImage;
   Marker _marker = LocationHelper.buildMarker('', const LatLng(16.0, 16.0));

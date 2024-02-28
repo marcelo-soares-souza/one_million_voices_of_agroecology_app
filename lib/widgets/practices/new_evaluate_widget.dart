@@ -21,7 +21,7 @@ class _NewEvaluate extends State<NewEvaluate> {
   Practice _practice = Practice.initPractice();
   final Evaluate _evaluate = Evaluate.initEvaluate();
   final _formKey = GlobalKey<FormState>();
-  var _isSending = false;
+  bool _isSending = false;
   bool _isLoggedIn = false;
 
   void _checkIfIsLoggedIn() async {

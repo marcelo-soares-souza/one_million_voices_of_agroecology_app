@@ -4,20 +4,22 @@ class GalleryItem {
   String description;
   String imageUrl;
   String locationId;
+  String practiceId;
   String createdAt;
   String updatedAt;
 
   String base64Image;
 
-  GalleryItem(
-      {required this.id,
-      required this.description,
-      required this.imageUrl,
-      required this.accountId,
-      required this.createdAt,
-      required this.updatedAt})
-      : base64Image = '',
-        locationId = '';
+  GalleryItem({
+    required this.id,
+    required this.description,
+    required this.imageUrl,
+    required this.accountId,
+  })  : base64Image = '',
+        locationId = '',
+        practiceId = '',
+        createdAt = '',
+        updatedAt = '';
 
   factory GalleryItem.fromJson(Map<String, dynamic> json) {
     return GalleryItem(
@@ -25,8 +27,6 @@ class GalleryItem {
       description: json['description'],
       imageUrl: json['image_url'],
       accountId: json['account_id'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
     );
   }
 
@@ -36,8 +36,6 @@ class GalleryItem {
       description: '',
       imageUrl: '',
       accountId: 0,
-      createdAt: '',
-      updatedAt: '',
     );
   }
 
@@ -53,6 +51,10 @@ class GalleryItem {
 
     if (locationId.isNotEmpty) {
       json['location_id'] = locationId;
+    }
+
+    if (practiceId.isNotEmpty) {
+      json['practice_id'] = practiceId;
     }
 
     return json;

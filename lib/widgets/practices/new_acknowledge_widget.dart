@@ -21,7 +21,7 @@ class _NewAcknowledge extends State<NewAcknowledge> {
   Practice _practice = Practice.initPractice();
   final Acknowledge _acknowledge = Acknowledge.initAcknowledge();
   final _formKey = GlobalKey<FormState>();
-  var _isSending = false;
+  bool _isSending = false;
   bool _isLoggedIn = false;
   final PracticeHelper _practiceHelper = PracticeHelper();
 

@@ -21,7 +21,7 @@ class _NewCharacterises extends State<NewCharacterises> {
   Practice _practice = Practice.initPractice();
   final Characterises _characterises = Characterises.initCharacterises();
   final _formKey = GlobalKey<FormState>();
-  var _isSending = false;
+  bool _isSending = false;
   bool _isLoggedIn = false;
   final PracticeHelper _practiceHelper = PracticeHelper();
 

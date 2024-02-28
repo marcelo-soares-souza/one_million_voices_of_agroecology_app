@@ -10,8 +10,15 @@ import 'package:one_million_voices_of_agroecology_app/widgets/image_input.dart';
 
 class NewMediaWidget extends StatefulWidget {
   final String locationId;
+  final String practiceId;
   final void Function(int page) onSetPage;
-  const NewMediaWidget({super.key, required this.locationId, required this.onSetPage});
+
+  const NewMediaWidget({
+    super.key,
+    required this.onSetPage,
+    this.locationId = '',
+    this.practiceId = '',
+  });
 
   @override
   State<NewMediaWidget> createState() => _NewMediaWidget();
@@ -19,8 +26,8 @@ class NewMediaWidget extends StatefulWidget {
 
 class _NewMediaWidget extends State<NewMediaWidget> {
   bool _isLoading = true;
-  var _isSending = false;
   bool _isLoggedIn = false;
+  bool _isSending = false;
 
   final _formKey = GlobalKey<FormState>();
   File? _selectedImage;
@@ -46,7 +53,8 @@ class _NewMediaWidget extends State<NewMediaWidget> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      _galleryItem.locationId = widget.locationId;
+      _galleryItem.locationId = widget.locationId.isNotEmpty ? widget.locationId : '';
+      _galleryItem.practiceId = widget.practiceId.isNotEmpty ? widget.practiceId : '';
 
       setState(() => _isSending = true);
 

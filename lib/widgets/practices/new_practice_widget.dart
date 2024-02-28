@@ -24,7 +24,7 @@ class _NewPractice extends State<NewPractice> {
   final Practice _practice = Practice.initPractice();
   List<Location> _locations = [];
   final _formKey = GlobalKey<FormState>();
-  var _isSending = false;
+  bool _isSending = false;
   bool _isLoggedIn = false;
   File? _selectedImage;
 
