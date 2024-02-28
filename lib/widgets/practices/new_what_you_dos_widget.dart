@@ -37,6 +37,15 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
 
     setState(() {
       _practice = widget.practice;
+
+      _whatYouDo.practiceId = _practice.id;
+      _whatYouDo.whereItIsRealized = _practice.whereItIsRealized;
+      _whatYouDo.summaryDescriptionOfAgroecologicalPractice = _practice.summaryDescription;
+      _whatYouDo.typeOfAgroecologicalPractice = _practice.typeOfAgroecologicalPractice;
+      _whatYouDo.practicalImplementationOfThePractice = _practice.practicalImplementationOfThePractice;
+      _whatYouDo.substitutionOfLessEcologicalAlternative = _practice.substitutionOfLessEcologicalAlternative;
+      _whatYouDo.whyYouUseAndWhatYouExpectFromThisPractice = _practice.whyYouUseAndWhatYouExpectFromThisPractice;
+
       _isLoading = false;
     });
   }
@@ -46,7 +55,6 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
       _formKey.currentState!.save();
 
       setState(() => _isSending = true);
-      _whatYouDo.practiceId = _practice.id;
 
       final Map<String, String> response = await PracticeService.updateWhatYouDo(_whatYouDo);
 

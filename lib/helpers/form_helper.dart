@@ -12,6 +12,8 @@ class FormHelper {
     List<DropdownMenuItem<String>> yesNoItems = [];
     yesNoItems.add(const DropdownMenuItem(value: 'Yes', child: Text('Yes')));
     yesNoItems.add(const DropdownMenuItem(value: 'No', child: Text('No')));
+    yesNoItems.add(const DropdownMenuItem(value: '', child: Text('None of above')));
+
     return yesNoItems;
   }
 

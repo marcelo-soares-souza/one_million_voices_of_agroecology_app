@@ -5,6 +5,7 @@ import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/practices/new_characterises_widget.dart';
+import 'package:one_million_voices_of_agroecology_app/widgets/practices/new_evaluate_widget.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/practices/new_what_you_dos_widget.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/text_block_widget.dart';
 
@@ -127,6 +128,8 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
                 SizedBox(child: NewWhatYouDos(practice: _practice))
               else if (_selectedPageIndex == 2)
                 SizedBox(child: NewCharacterises(practice: _practice))
+              else if (_selectedPageIndex == 3)
+                SizedBox(child: NewEvaluate(practice: _practice))
             ] else if (_selectedPageIndex == 0 && mainBlock.isNotEmpty)
               ...mainBlock
             else if (_selectedPageIndex == 1 && whatYouDoBlock.isNotEmpty)
@@ -225,6 +228,8 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
               IconButton(icon: const Icon(FontAwesomeIcons.penToSquare), onPressed: () => _selectPage(1, 'add'))
             else if (_selectedPageIndex == 2 && _selectedPageOperation != 'add')
               IconButton(icon: const Icon(FontAwesomeIcons.penToSquare), onPressed: () => _selectPage(2, 'add'))
+            else if (_selectedPageIndex == 3 && _selectedPageOperation != 'add')
+              IconButton(icon: const Icon(FontAwesomeIcons.penToSquare), onPressed: () => _selectPage(3, 'add'))
           ]
         ],
       ),

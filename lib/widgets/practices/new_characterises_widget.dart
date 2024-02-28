@@ -39,6 +39,10 @@ class _NewCharacterises extends State<NewCharacterises> {
     setState(() {
       _practice = widget.practice;
 
+      _characterises.practiceId = _practice.id;
+      _characterises.agroecologyPrinciplesAddressed = _practice.agroecologyPrinciplesAddressed;
+      _characterises.foodSystemComponentsAddressed = _practice.foodSystemComponentsAddressed;
+
       _practice.agroecologyPrinciplesAddressed.split(',').forEach((element) {
         String key = element.trim();
         if (key.isNotEmpty) {
@@ -74,8 +78,6 @@ class _NewCharacterises extends State<NewCharacterises> {
           .map((entry) => entry.key)
           .toList()
           .join(', ');
-
-      _characterises.practiceId = _practice.id;
 
       final Map<String, String> response = await PracticeService.updateCharacterises(_characterises);
 

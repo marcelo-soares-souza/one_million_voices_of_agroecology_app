@@ -7,6 +7,7 @@ import 'package:one_million_voices_of_agroecology_app/helpers/custom_interceptor
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice/characterises.dart';
+import 'package:one_million_voices_of_agroecology_app/models/practice/evaluate.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice/what_you_do.dart';
 import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
 
@@ -161,6 +162,34 @@ class PracticeService {
       if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
       return {'status': 'success', 'message': 'Characterise Updated'};
+    }
+    return {'status': 'failed', 'message': 'An error occured. Please login again.'};
+  }
+
+  static Future<Map<String, String>> updateEvaluate(Evaluate evaluate) async {
+    bool isTokenValid = await AuthService.validateToken();
+    if (isTokenValid) {
+      final evaluateJson = evaluate.toJson();
+
+      evaluateJson.remove('id');
+      evaluateJson.remove('created_at');
+      evaluateJson.remove('updated_at');
+
+      final body = json.encode(evaluateJson);
+
+      debugPrint('[DEBUG]: updateEvaluate body: $body');
+
+      final res = await httpClient.post(Config.getURI('/evaluates.json'), body: body);
+
+      debugPrint('[DEBUG]: statusCode ${res.statusCode}');
+      debugPrint('[DEBUG]: Body ${res.body}');
+
+      var message = json.decode(res.body);
+      var error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
+
+      if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
+
+      return {'status': 'success', 'message': 'Evaluate Updated'};
     }
     return {'status': 'failed', 'message': 'An error occured. Please login again.'};
   }

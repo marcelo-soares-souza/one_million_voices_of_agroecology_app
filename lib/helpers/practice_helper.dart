@@ -55,4 +55,29 @@ class PracticeHelper {
     'Other': false,
     'I am not sure': false,
   };
+
+  static List<DropdownMenuItem<String>> get dropDownEffectiveOptions {
+    Map<String, String> options = {
+      "Very effective": "Very effective",
+      "Rather effective": "Rather effective",
+      "Neither effective nor uneffective": "Neither effective nor uneffective",
+      "Rather uneffective": "Rather uneffective",
+      "Very uneffective": "Very uneffective",
+      "I am not sure": "I am not sure",
+      "Not applicable": "Not applicable",
+      "": "",
+    };
+
+    List<DropdownMenuItem<String>> effectiveItems = [];
+    for (var option in options.entries) {
+      effectiveItems.add(
+        DropdownMenuItem(
+          value: option.key,
+          child: Text(option.key),
+        ),
+      );
+    }
+
+    return effectiveItems;
+  }
 }
