@@ -206,4 +206,35 @@ class PracticeHelper {
 
     return timeItems;
   }
+
+  Map<String, bool> knowledgeSourceValues = {
+    'Formal knowledge': false,
+    'Indigenous knowledge': false,
+    'Local knowledge': false,
+    'Personal experimentation': false,
+    'Other': false,
+    'I am not sure': false,
+  };
+
+  static List<DropdownMenuItem<String>> get dropDownKnowledgeTimingOptions {
+    Map<String, String> options = {
+      "A long time ago": "A long time ago",
+      "Some time ago": "Some time ago",
+      "Recently": "Recently",
+      "I am not sure": "I am not sure",
+      "": "None of above",
+    };
+
+    List<DropdownMenuItem<String>> knowledgeTimingItems = [];
+    for (var option in options.entries) {
+      knowledgeTimingItems.add(
+        DropdownMenuItem(
+          value: option.key,
+          child: Text(option.key),
+        ),
+      );
+    }
+
+    return knowledgeTimingItems;
+  }
 }

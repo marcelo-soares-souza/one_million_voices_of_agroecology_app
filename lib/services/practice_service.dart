@@ -6,6 +6,7 @@ import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/custom_interceptor.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
+import 'package:one_million_voices_of_agroecology_app/models/practice/acknowledge.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice/characterises.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice/evaluate.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice/what_you_do.dart';
@@ -190,6 +191,34 @@ class PracticeService {
       if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
       return {'status': 'success', 'message': 'Evaluate Updated'};
+    }
+    return {'status': 'failed', 'message': 'An error occured. Please login again.'};
+  }
+
+  static Future<Map<String, String>> updateAcknowledge(Acknowledge acknowledge) async {
+    bool isTokenValid = await AuthService.validateToken();
+    if (isTokenValid) {
+      final acknowledgeJson = acknowledge.toJson();
+
+      acknowledgeJson.remove('id');
+      acknowledgeJson.remove('created_at');
+      acknowledgeJson.remove('updated_at');
+
+      final body = json.encode(acknowledgeJson);
+
+      debugPrint('[DEBUG]: updateAcknowledge body: $body');
+
+      final res = await httpClient.post(Config.getURI('/acknowledges.json'), body: body);
+
+      debugPrint('[DEBUG]: statusCode ${res.statusCode}');
+      debugPrint('[DEBUG]: Body ${res.body}');
+
+      var message = json.decode(res.body);
+      var error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
+
+      if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
+
+      return {'status': 'success', 'message': 'Acknowledge Updated'};
     }
     return {'status': 'failed', 'message': 'An error occured. Please login again.'};
   }
