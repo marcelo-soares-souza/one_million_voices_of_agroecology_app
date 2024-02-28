@@ -36,6 +36,7 @@ class LocationHelper {
       "Mainly commercial": "Mainly commercial",
       "Other": "Other",
       "I am not sure": "I am not sure",
+      "": "None of above",
     };
 
     List<DropdownMenuItem<String>> farmAndFarmingSystemItems = [];

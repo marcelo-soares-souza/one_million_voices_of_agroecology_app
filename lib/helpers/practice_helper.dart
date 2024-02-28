@@ -6,6 +6,7 @@ class PracticeHelper {
       "On-farm": "On-farm",
       "Off-farm": "Off-farm",
       "Other": "Other",
+      "": "None of above",
     };
 
     List<DropdownMenuItem<String>> whereItIsRealizedItems = [];
@@ -65,7 +66,7 @@ class PracticeHelper {
       "Very uneffective": "Very uneffective",
       "I am not sure": "I am not sure",
       "Not applicable": "Not applicable",
-      "": "",
+      "": "None of above",
     };
 
     List<DropdownMenuItem<String>> effectiveItems = [];
@@ -79,5 +80,130 @@ class PracticeHelper {
     }
 
     return effectiveItems;
+  }
+
+  static List<DropdownMenuItem<String>> get dropDownKnowledgeAndSkillsOptions {
+    Map<String, String> options = {
+      "High specialised knowledge required": "High specialised knowledge required",
+      "Rather high specialised knowledge required": "Rather high specialised knowledge required",
+      "Specialised knowledge required neither high nor low": "Specialised knowledge required neither high nor low",
+      "Rather low specialised knowledge required": "Rather low specialised knowledge required",
+      "No specialised knowledge required": "No specialised knowledge required",
+      "I am not sure": "I am not sure",
+      "Not applicable": "Not applicable",
+      "": "None of above",
+    };
+
+    List<DropdownMenuItem<String>> knowledgeAndSkillsItems = [];
+    for (var option in options.entries) {
+      knowledgeAndSkillsItems.add(
+        DropdownMenuItem(
+          value: option.key,
+          child: Text(option.key),
+        ),
+      );
+    }
+
+    return knowledgeAndSkillsItems;
+  }
+
+  static List<DropdownMenuItem<String>> get dropDownLabourOptions {
+    Map<String, String> options = {
+      "High labour required": "High labour required",
+      "Rather high labour required": "Rather high labour required",
+      "Neither high nor low labout required": "Neither high nor low labout required",
+      "Rather low labour required": "Rather low labour required",
+      "Low labour required": "Low labour required",
+      "I am not sure": "I am not sure",
+      "Not applicable": "Not applicable",
+      "": "None of above",
+    };
+
+    List<DropdownMenuItem<String>> labourItems = [];
+    for (var option in options.entries) {
+      labourItems.add(
+        DropdownMenuItem(
+          value: option.key,
+          child: Text(option.key),
+        ),
+      );
+    }
+
+    return labourItems;
+  }
+
+  static List<DropdownMenuItem<String>> get dropDownCostsOptions {
+    Map<String, String> options = {
+      "High costs": "High costs",
+      "Rather high costs": "Rather high costs",
+      "Neither high nor low costs": "Neither high nor low costs",
+      "Rather low costs": "Rather low costs",
+      "Low costs": "Low costs",
+      "I am not sure": "I am not sure",
+      "Not applicable": "Not applicable",
+      "": "None of above",
+    };
+
+    List<DropdownMenuItem<String>> costsItems = [];
+    for (var option in options.entries) {
+      costsItems.add(
+        DropdownMenuItem(
+          value: option.key,
+          child: Text(option.key),
+        ),
+      );
+    }
+
+    return costsItems;
+  }
+
+  static List<DropdownMenuItem<String>> get dropDownDegradedOptions {
+    Map<String, String> options = {
+      "Works well in depleted environment": "Works well in depleted environment",
+      "Works rather well in depleted environment": "Works rather well in depleted environment",
+      "Neither works well nor poorly in depleted environment": "Neither works well nor poorly in depleted environment",
+      "Does rather not work in depleted environment": "Does rather not work in depleted environment",
+      "Does not work at all in depleted environment": "Does not work at all in depleted environment",
+      "I am not sure": "I am not sure",
+      "Not applicable": "Not applicable",
+      "": "None of above",
+    };
+
+    List<DropdownMenuItem<String>> degradedItems = [];
+    for (var option in options.entries) {
+      degradedItems.add(
+        DropdownMenuItem(
+          value: option.key,
+          child: Text(option.key),
+        ),
+      );
+    }
+
+    return degradedItems;
+  }
+
+  static List<DropdownMenuItem<String>> get dropDownTimeOptions {
+    Map<String, String> options = {
+      "Works instantly": "Works instantly",
+      "Works rather rapidly": "Works rather rapidly",
+      "Works neither rapidly nor slowly": "Works neither rapidly nor slowly",
+      "Takes rather long to work": "Takes rather long to work",
+      "Takes very long to work": "Takes very long to work",
+      "I am not sure": "I am not sure",
+      "Not applicable": "Not applicable",
+      "": "None of above",
+    };
+
+    List<DropdownMenuItem<String>> timeItems = [];
+    for (var option in options.entries) {
+      timeItems.add(
+        DropdownMenuItem(
+          value: option.key,
+          child: Text(option.key),
+        ),
+      );
+    }
+
+    return timeItems;
   }
 }

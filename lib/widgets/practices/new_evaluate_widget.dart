@@ -195,8 +195,34 @@ class _NewEvaluate extends State<NewEvaluate> {
                     style: const TextStyle(color: Colors.white),
                     onSaved: (value) => _evaluate.unintendedNegativeSideEffectOfPracticeDetails = value!,
                   ),
-
+                  //
                   // knowledge and skills required for practice
+                  const SizedBox(height: 21),
+                  const Text('Knowledge and skills required for practice',
+                      style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  DropdownButtonFormField(
+                    items: PracticeHelper.dropDownKnowledgeAndSkillsOptions,
+                    value: widget.practice.knowledgeAndSkillsRequiredForPractice.isNotEmpty
+                        ? widget.practice.knowledgeAndSkillsRequiredForPractice
+                        : '',
+                    onChanged: (value) => _evaluate.knowledgeAndSkillsRequiredForPractice = value!,
+                    decoration: const InputDecoration(
+                      filled: false,
+                      fillColor: Colors.blueAccent,
+                    ),
+                    dropdownColor: Theme.of(context).colorScheme.background,
+                  ),
+                  const SizedBox(height: 30),
+                  const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  TextFormField(
+                    initialValue: widget.practice.knowledgeAndSkillsRequiredForPracticeDetails.isNotEmpty
+                        ? widget.practice.knowledgeAndSkillsRequiredForPracticeDetails
+                        : '',
+                    maxLength: 4096,
+                    style: const TextStyle(color: Colors.white),
+                    onSaved: (value) => _evaluate.knowledgeAndSkillsRequiredForPracticeDetails = value!,
+                  ),
+
                   //
                   // labour required for practice
                   //
