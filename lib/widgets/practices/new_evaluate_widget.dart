@@ -222,20 +222,161 @@ class _NewEvaluate extends State<NewEvaluate> {
                     style: const TextStyle(color: Colors.white),
                     onSaved: (value) => _evaluate.knowledgeAndSkillsRequiredForPracticeDetails = value!,
                   ),
-
                   //
                   // labour required for practice
+                  const SizedBox(height: 21),
+                  const Text('Labour required for practice', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  DropdownButtonFormField(
+                    items: PracticeHelper.dropDownLabourOptions,
+                    value: widget.practice.labourRequiredForPractice.isNotEmpty
+                        ? widget.practice.labourRequiredForPractice
+                        : '',
+                    onChanged: (value) => _evaluate.labourRequiredForPractice = value!,
+                    decoration: const InputDecoration(
+                      filled: false,
+                      fillColor: Colors.blueAccent,
+                    ),
+                    dropdownColor: Theme.of(context).colorScheme.background,
+                  ),
+                  const SizedBox(height: 30),
+                  const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  TextFormField(
+                    initialValue: widget.practice.labourRequiredForPracticeDetails.isNotEmpty
+                        ? widget.practice.labourRequiredForPracticeDetails
+                        : '',
+                    maxLength: 4096,
+                    style: const TextStyle(color: Colors.white),
+                    onSaved: (value) => _evaluate.labourRequiredForPracticeDetails = value!,
+                  ),
                   //
                   // cost associated with practice
+                  const SizedBox(height: 21),
+                  const Text('Cost associated with practice', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  DropdownButtonFormField(
+                    items: PracticeHelper.dropDownCostsOptions,
+                    value: widget.practice.costAssociatedWithPractice.isNotEmpty
+                        ? widget.practice.costAssociatedWithPractice
+                        : '',
+                    onChanged: (value) => _evaluate.costAssociatedWithPractice = value!,
+                    decoration: const InputDecoration(
+                      filled: false,
+                      fillColor: Colors.blueAccent,
+                    ),
+                    dropdownColor: Theme.of(context).colorScheme.background,
+                  ),
+                  const SizedBox(height: 30),
+                  const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  TextFormField(
+                    initialValue: widget.practice.costAssociatedWithPracticeDetails.isNotEmpty
+                        ? widget.practice.costAssociatedWithPracticeDetails
+                        : '',
+                    maxLength: 4096,
+                    style: const TextStyle(color: Colors.white),
+                    onSaved: (value) => _evaluate.costAssociatedWithPracticeDetails = value!,
+                  ),
                   //
                   // does it work in degraded environments
+                  const SizedBox(height: 21),
+                  const Text('Does it work in degraded environments?',
+                      style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  DropdownButtonFormField(
+                    items: PracticeHelper.dropDownDegradedOptions,
+                    value: widget.practice.doesItWorkInDegradedEnvironments.isNotEmpty
+                        ? widget.practice.doesItWorkInDegradedEnvironments
+                        : '',
+                    onChanged: (value) => _evaluate.doesItWorkInDegradedEnvironments = value!,
+                    decoration: const InputDecoration(
+                      filled: false,
+                      fillColor: Colors.blueAccent,
+                    ),
+                    dropdownColor: Theme.of(context).colorScheme.background,
+                  ),
+                  const SizedBox(height: 30),
+                  const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  TextFormField(
+                    initialValue: widget.practice.doesItWorkInDegradedEnvironmentsDetails.isNotEmpty
+                        ? widget.practice.doesItWorkInDegradedEnvironmentsDetails
+                        : '',
+                    maxLength: 4096,
+                    style: const TextStyle(color: Colors.white),
+                    onSaved: (value) => _evaluate.doesItWorkInDegradedEnvironmentsDetails = value!,
+                  ),
                   //
                   // does it help restore land
+                  const SizedBox(height: 21),
+                  const Text('Does it help restore land?', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  DropdownButtonFormField(
+                    items: PracticeHelper.dropDownEffectiveOptions,
+                    value:
+                        widget.practice.doesItHelpRestoreLand.isNotEmpty ? widget.practice.doesItHelpRestoreLand : '',
+                    onChanged: (value) => _evaluate.doesItHelpRestoreLand = value!,
+                    decoration: const InputDecoration(
+                      filled: false,
+                      fillColor: Colors.blueAccent,
+                    ),
+                    dropdownColor: Theme.of(context).colorScheme.background,
+                  ),
+                  const SizedBox(height: 30),
+                  const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  TextFormField(
+                    initialValue: widget.practice.doesItHelpRestoreLandDetails.isNotEmpty
+                        ? widget.practice.doesItHelpRestoreLandDetails
+                        : '',
+                    maxLength: 4096,
+                    style: const TextStyle(color: Colors.white),
+                    onSaved: (value) => _evaluate.doesItHelpRestoreLandDetails = value!,
+                  ),
                   //
                   // climage change vulnerability effects
+                  const SizedBox(height: 21),
+                  const Text('Climate change vulnerability effects',
+                      style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  DropdownButtonFormField(
+                    items: PracticeHelper.dropDownEffectiveOptions,
+                    value: widget.practice.climateChangeVulnerabilityEffects.isNotEmpty
+                        ? widget.practice.climateChangeVulnerabilityEffects
+                        : '',
+                    onChanged: (value) => _evaluate.climateChangeVulnerabilityEffects = value!,
+                    decoration: const InputDecoration(
+                      filled: false,
+                      fillColor: Colors.blueAccent,
+                    ),
+                    dropdownColor: Theme.of(context).colorScheme.background,
+                  ),
+                  const SizedBox(height: 30),
+                  const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  TextFormField(
+                    initialValue: widget.practice.climateChangeVulnerabilityEffectsDetails.isNotEmpty
+                        ? widget.practice.climateChangeVulnerabilityEffectsDetails
+                        : '',
+                    maxLength: 4096,
+                    style: const TextStyle(color: Colors.white),
+                    onSaved: (value) => _evaluate.climateChangeVulnerabilityEffectsDetails = value!,
+                  ),
                   //
                   // time required for practice
-
+                  const SizedBox(height: 21),
+                  const Text('Time requirements', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  DropdownButtonFormField(
+                    items: PracticeHelper.dropDownTimeOptions,
+                    value: widget.practice.timeRequirements.isNotEmpty ? widget.practice.timeRequirements : '',
+                    onChanged: (value) => _evaluate.timeRequirements = value!,
+                    decoration: const InputDecoration(
+                      filled: false,
+                      fillColor: Colors.blueAccent,
+                    ),
+                    dropdownColor: Theme.of(context).colorScheme.background,
+                  ),
+                  const SizedBox(height: 30),
+                  const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                  TextFormField(
+                    initialValue: widget.practice.timeRequirementsDetails.isNotEmpty
+                        ? widget.practice.timeRequirementsDetails
+                        : '',
+                    maxLength: 4096,
+                    style: const TextStyle(color: Colors.white),
+                    onSaved: (value) => _evaluate.timeRequirementsDetails = value!,
+                  ),
                   //
                   // Buttons
                   //
