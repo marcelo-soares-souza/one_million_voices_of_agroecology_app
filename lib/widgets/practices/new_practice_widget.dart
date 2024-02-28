@@ -51,7 +51,7 @@ class _NewPractice extends State<NewPractice> {
 
   List<DropdownMenuItem<String>> get dropDownLocations {
     List<DropdownMenuItem<String>> locationItems = [];
-    for (var location in _locations) {
+    for (Location location in _locations) {
       locationItems.add(
         DropdownMenuItem(
           value: location.id.toString(),

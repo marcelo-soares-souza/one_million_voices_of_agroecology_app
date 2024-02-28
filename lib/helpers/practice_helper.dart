@@ -10,7 +10,7 @@ class PracticeHelper {
     };
 
     List<DropdownMenuItem<String>> whereItIsRealizedItems = [];
-    for (var option in options.entries) {
+    for (MapEntry<String, String> option in options.entries) {
       whereItIsRealizedItems.add(
         DropdownMenuItem(
           value: option.key,
@@ -70,7 +70,7 @@ class PracticeHelper {
     };
 
     List<DropdownMenuItem<String>> effectiveItems = [];
-    for (var option in options.entries) {
+    for (MapEntry<String, String> option in options.entries) {
       effectiveItems.add(
         DropdownMenuItem(
           value: option.key,
@@ -95,7 +95,7 @@ class PracticeHelper {
     };
 
     List<DropdownMenuItem<String>> knowledgeAndSkillsItems = [];
-    for (var option in options.entries) {
+    for (MapEntry<String, String> option in options.entries) {
       knowledgeAndSkillsItems.add(
         DropdownMenuItem(
           value: option.key,
@@ -120,7 +120,7 @@ class PracticeHelper {
     };
 
     List<DropdownMenuItem<String>> labourItems = [];
-    for (var option in options.entries) {
+    for (MapEntry<String, String> option in options.entries) {
       labourItems.add(
         DropdownMenuItem(
           value: option.key,
@@ -145,7 +145,7 @@ class PracticeHelper {
     };
 
     List<DropdownMenuItem<String>> costsItems = [];
-    for (var option in options.entries) {
+    for (MapEntry<String, String> option in options.entries) {
       costsItems.add(
         DropdownMenuItem(
           value: option.key,
@@ -170,7 +170,7 @@ class PracticeHelper {
     };
 
     List<DropdownMenuItem<String>> degradedItems = [];
-    for (var option in options.entries) {
+    for (MapEntry<String, String> option in options.entries) {
       degradedItems.add(
         DropdownMenuItem(
           value: option.key,
@@ -195,7 +195,7 @@ class PracticeHelper {
     };
 
     List<DropdownMenuItem<String>> timeItems = [];
-    for (var option in options.entries) {
+    for (MapEntry<String, String> option in options.entries) {
       timeItems.add(
         DropdownMenuItem(
           value: option.key,
@@ -226,7 +226,7 @@ class PracticeHelper {
     };
 
     List<DropdownMenuItem<String>> knowledgeTimingItems = [];
-    for (var option in options.entries) {
+    for (MapEntry<String, String> option in options.entries) {
       knowledgeTimingItems.add(
         DropdownMenuItem(
           value: option.key,

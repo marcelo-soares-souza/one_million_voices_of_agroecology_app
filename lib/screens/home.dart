@@ -22,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Widget activePage = const MapScreen();
-  var activePageTitle = 'Map';
+  String activePageTitle = 'Map';
 
   void _addLocation() async {
     await Navigator.of(context).push(

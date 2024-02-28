@@ -37,10 +37,10 @@ class Location {
     required this.responsibleForInformation,
     required this.url,
     required this.accountId,
-    required this.createdAt,
-    required this.updatedAt,
   })  : base64Image = '',
-        hasPermission = false;
+        hasPermission = false,
+        createdAt = '',
+        updatedAt = '';
 
   static Location initLocation() {
     return Location(
@@ -60,8 +60,6 @@ class Location {
       responsibleForInformation: '',
       url: '',
       accountId: 0,
-      createdAt: '',
-      updatedAt: '',
     );
   }
 
@@ -83,13 +81,11 @@ class Location {
       url: json['url'].toString(),
       imageUrl: json['image_url'].toString(),
       accountId: json['account_id'],
-      createdAt: json['created_at'].toString(),
-      updatedAt: json['updated_at'].toString(),
     );
   }
 
   Map<String, dynamic> toJson() {
-    var json = {
+    Map<String, dynamic> json = {
       'id': id,
       'name': name,
       'country': country,
@@ -105,8 +101,6 @@ class Location {
       'longitude': longitude,
       'responsible_for_information': responsibleForInformation,
       'url': url,
-      'created_at': createdAt,
-      'updated_at': updatedAt,
     };
 
     if (base64Image.isNotEmpty) {

@@ -23,7 +23,7 @@ class AuthService {
 
     if (res.statusCode != 200) return false;
 
-    var data = jsonDecode(res.body.toString());
+    dynamic data = jsonDecode(res.body.toString());
 
     if (data['token'].toString().isEmpty) return false;
 

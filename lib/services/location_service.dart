@@ -46,7 +46,7 @@ class LocationService {
     debugPrint('[DEBUG]: statusCode ${res.statusCode}');
     debugPrint('[DEBUG]: body ${res.body}');
 
-    var data = json.decode(res.body.toString());
+    dynamic data = json.decode(res.body.toString());
 
     if (res.body.length > 14) {
       for (final item in data['gallery']) {
@@ -89,8 +89,8 @@ class LocationService {
       debugPrint('[DEBUG]: statusCode ${res.statusCode}');
       debugPrint('[DEBUG]: Body ${res.body}');
 
-      var message = json.decode(res.body);
-      var error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
+      dynamic message = json.decode(res.body);
+      String error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
 
       if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
@@ -131,9 +131,9 @@ class LocationService {
       debugPrint('[DEBUG]: statusCode ${res.statusCode}');
       debugPrint('[DEBUG]: Body ${res.body}');
 
-      var message = json.decode(res.body);
+      dynamic message = json.decode(res.body);
 
-      var error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
+      String error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
 
       if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
@@ -153,7 +153,7 @@ class LocationService {
 
       String error = 'Generic Error. Please try again.';
       if (res.body.isNotEmpty) {
-        var message = json.decode(res.body);
+        dynamic message = json.decode(res.body);
         error = message['error'] ? message['error'].toString().replaceAll('{', '').replaceAll('}', '') : '';
       }
 
@@ -176,7 +176,7 @@ class LocationService {
       String error = '';
 
       if (res.body.isNotEmpty) {
-        var message = json.decode(res.body);
+        dynamic message = json.decode(res.body);
         error = message['error'] ? message['error'].toString().replaceAll('{', '').replaceAll('}', '') : '';
       }
 
@@ -191,7 +191,7 @@ class LocationService {
     final params = {'country': countryISOName};
     final res = await httpClient.get(Config.getURI('/coordinates.json'), params: params);
 
-    var message = json.decode(res.body);
+    dynamic message = json.decode(res.body);
 
     double latitude = message['latitude'] as double;
     double longitude = message['longitude'] as double;

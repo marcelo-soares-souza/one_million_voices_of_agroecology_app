@@ -40,7 +40,7 @@ class GalleryItem {
   }
 
   Map<String, dynamic> toJson() {
-    var json = {
+    Map<String, String> json = {
       'description': description,
       'image_url': imageUrl,
     };

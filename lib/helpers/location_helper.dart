@@ -15,7 +15,7 @@ class LocationHelper {
 
   static List<DropdownMenuItem<String>> get dropDownCountries {
     List<DropdownMenuItem<String>> countryItems = [];
-    for (var country in countries) {
+    for (Country country in countries) {
       countryItems.add(
         DropdownMenuItem(
           value: country.isoCode.name,
@@ -40,7 +40,7 @@ class LocationHelper {
     };
 
     List<DropdownMenuItem<String>> farmAndFarmingSystemItems = [];
-    for (var option in options.entries) {
+    for (MapEntry<String, String> option in options.entries) {
       farmAndFarmingSystemItems.add(
         DropdownMenuItem(
           value: option.key,

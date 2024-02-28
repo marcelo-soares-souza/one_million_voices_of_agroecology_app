@@ -46,7 +46,7 @@ class PracticeService {
 
     final res = await httpClient.get(Config.getURI('/practices/$id/gallery.json'));
 
-    var data = json.decode(res.body.toString());
+    dynamic data = json.decode(res.body.toString());
 
     if (res.body.length > 14) {
       for (final item in data['gallery']) {
@@ -74,8 +74,8 @@ class PracticeService {
       debugPrint('[DEBUG]: statusCode ${res.statusCode}');
       debugPrint('[DEBUG]: Body ${res.body}');
 
-      var message = json.decode(res.body);
-      var error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
+      dynamic message = json.decode(res.body);
+      String error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
 
       if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
@@ -101,8 +101,8 @@ class PracticeService {
       debugPrint('[DEBUG]: statusCode ${res.statusCode}');
       debugPrint('[DEBUG]: Body ${res.body}');
 
-      var message = json.decode(res.body);
-      var error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
+      dynamic message = json.decode(res.body);
+      String error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
 
       if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
@@ -129,8 +129,8 @@ class PracticeService {
       debugPrint('[DEBUG]: statusCode ${res.statusCode}');
       debugPrint('[DEBUG]: Body ${res.body}');
 
-      var message = json.decode(res.body);
-      var error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
+      dynamic message = json.decode(res.body);
+      String error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
 
       if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
@@ -157,8 +157,8 @@ class PracticeService {
       debugPrint('[DEBUG]: statusCode ${res.statusCode}');
       debugPrint('[DEBUG]: Body ${res.body}');
 
-      var message = json.decode(res.body);
-      var error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
+      dynamic message = json.decode(res.body);
+      String error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
 
       if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
@@ -185,8 +185,8 @@ class PracticeService {
       debugPrint('[DEBUG]: statusCode ${res.statusCode}');
       debugPrint('[DEBUG]: Body ${res.body}');
 
-      var message = json.decode(res.body);
-      var error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
+      dynamic message = json.decode(res.body);
+      String error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
 
       if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
@@ -213,8 +213,8 @@ class PracticeService {
       debugPrint('[DEBUG]: statusCode ${res.statusCode}');
       debugPrint('[DEBUG]: Body ${res.body}');
 
-      var message = json.decode(res.body);
-      var error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
+      dynamic message = json.decode(res.body);
+      String error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
 
       if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
@@ -234,7 +234,7 @@ class PracticeService {
 
       String error = 'Generic Error. Please try again.';
       if (res.body.isNotEmpty) {
-        var message = json.decode(res.body);
+        dynamic message = json.decode(res.body);
         error = message['error'] ? message['error'].toString().replaceAll('{', '').replaceAll('}', '') : '';
       }
 
