@@ -11,6 +11,7 @@ import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/home.dart';
 import 'package:one_million_voices_of_agroecology_app/services/location_service.dart';
+import 'package:one_million_voices_of_agroecology_app/widgets/locations/edit_location_widget.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/new_media_widget.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/text_block_widget.dart';
 
@@ -110,6 +111,14 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
           ],
         );
       },
+    );
+  }
+
+  void _editLocation(Location location) async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => EditLocation(location: location),
+      ),
     );
   }
 
@@ -292,11 +301,20 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                       _sendMedia = true;
                     });
                   })
-            else if (_selectedPageIndex == 0 && _location.hasPermission)
+            else if (_selectedPageIndex == 0 && _location.hasPermission) ...[
+              IconButton(
+                icon: const Icon(FontAwesomeIcons.penToSquare),
+                color: Colors.green,
+                onPressed: () {
+                  _editLocation(_location);
+                },
+              ),
               IconButton(
                 icon: const Icon(FontAwesomeIcons.trash),
+                color: Colors.red,
                 onPressed: _showAlertDialog,
-              )
+              ),
+            ]
           ]
         ],
       ),
