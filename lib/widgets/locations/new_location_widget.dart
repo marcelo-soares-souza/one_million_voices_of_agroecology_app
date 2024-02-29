@@ -128,6 +128,9 @@ class _NewLocation extends State<NewLocation> {
                   const SizedBox(height: 10),
                   const Text('Location Name', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
+                    autocorrect: true,
                     maxLength: 64,
                     style: const TextStyle(color: Colors.white),
                     validator: (value) => FormHelper.validateInputSize(value, 1, 64),
