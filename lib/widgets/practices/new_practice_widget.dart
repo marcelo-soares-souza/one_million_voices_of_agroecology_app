@@ -36,6 +36,11 @@ class _NewPractice extends State<NewPractice> {
 
   void _retrieveLocations() async {
     String accountId = await AuthService.getCurrentAccountId();
+
+    if (accountId.isEmpty || accountId == '0') {
+      return;
+    }
+
     List<Location> locations = await LocationService.retrieveAllLocationsByAccount(accountId);
     setState(() => _locations = locations);
   }

@@ -26,7 +26,7 @@ class _NewLocation extends State<NewLocation> {
   bool _isLoading = true;
 
   final LocationHelper _locationHelper = LocationHelper();
-  late Location _location;
+  Location _location = Location.initLocation();
   late Position? _currentPosition;
   final LatLng _initialCenter = const LatLng(16.0, 16.0);
   MapController mapController = MapController();
@@ -45,9 +45,8 @@ class _NewLocation extends State<NewLocation> {
   @override
   void initState() {
     super.initState();
-    _getCurrentPosition();
     _checkIfIsLoggedIn();
-    _location = Location.initLocation();
+    _getCurrentPosition();
     setState(() => _isLoading = false);
   }
 

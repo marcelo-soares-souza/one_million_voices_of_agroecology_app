@@ -36,6 +36,20 @@ class AuthService {
     return true;
   }
 
+  static Future<bool> signup(name, email, password) async {
+    final res = await httpClient.post(
+      Config.getURI('/signup.json'),
+      body: jsonEncode({'name': name, 'email': email, 'password': password}),
+    );
+
+    debugPrint('[DEBUG]: signup statusCode ${res.statusCode}');
+    debugPrint('[DEBUG]: signup body ${res.body.toString()}');
+
+    if (res.statusCode > 400) return false;
+
+    return true;
+  }
+
   static Future<String> getCurrentAccountId() async {
     if (!await storage.containsKey(key: 'account_id') || !await storage.containsKey(key: 'token')) return '0';
     return (await storage.read(key: 'account_id'))!;
@@ -47,9 +61,9 @@ class AuthService {
       await storage.delete(key: 'email');
       await storage.delete(key: 'account_id');
 
-      debugPrint('[DEBUG]: E-Mail: ${await storage.containsKey(key: 'email')}');
-      debugPrint('[DEBUG]: Token: ${await storage.containsKey(key: 'token')}');
-      debugPrint('[DEBUG]: Account ID: ${await storage.containsKey(key: 'account_id')}');
+      debugPrint('[DEBUG]: Contains E-Mail: ${await storage.containsKey(key: 'email')}');
+      debugPrint('[DEBUG]: Contains Token: ${await storage.containsKey(key: 'token')}');
+      debugPrint('[DEBUG]: Contains  Account ID: ${await storage.containsKey(key: 'account_id')}');
 
       return true;
     } catch (e) {
