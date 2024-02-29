@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
+import 'package:one_million_voices_of_agroecology_app/screens/home.dart';
 import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/new_media_widget.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/practices/new_acknowledge_widget.dart';
@@ -13,8 +14,10 @@ import 'package:one_million_voices_of_agroecology_app/widgets/text_block_widget.
 
 class PracticeDetailsScreen extends StatefulWidget {
   final Practice practice;
+  final void Function(Practice practice) onRemovePractice;
+  static dynamic _dummyOnRemovePractice(Practice practice) {}
 
-  const PracticeDetailsScreen({super.key, required this.practice});
+  const PracticeDetailsScreen({super.key, required this.practice, this.onRemovePractice = _dummyOnRemovePractice});
 
   @override
   State<PracticeDetailsScreen> createState() {
@@ -101,6 +104,46 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
   void initState() {
     super.initState();
     _retrieveFullPractice();
+  }
+
+  Future<void> _showAlertDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          titleTextStyle: TextStyle(color: Theme.of(context).primaryColor),
+          contentTextStyle: TextStyle(color: Theme.of(context).secondaryHeaderColor),
+          title: const Text('Delete this Location'),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are you sure?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Yes'),
+              onPressed: () {
+                widget.onRemovePractice(widget.practice);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (ctx) => const HomeScreen()),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -236,15 +279,37 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
         actions: [
           if (!_isLoading && _practice.hasPermission) ...[
             if (_selectedPageIndex == 1 && _selectedPageOperation != 'add')
-              IconButton(icon: const Icon(FontAwesomeIcons.penToSquare), onPressed: () => _selectPage(1, 'add'))
+              IconButton(
+                  icon: const Icon(FontAwesomeIcons.penToSquare),
+                  color: Colors.green,
+                  onPressed: () => _selectPage(1, 'add'))
             else if (_selectedPageIndex == 2 && _selectedPageOperation != 'add')
-              IconButton(icon: const Icon(FontAwesomeIcons.penToSquare), onPressed: () => _selectPage(2, 'add'))
+              IconButton(
+                  icon: const Icon(FontAwesomeIcons.penToSquare),
+                  color: Colors.green,
+                  onPressed: () => _selectPage(2, 'add'))
             else if (_selectedPageIndex == 3 && _selectedPageOperation != 'add')
-              IconButton(icon: const Icon(FontAwesomeIcons.penToSquare), onPressed: () => _selectPage(3, 'add'))
+              IconButton(
+                  icon: const Icon(FontAwesomeIcons.penToSquare),
+                  color: Colors.green,
+                  onPressed: () => _selectPage(3, 'add'))
             else if (_selectedPageIndex == 4 && _selectedPageOperation != 'add')
-              IconButton(icon: const Icon(FontAwesomeIcons.penToSquare), onPressed: () => _selectPage(4, 'add'))
+              IconButton(
+                  icon: const Icon(FontAwesomeIcons.penToSquare),
+                  color: Colors.green,
+                  onPressed: () => _selectPage(4, 'add'))
             else if (_selectedPageIndex == 5 && _selectedPageOperation != 'add')
-              IconButton(icon: const Icon(FontAwesomeIcons.camera), onPressed: () => _selectPage(5, 'add'))
+              IconButton(
+                  icon: const Icon(FontAwesomeIcons.camera),
+                  color: Colors.orange,
+                  onPressed: () => _selectPage(5, 'add'))
+            else if (_selectedPageIndex == 0 && _practice.hasPermission) ...[
+              IconButton(
+                icon: const Icon(FontAwesomeIcons.trash),
+                color: Colors.red,
+                onPressed: _showAlertDialog,
+              ),
+            ]
           ]
         ],
       ),

@@ -295,6 +295,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
             if (_selectedPageIndex == 1)
               IconButton(
                   icon: const Icon(FontAwesomeIcons.camera),
+                  color: Colors.orange,
                   onPressed: () {
                     _selectPage(1);
                     setState(() {

@@ -24,6 +24,9 @@ class _PracticesWidget extends State<PracticesWidget> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => PracticeDetailsScreen(
+          onRemovePractice: (ctx) {
+            _removePractice(practice);
+          },
           practice: practice,
         ),
       ),
