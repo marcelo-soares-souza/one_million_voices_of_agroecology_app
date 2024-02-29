@@ -311,7 +311,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                 },
               ),
               IconButton(
-                icon: const Icon(FontAwesomeIcons.trash),
+                icon: const Icon(FontAwesomeIcons.trashCan),
                 color: Colors.red,
                 onPressed: _showAlertDialog,
               ),

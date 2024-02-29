@@ -305,7 +305,7 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
                   onPressed: () => _selectPage(5, 'add'))
             else if (_selectedPageIndex == 0 && _practice.hasPermission) ...[
               IconButton(
-                icon: const Icon(FontAwesomeIcons.trash),
+                icon: const Icon(FontAwesomeIcons.trashCan),
                 color: Colors.red,
                 onPressed: _showAlertDialog,
               ),

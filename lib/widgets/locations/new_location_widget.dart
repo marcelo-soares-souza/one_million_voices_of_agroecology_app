@@ -26,7 +26,7 @@ class _NewLocation extends State<NewLocation> {
   bool _isLoading = true;
 
   final LocationHelper _locationHelper = LocationHelper();
-  Location _location = Location.initLocation();
+  final Location _location = Location.initLocation();
   late Position? _currentPosition;
   final LatLng _initialCenter = const LatLng(16.0, 16.0);
   MapController mapController = MapController();

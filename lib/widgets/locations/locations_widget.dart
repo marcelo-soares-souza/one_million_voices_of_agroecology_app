@@ -64,20 +64,6 @@ class _LocationsWidget extends State<LocationsWidget> {
       content = ListView.builder(
         itemCount: _locations.length,
         itemBuilder: (ctx, index) => Slidable(
-          startActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            children: [
-              if (_locations[index].hasPermission) ...[
-                SlidableAction(
-                  onPressed: (onPressed) => selectLocation(context, _locations[index]),
-                  label: 'Edit',
-                  icon: FontAwesomeIcons.penToSquare,
-                  backgroundColor: const Color(0xFF4A90E2),
-                  foregroundColor: Colors.white,
-                ),
-              ]
-            ],
-          ),
           endActionPane: ActionPane(
             motion: const ScrollMotion(),
             children: [

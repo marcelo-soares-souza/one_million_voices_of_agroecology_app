@@ -15,7 +15,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreen extends State<LoginScreen> {
   Duration get loginTime => const Duration(milliseconds: 500);
-  Duration get singupTime => const Duration(milliseconds: 1000);
+  Duration get singupTime => const Duration(milliseconds: 500);
 
   Future<String?> _authUser(LoginData data) async {
     bool isAuthenticated = await AuthService.login(data.name, data.password);

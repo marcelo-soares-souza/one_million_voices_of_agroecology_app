@@ -73,20 +73,6 @@ class _PracticesWidget extends State<PracticesWidget> {
       content = ListView.builder(
         itemCount: _practices.length,
         itemBuilder: (ctx, index) => Slidable(
-          startActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            children: [
-              if (_practices[index].hasPermission) ...[
-                SlidableAction(
-                  onPressed: (onPressed) => selectPractice(context, _practices[index]),
-                  label: 'Edit',
-                  icon: FontAwesomeIcons.penToSquare,
-                  backgroundColor: const Color(0xFF4A90E2),
-                  foregroundColor: Colors.white,
-                ),
-              ]
-            ],
-          ),
           endActionPane: ActionPane(
             motion: const ScrollMotion(),
             children: [
