@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/custom_interceptor.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
-import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
+import 'package:one_million_voices_of_agroecology_app/models/practice/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice/acknowledge.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice/characterises.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice/evaluate.dart';

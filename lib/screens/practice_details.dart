@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
-import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
+import 'package:one_million_voices_of_agroecology_app/models/practice/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/home.dart';
 import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/new_media_widget.dart';

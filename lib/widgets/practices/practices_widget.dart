@@ -3,7 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
 
-import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
+import 'package:one_million_voices_of_agroecology_app/models/practice/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/practice_details.dart';
 import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/practices/practice_item_widget.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/practice_helper.dart';
-import 'package:one_million_voices_of_agroecology_app/models/practice.dart';
+import 'package:one_million_voices_of_agroecology_app/models/practice/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice/what_you_do.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/home.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/practices.dart';
