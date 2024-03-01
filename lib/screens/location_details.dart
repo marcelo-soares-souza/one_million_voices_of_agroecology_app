@@ -202,15 +202,15 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
               // Gallery
               //
               if (_gallery.isEmpty) ...[
-                const SizedBox(height: 40),
+                const SizedBox(height: 200),
                 Center(
-                  child: Text(
-                    'No items',
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                  ),
-                )
+                    child: Text(
+                  textAlign: TextAlign.center,
+                  'No images available',
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                ))
               ] else
                 for (final i in _gallery) ...[
                   Slidable(

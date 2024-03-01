@@ -26,6 +26,7 @@ class PracticeDetailsScreen extends StatefulWidget {
 }
 
 class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
+  String activePageTitle = '';
   bool _isLoading = true;
   int _selectedPageIndex = 0;
   String _selectedPageOperation = '';
@@ -93,8 +94,18 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
     });
   }
 
+  Map<int, String> pageSelectedTitle = {
+    0: 'Summary',
+    1: 'What you Do',
+    2: 'Characterise',
+    3: 'Evaluate',
+    4: 'Acknowledge',
+    5: 'Gallery',
+  };
+
   void _selectPage(int index, [String operation = '']) {
     setState(() {
+      activePageTitle = pageSelectedTitle[index]!;
       _selectedPageIndex = index;
       _selectedPageOperation = operation.isNotEmpty ? operation : '';
     });
@@ -103,6 +114,7 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
   @override
   void initState() {
     super.initState();
+    activePageTitle = widget.practice.name;
     _retrieveFullPractice();
   }
 
@@ -199,15 +211,17 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
               // Gallery
               //
               if (_gallery.isEmpty) ...[
-                const SizedBox(height: 20),
-                Center(
-                  child: Text(
+                Column(children: [
+                  const SizedBox(height: 200),
+                  Center(
+                      child: Text(
+                    textAlign: TextAlign.center,
                     'No images available',
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
-                  ),
-                )
+                  ))
+                ])
               ] else
                 for (final i in _gallery) ...[
                   Stack(
@@ -258,7 +272,7 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
                   const SizedBox(height: 20),
                 ],
             ] else ...[
-              const SizedBox(height: 40),
+              const SizedBox(height: 100),
               Center(
                 child: Text(
                   'No data available for this section.',
@@ -275,7 +289,7 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.practice.name),
+        title: Text(activePageTitle),
         actions: [
           if (!_isLoading && _practice.hasPermission) ...[
             if (_selectedPageIndex == 1 && _selectedPageOperation != 'add')

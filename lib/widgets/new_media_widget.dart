@@ -138,7 +138,7 @@ class _NewMediaWidget extends State<NewMediaWidget> {
                                 width: 16,
                                 child: CircularProgressIndicator(),
                               )
-                            : const Text('Add'),
+                            : const Text('Save'),
                       ),
                     ],
                   ),

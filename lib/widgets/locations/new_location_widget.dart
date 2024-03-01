@@ -135,7 +135,15 @@ class _NewLocation extends State<NewLocation> {
                     style: const TextStyle(color: Colors.white),
                     validator: (value) => FormHelper.validateInputSize(value, 1, 64),
                     onSaved: (value) => _location.name = value!,
+                    decoration: InputDecoration(
+                      hintText: 'How would you like to name the place where you practice agroecology?',
+                      hintStyle: TextStyle(
+                        color: Colors.grey.withOpacity(0.4),
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
+                  const SizedBox(height: 24),
                   const Text('Country', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: LocationHelper.dropDownCountries,
@@ -152,7 +160,7 @@ class _NewLocation extends State<NewLocation> {
                     ),
                     dropdownColor: Theme.of(context).colorScheme.background,
                   ),
-                  const SizedBox(height: 21),
+                  const SizedBox(height: 24),
                   const Text('Is it a farm?', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: FormHelper.dropDownYesNo,
@@ -164,7 +172,7 @@ class _NewLocation extends State<NewLocation> {
                     ),
                     dropdownColor: Theme.of(context).colorScheme.background,
                   ),
-                  const SizedBox(height: 21),
+                  const SizedBox(height: 24),
                   const Text('What do you have on your farm?', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   for (final key in _locationHelper.farmAndFarmingSystemComplementValues.keys) ...[
                     CheckboxListTile(
@@ -174,7 +182,7 @@ class _NewLocation extends State<NewLocation> {
                           setState(() => _locationHelper.farmAndFarmingSystemComplementValues[key] = value!),
                     )
                   ],
-                  const SizedBox(height: 21),
+                  const SizedBox(height: 24),
                   const Text('What\'s the main purpose?', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: LocationHelper.dropDownFarmAndFarmingSystemOptions,
@@ -186,14 +194,20 @@ class _NewLocation extends State<NewLocation> {
                     ),
                     dropdownColor: Theme.of(context).colorScheme.background,
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 24),
                   const Text('What is your dream?', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
                     maxLength: 512,
-                    minLines: 2,
                     maxLines: null,
                     style: const TextStyle(color: Colors.white),
                     onSaved: (value) => _location.whatIsYourDream = value!,
+                    decoration: InputDecoration(
+                      hintText: 'Do you have a dream of transforming your farm and/or location?',
+                      hintStyle: TextStyle(
+                        color: Colors.grey.withOpacity(0.4),
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 21),
                   const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 18)),
@@ -203,10 +217,16 @@ class _NewLocation extends State<NewLocation> {
                   const Text('Description', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
                     maxLength: 512,
-                    minLines: 2,
                     maxLines: null,
                     style: const TextStyle(color: Colors.white),
                     onSaved: (value) => _location.description = value!,
+                    decoration: InputDecoration(
+                      hintText: 'Tell us a bit about your place, what you do in the place you register',
+                      hintStyle: TextStyle(
+                        color: Colors.grey.withOpacity(0.4),
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 21),
                   const Text('Location', style: TextStyle(color: Colors.grey, fontSize: 18)),
@@ -255,7 +275,7 @@ class _NewLocation extends State<NewLocation> {
                                 width: 16,
                                 child: CircularProgressIndicator(),
                               )
-                            : const Text('Add'),
+                            : const Text('Save'),
                       ),
                     ],
                   ),

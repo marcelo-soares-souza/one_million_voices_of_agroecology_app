@@ -152,6 +152,13 @@ class _NewPractice extends State<NewPractice> {
                     style: const TextStyle(color: Colors.white),
                     validator: (value) => FormHelper.validateInputSize(value, 1, 64),
                     onSaved: (value) => _practice.name = value!,
+                    decoration: InputDecoration(
+                      hintText: 'Name this practice (e.g. my agroforestry, permaculture experiment, etc.).?',
+                      hintStyle: TextStyle(
+                        color: Colors.grey.withOpacity(0.4),
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 21),
                   const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 18)),
@@ -177,7 +184,7 @@ class _NewPractice extends State<NewPractice> {
                                 width: 16,
                                 child: CircularProgressIndicator(),
                               )
-                            : const Text('Add'),
+                            : const Text('Save'),
                       ),
                     ],
                   ),

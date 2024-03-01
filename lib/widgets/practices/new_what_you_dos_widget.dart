@@ -121,6 +121,13 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
                     maxLength: 4096,
                     style: const TextStyle(color: Colors.white),
                     onSaved: (value) => _whatYouDo.summaryDescriptionOfAgroecologicalPractice = value!,
+                    decoration: InputDecoration(
+                      hintText: 'In short, what is the practice that you want to map?',
+                      hintStyle: TextStyle(
+                        color: Colors.grey.withOpacity(0.4),
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 21),
                   const Text('Type of agroecological practice', style: TextStyle(color: Colors.grey, fontSize: 18)),
@@ -131,6 +138,14 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
                     maxLength: 4096,
                     style: const TextStyle(color: Colors.white),
                     onSaved: (value) => _whatYouDo.typeOfAgroecologicalPractice = value!,
+                    decoration: InputDecoration(
+                      hintText:
+                          'There is no standardised typology for agroecological practices, so please describe briefly what kind of practice it is',
+                      hintStyle: TextStyle(
+                        color: Colors.grey.withOpacity(0.4),
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 21),
                   const Text('Implementing the practice', style: TextStyle(color: Colors.grey, fontSize: 18)),
@@ -174,6 +189,13 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
                     maxLength: 4096,
                     style: const TextStyle(color: Colors.white),
                     onSaved: (value) => _whatYouDo.whyYouUseAndWhatYouExpectFromThisPractice = value!,
+                    decoration: InputDecoration(
+                      hintText: 'Which effect do you expect the practice to have?',
+                      hintStyle: TextStyle(
+                        color: Colors.grey.withOpacity(0.4),
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
 
                   //
