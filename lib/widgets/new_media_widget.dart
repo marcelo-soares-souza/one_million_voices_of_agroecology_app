@@ -4,20 +4,24 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
+import 'package:one_million_voices_of_agroecology_app/models/location.dart';
+import 'package:one_million_voices_of_agroecology_app/models/practice/practice.dart';
+import 'package:one_million_voices_of_agroecology_app/screens/location_details.dart';
+import 'package:one_million_voices_of_agroecology_app/screens/practice_details.dart';
 import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
 import 'package:one_million_voices_of_agroecology_app/services/location_service.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/image_input.dart';
 
 class NewMediaWidget extends StatefulWidget {
-  final String locationId;
-  final String practiceId;
+  final Location location;
+  final Practice practice;
   final void Function(int page) onSetPage;
 
   const NewMediaWidget({
     super.key,
     required this.onSetPage,
-    this.locationId = '',
-    this.practiceId = '',
+    required this.location,
+    required this.practice,
   });
 
   @override
@@ -53,8 +57,8 @@ class _NewMediaWidget extends State<NewMediaWidget> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      _galleryItem.locationId = widget.locationId.isNotEmpty ? widget.locationId : '';
-      _galleryItem.practiceId = widget.practiceId.isNotEmpty ? widget.practiceId : '';
+      _galleryItem.locationId = widget.location.id != 0 ? widget.location.id.toString() : '';
+      _galleryItem.practiceId = widget.practice.id != 0 ? widget.practice.id.toString() : '';
 
       setState(() => _isSending = true);
 
@@ -74,7 +78,15 @@ class _NewMediaWidget extends State<NewMediaWidget> {
 
       if (status == 'success') {
         FormHelper.successMessage(context, message);
-        Navigator.of(context).pop();
+        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => _galleryItem.locationId.isEmpty
+                ? PracticeDetailsScreen(practice: widget.practice)
+                : LocationDetailsScreen(location: widget.location),
+          ),
+        );
       } else {
         FormHelper.errorMessage(context, 'An error occured: $message');
       }

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
+import 'package:one_million_voices_of_agroecology_app/models/location.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/home.dart';
 import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
@@ -192,7 +193,8 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
               else if (_selectedPageIndex == 5)
                 SizedBox(
                   child: NewMediaWidget(
-                    practiceId: _practice.id.toString(),
+                    practice: _practice,
+                    location: Location.initLocation(),
                     onSetPage: _selectPage,
                   ),
                 )

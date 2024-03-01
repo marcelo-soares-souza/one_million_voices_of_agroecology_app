@@ -3,8 +3,7 @@ import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/practice_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice/what_you_do.dart';
-import 'package:one_million_voices_of_agroecology_app/screens/home.dart';
-import 'package:one_million_voices_of_agroecology_app/screens/practices.dart';
+import 'package:one_million_voices_of_agroecology_app/screens/practice_details.dart';
 import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
 import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
 
@@ -39,11 +38,15 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
       _practice = widget.practice;
 
       _whatYouDo.practiceId = _practice.id;
-      _whatYouDo.whereItIsRealized = _practice.whereItIsRealized;
+      _whatYouDo.whereItIsRealized = _practice.whereItIsRealized.isNotEmpty ? _practice.whereItIsRealized : 'On-farm';
       _whatYouDo.summaryDescriptionOfAgroecologicalPractice = _practice.summaryDescription;
       _whatYouDo.typeOfAgroecologicalPractice = _practice.typeOfAgroecologicalPractice;
       _whatYouDo.practicalImplementationOfThePractice = _practice.practicalImplementationOfThePractice;
-      _whatYouDo.substitutionOfLessEcologicalAlternative = _practice.substitutionOfLessEcologicalAlternative;
+
+      _whatYouDo.substitutionOfLessEcologicalAlternative = _practice.substitutionOfLessEcologicalAlternative.isNotEmpty
+          ? _practice.substitutionOfLessEcologicalAlternative
+          : 'Yes';
+
       _whatYouDo.whyYouUseAndWhatYouExpectFromThisPractice = _practice.whyYouUseAndWhatYouExpectFromThisPractice;
 
       _isLoading = false;
@@ -65,13 +68,11 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
 
       if (status == 'success') {
         FormHelper.successMessage(context, message);
+        Navigator.pop(context);
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomeScreen(
-              activePage: PracticesScreen(),
-              activePageTitle: 'Practices',
-            ),
+            builder: (context) => PracticeDetailsScreen(practice: widget.practice),
           ),
         );
       } else {

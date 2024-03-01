@@ -9,6 +9,7 @@ import 'package:one_million_voices_of_agroecology_app/helpers/location_helper.da
 
 import 'package:one_million_voices_of_agroecology_app/models/gallery_item.dart';
 import 'package:one_million_voices_of_agroecology_app/models/location.dart';
+import 'package:one_million_voices_of_agroecology_app/models/practice/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/home.dart';
 import 'package:one_million_voices_of_agroecology_app/services/location_service.dart';
 import 'package:one_million_voices_of_agroecology_app/widgets/locations/edit_location_widget.dart';
@@ -278,7 +279,8 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                 ],
             ] else if (_selectedPageIndex == 1 && _sendMedia == true) ...[
               NewMediaWidget(
-                locationId: widget.location.id.toString(),
+                location: widget.location,
+                practice: Practice.initPractice(),
                 onSetPage: _selectPage,
               ),
             ]

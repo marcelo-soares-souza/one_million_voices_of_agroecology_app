@@ -3,8 +3,7 @@ import 'package:one_million_voices_of_agroecology_app/helpers/form_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/helpers/practice_helper.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice/practice.dart';
 import 'package:one_million_voices_of_agroecology_app/models/practice/acknowledge.dart';
-import 'package:one_million_voices_of_agroecology_app/screens/home.dart';
-import 'package:one_million_voices_of_agroecology_app/screens/practices.dart';
+import 'package:one_million_voices_of_agroecology_app/screens/practice_details.dart';
 import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
 import 'package:one_million_voices_of_agroecology_app/services/practice_service.dart';
 
@@ -79,13 +78,11 @@ class _NewAcknowledge extends State<NewAcknowledge> {
 
       if (status == 'success') {
         FormHelper.successMessage(context, message);
+        Navigator.pop(context);
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomeScreen(
-              activePage: PracticesScreen(),
-              activePageTitle: 'Practices',
-            ),
+            builder: (context) => PracticeDetailsScreen(practice: widget.practice),
           ),
         );
       } else {
