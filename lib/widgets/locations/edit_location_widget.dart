@@ -52,7 +52,13 @@ class _EditLocation extends State<EditLocation> {
     _checkIfIsLoggedIn();
 
     _location = widget.location;
-    _location.country = countries.where((e) => e.name == _location.country).first.isoCode.name;
+
+    try {
+      _location.country = countries.where((e) => e.name == _location.country).first.isoCode.name;
+    } catch (e) {
+      _location.country = 'BR';
+    }
+
     _initialCenter = LatLng(double.parse(_location.latitude), double.parse(_location.longitude));
     _marker = LocationHelper.buildMarker('', _initialCenter);
 
