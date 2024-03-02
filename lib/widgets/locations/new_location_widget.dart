@@ -95,7 +95,7 @@ class _NewLocation extends State<NewLocation> {
   }
 
   void _updateCoordinates() async {
-    LatLng coordinates = await LocationService.getCoordinates(_location.country);
+    LatLng coordinates = await LocationService.getCoordinates(_location.countryCode);
 
     setState(() {
       _location.latitude = coordinates.latitude.toString();
@@ -147,10 +147,11 @@ class _NewLocation extends State<NewLocation> {
                   const Text('Country', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: LocationHelper.dropDownCountries,
-                    value: _location.country,
+                    value: _location.countryCode,
                     onChanged: (value) {
                       setState(() {
                         _location.country = value!;
+                        _location.countryCode = _location.country;
                       });
                       _updateCoordinates();
                     },

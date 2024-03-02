@@ -152,7 +152,7 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
               ),
               TextBlockWidget(
                 label: 'Country',
-                value: _location.country,
+                value: '${_location.country} (${_location.countryCode})',
               ),
               TextBlockWidget(
                 label: 'Farm and Farming System',

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dart_countries/dart_countries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -52,12 +51,6 @@ class _EditLocation extends State<EditLocation> {
     _checkIfIsLoggedIn();
 
     _location = widget.location;
-
-    try {
-      _location.country = countries.where((e) => e.name == _location.country).first.isoCode.name;
-    } catch (e) {
-      _location.country = 'BR';
-    }
 
     _initialCenter = LatLng(double.parse(_location.latitude), double.parse(_location.longitude));
     _marker = LocationHelper.buildMarker('', _initialCenter);
@@ -117,7 +110,7 @@ class _EditLocation extends State<EditLocation> {
   }
 
   void _updateCoordinates() async {
-    LatLng coordinates = await LocationService.getCoordinates(_location.country);
+    LatLng coordinates = await LocationService.getCoordinates(_location.countryCode);
 
     setState(() {
       _location.latitude = coordinates.latitude.toString();
@@ -159,10 +152,11 @@ class _EditLocation extends State<EditLocation> {
                   const Text('Country', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: LocationHelper.dropDownCountries,
-                    value: _location.country,
+                    value: _location.countryCode,
                     onChanged: (value) {
                       setState(() {
                         _location.country = value!;
+                        _location.countryCode = _location.country;
                       });
                       _updateCoordinates();
                     },

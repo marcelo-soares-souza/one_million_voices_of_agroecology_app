@@ -77,6 +77,7 @@ class LocationService {
       final locationJson = location.toJson();
 
       locationJson.remove('id');
+      locationJson.remove('country_code');
       locationJson.remove('created_at');
       locationJson.remove('updated_at');
 
@@ -106,6 +107,7 @@ class LocationService {
       final locationJson = location.toJson();
 
       locationJson.remove('id');
+      locationJson.remove('country_code');
       locationJson.remove('created_at');
       locationJson.remove('updated_at');
 

@@ -2,6 +2,7 @@ class Location {
   int id;
   String name;
   String country;
+  String countryCode;
   String isItAFarm;
   String farmAndFarmingSystemComplement;
   String farmAndFarmingSystem;
@@ -24,6 +25,7 @@ class Location {
     required this.id,
     required this.name,
     required this.country,
+    required this.countryCode,
     required this.isItAFarm,
     required this.farmAndFarmingSystemComplement,
     required this.farmAndFarmingSystem,
@@ -46,7 +48,8 @@ class Location {
     return Location(
       id: 0,
       name: '',
-      country: 'BR',
+      country: 'Brazil',
+      countryCode: 'BR',
       isItAFarm: 'true',
       farmAndFarmingSystemComplement: '',
       farmAndFarmingSystem: '',
@@ -68,6 +71,7 @@ class Location {
       id: json['id'],
       name: json['name'].toString(),
       country: json['country'].toString(),
+      countryCode: json['country_code'].toString(),
       isItAFarm: json['is_it_a_farm'].toString(),
       farmAndFarmingSystemComplement: json['farm_and_farming_system_complement'].toString(),
       farmAndFarmingSystem: json['farm_and_farming_system'].toString(),
@@ -89,6 +93,7 @@ class Location {
       'id': id,
       'name': name,
       'country': country,
+      'country_code': countryCode,
       'is_it_a_farm': isItAFarm,
       'farm_and_farming_system_complement': farmAndFarmingSystemComplement,
       'farm_and_farming_system': farmAndFarmingSystem,
