@@ -48,11 +48,11 @@ class Location {
     return Location(
       id: 0,
       name: '',
-      country: 'Brazil',
+      country: 'BR',
       countryCode: 'BR',
       isItAFarm: 'true',
       farmAndFarmingSystemComplement: '',
-      farmAndFarmingSystem: '',
+      farmAndFarmingSystem: 'Mainly Home Consumption',
       farmAndFarmingSystemDetails: '',
       whatIsYourDream: '',
       imageUrl: '',

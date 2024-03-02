@@ -77,6 +77,8 @@ class _EditLocation extends State<EditLocation> {
           .toList()
           .join(', ');
 
+      _location.country = _location.countryCode;
+
       String imageBase64 = '';
 
       if (_selectedImage != null) {
@@ -172,7 +174,7 @@ class _EditLocation extends State<EditLocation> {
                   const Text('Is it a farm?', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   DropdownButtonFormField(
                     items: FormHelper.dropDownYesNo,
-                    value: _location.isItAFarm == 'true' ? 'Yes' : 'No',
+                    value: _location.isItAFarm,
                     onChanged: (value) => _location.isItAFarm = value!,
                     decoration: const InputDecoration(
                       filled: false,
