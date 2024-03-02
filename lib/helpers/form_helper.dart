@@ -10,11 +10,20 @@ class FormHelper {
 
   static List<DropdownMenuItem<String>> get dropDownYesNo {
     List<DropdownMenuItem<String>> yesNoItems = [];
-    yesNoItems.add(const DropdownMenuItem(value: 'true', child: Text('Yes')));
-    yesNoItems.add(const DropdownMenuItem(value: 'false', child: Text('No')));
+    yesNoItems.add(const DropdownMenuItem(value: 'Yes', child: Text('Yes')));
+    yesNoItems.add(const DropdownMenuItem(value: 'No', child: Text('No')));
     yesNoItems.add(const DropdownMenuItem(value: '', child: Text('None of above')));
 
     return yesNoItems;
+  }
+
+  static List<DropdownMenuItem<String>> get dropDownYesNoBool {
+    List<DropdownMenuItem<String>> yesNoBoolItems = [];
+    yesNoBoolItems.add(const DropdownMenuItem(value: 'true', child: Text('Yes')));
+    yesNoBoolItems.add(const DropdownMenuItem(value: 'false', child: Text('No')));
+    yesNoBoolItems.add(const DropdownMenuItem(value: '', child: Text('None of above')));
+
+    return yesNoBoolItems;
   }
 
   static successMessage(context, message) {
