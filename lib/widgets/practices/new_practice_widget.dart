@@ -148,6 +148,8 @@ class _NewPractice extends State<NewPractice> {
                   const SizedBox(height: 21),
                   const Text('Practice Name', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     maxLength: 64,
                     style: const TextStyle(color: Colors.white),
                     validator: (value) => FormHelper.validateInputSize(value, 1, 64),

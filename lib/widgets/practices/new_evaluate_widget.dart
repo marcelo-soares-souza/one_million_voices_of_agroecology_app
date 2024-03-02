@@ -131,6 +131,8 @@ class _NewEvaluate extends State<NewEvaluate> {
                   const SizedBox(height: 30),
                   const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue: widget.practice.generalPerformanceOfPracticeDetails.isNotEmpty
                         ? widget.practice.generalPerformanceOfPracticeDetails
                         : '',
@@ -158,6 +160,8 @@ class _NewEvaluate extends State<NewEvaluate> {
                   const SizedBox(height: 30),
                   const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue: widget.practice.unintendedPositiveSideEffectsOfPracticeDetails.isNotEmpty
                         ? widget.practice.unintendedPositiveSideEffectsOfPracticeDetails
                         : '',
@@ -185,6 +189,8 @@ class _NewEvaluate extends State<NewEvaluate> {
                   const SizedBox(height: 30),
                   const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue: widget.practice.unintendedNegativeSideEffectOfPracticeDetails.isNotEmpty
                         ? widget.practice.unintendedNegativeSideEffectOfPracticeDetails
                         : '',
@@ -212,6 +218,8 @@ class _NewEvaluate extends State<NewEvaluate> {
                   const SizedBox(height: 30),
                   const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue: widget.practice.knowledgeAndSkillsRequiredForPracticeDetails.isNotEmpty
                         ? widget.practice.knowledgeAndSkillsRequiredForPracticeDetails
                         : '',
@@ -238,6 +246,8 @@ class _NewEvaluate extends State<NewEvaluate> {
                   const SizedBox(height: 30),
                   const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue: widget.practice.labourRequiredForPracticeDetails.isNotEmpty
                         ? widget.practice.labourRequiredForPracticeDetails
                         : '',
@@ -264,6 +274,8 @@ class _NewEvaluate extends State<NewEvaluate> {
                   const SizedBox(height: 30),
                   const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue: widget.practice.costAssociatedWithPracticeDetails.isNotEmpty
                         ? widget.practice.costAssociatedWithPracticeDetails
                         : '',
@@ -291,6 +303,8 @@ class _NewEvaluate extends State<NewEvaluate> {
                   const SizedBox(height: 30),
                   const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue: widget.practice.doesItWorkInDegradedEnvironmentsDetails.isNotEmpty
                         ? widget.practice.doesItWorkInDegradedEnvironmentsDetails
                         : '',
@@ -316,6 +330,8 @@ class _NewEvaluate extends State<NewEvaluate> {
                   const SizedBox(height: 30),
                   const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue: widget.practice.doesItHelpRestoreLandDetails.isNotEmpty
                         ? widget.practice.doesItHelpRestoreLandDetails
                         : '',
@@ -343,6 +359,8 @@ class _NewEvaluate extends State<NewEvaluate> {
                   const SizedBox(height: 30),
                   const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue: widget.practice.climateChangeVulnerabilityEffectsDetails.isNotEmpty
                         ? widget.practice.climateChangeVulnerabilityEffectsDetails
                         : '',
@@ -367,6 +385,8 @@ class _NewEvaluate extends State<NewEvaluate> {
                   const SizedBox(height: 30),
                   const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue: widget.practice.timeRequirementsDetails.isNotEmpty
                         ? widget.practice.timeRequirementsDetails
                         : '',

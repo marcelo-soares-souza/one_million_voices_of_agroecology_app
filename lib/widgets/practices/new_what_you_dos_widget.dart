@@ -117,6 +117,8 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
                   const SizedBox(height: 21),
                   const Text('Summary description', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue:
                         widget.practice.summaryDescription.isNotEmpty ? widget.practice.summaryDescription : '',
                     maxLength: 4096,
@@ -133,6 +135,8 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
                   const SizedBox(height: 21),
                   const Text('Type of agroecological practice', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue: widget.practice.typeOfAgroecologicalPractice.isNotEmpty
                         ? widget.practice.typeOfAgroecologicalPractice
                         : '',
@@ -151,6 +155,8 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
                   const SizedBox(height: 21),
                   const Text('Implementing the practice', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue: widget.practice.practicalImplementationOfThePractice.isNotEmpty
                         ? widget.practice.practicalImplementationOfThePractice
                         : '',
@@ -184,6 +190,8 @@ class _NewWhatYouDos extends State<NewWhatYouDos> {
                   const Text('Why you use and what you expect from this practice?',
                       style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue: widget.practice.whyYouUseAndWhatYouExpectFromThisPractice.isNotEmpty
                         ? widget.practice.whyYouUseAndWhatYouExpectFromThisPractice
                         : '',

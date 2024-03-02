@@ -198,6 +198,8 @@ class _NewLocation extends State<NewLocation> {
                   const SizedBox(height: 24),
                   const Text('What is your dream?', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     maxLength: 512,
                     maxLines: null,
                     style: const TextStyle(color: Colors.white),
@@ -217,6 +219,8 @@ class _NewLocation extends State<NewLocation> {
                   const SizedBox(height: 20),
                   const Text('Description', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     maxLength: 512,
                     maxLines: null,
                     style: const TextStyle(color: Colors.white),

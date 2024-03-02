@@ -125,6 +125,8 @@ class _NewAcknowledge extends State<NewAcknowledge> {
                   const SizedBox(height: 30),
                   const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue:
                         widget.practice.knowledgeSourceDetails.isNotEmpty ? widget.practice.knowledgeSourceDetails : '',
                     maxLength: 4096,
@@ -148,6 +150,8 @@ class _NewAcknowledge extends State<NewAcknowledge> {
                   const SizedBox(height: 30),
                   const Text('Details', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue:
                         widget.practice.knowledgeTimingDetails.isNotEmpty ? widget.practice.knowledgeTimingDetails : '',
                     maxLength: 4096,
@@ -159,6 +163,8 @@ class _NewAcknowledge extends State<NewAcknowledge> {
                   const SizedBox(height: 30),
                   const Text('Uptake motivation', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue: widget.practice.uptakeMotivation.isNotEmpty ? widget.practice.uptakeMotivation : '',
                     maxLength: 4096,
                     style: const TextStyle(color: Colors.white),
@@ -169,6 +175,8 @@ class _NewAcknowledge extends State<NewAcknowledge> {
                   const SizedBox(height: 30),
                   const Text('Knowledge products', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue: widget.practice.knowledgeProducts.isNotEmpty ? widget.practice.knowledgeProducts : '',
                     maxLength: 4096,
                     style: const TextStyle(color: Colors.white),

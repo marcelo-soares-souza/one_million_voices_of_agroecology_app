@@ -143,6 +143,8 @@ class _EditLocation extends State<EditLocation> {
                   const SizedBox(height: 10),
                   const Text('Location Name', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     maxLength: 64,
                     style: const TextStyle(color: Colors.white),
                     validator: (value) => FormHelper.validateInputSize(value, 1, 64),
@@ -203,6 +205,8 @@ class _EditLocation extends State<EditLocation> {
                   const SizedBox(height: 30),
                   const Text('What is your dream?', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue: _location.whatIsYourDream,
                     maxLength: 512,
                     minLines: 2,
@@ -217,6 +221,8 @@ class _EditLocation extends State<EditLocation> {
                   const SizedBox(height: 20),
                   const Text('Description', style: TextStyle(color: Colors.grey, fontSize: 18)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     initialValue: _location.description,
                     maxLength: 512,
                     minLines: 2,

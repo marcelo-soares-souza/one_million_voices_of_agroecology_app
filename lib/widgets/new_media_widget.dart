@@ -130,6 +130,8 @@ class _NewMediaWidget extends State<NewMediaWidget> {
                   const SizedBox(height: 16),
                   const Text('Description', style: TextStyle(color: Colors.grey, fontSize: 16)),
                   TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
                     maxLength: 64,
                     style: const TextStyle(color: Colors.white),
                     onSaved: (value) => _galleryItem.description = value!,
