@@ -63,7 +63,7 @@ class _MapWidget extends State<MapWidget> {
 
   void selectLocation(BuildContext context, Location location) {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (ctx) => LocationDetailsScreen(location: location)),
+      MaterialPageRoute(builder: (ctx) => LocationDetailsScreen(location: location, disableControls: true)),
     );
   }
 

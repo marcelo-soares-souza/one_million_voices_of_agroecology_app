@@ -18,10 +18,15 @@ import 'package:one_million_voices_of_agroecology_app/widgets/text_block_widget.
 
 class LocationDetailsScreen extends StatefulWidget {
   final Location location;
+  final bool disableControls;
   final void Function(Location location) onRemoveLocation;
   static dynamic _dummyOnRemoveLocation(Location location) {}
 
-  const LocationDetailsScreen({super.key, required this.location, this.onRemoveLocation = _dummyOnRemoveLocation});
+  const LocationDetailsScreen(
+      {super.key,
+      required this.location,
+      this.onRemoveLocation = _dummyOnRemoveLocation,
+      this.disableControls = false});
 
   @override
   State<LocationDetailsScreen> createState() {
@@ -294,30 +299,31 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
         title: Text(widget.location.name),
         actions: [
           if (!_isLoading && _location.hasPermission) ...[
-            if (_selectedPageIndex == 1)
-              IconButton(
-                  icon: const Icon(FontAwesomeIcons.camera),
-                  color: Colors.orange,
+            if (!widget.disableControls)
+              if (_selectedPageIndex == 1)
+                IconButton(
+                    icon: const Icon(FontAwesomeIcons.camera),
+                    color: Colors.orange,
+                    onPressed: () {
+                      _selectPage(1);
+                      setState(() {
+                        _sendMedia = true;
+                      });
+                    })
+              else if (_selectedPageIndex == 0 && _location.hasPermission) ...[
+                IconButton(
+                  icon: const Icon(FontAwesomeIcons.penToSquare),
+                  color: Colors.green,
                   onPressed: () {
-                    _selectPage(1);
-                    setState(() {
-                      _sendMedia = true;
-                    });
-                  })
-            else if (_selectedPageIndex == 0 && _location.hasPermission) ...[
-              IconButton(
-                icon: const Icon(FontAwesomeIcons.penToSquare),
-                color: Colors.green,
-                onPressed: () {
-                  _editLocation(_location);
-                },
-              ),
-              IconButton(
-                icon: const Icon(FontAwesomeIcons.trashCan),
-                color: Colors.red,
-                onPressed: _showAlertDialog,
-              ),
-            ]
+                    _editLocation(_location);
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(FontAwesomeIcons.trashCan),
+                  color: Colors.red,
+                  onPressed: _showAlertDialog,
+                ),
+              ]
           ]
         ],
       ),
