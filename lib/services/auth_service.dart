@@ -36,18 +36,21 @@ class AuthService {
     return true;
   }
 
-  static Future<bool> signup(name, email, password) async {
+  static Future<Map<String, String>> signup(name, email, password) async {
     final res = await httpClient.post(
       Config.getURI('/signup.json'),
       body: jsonEncode({'name': name, 'email': email, 'password': password}),
     );
 
+    dynamic message = json.decode(res.body);
+    String error = message['error'].toString().replaceAll('{', '').replaceAll('}', '');
+
     debugPrint('[DEBUG]: signup statusCode ${res.statusCode}');
     debugPrint('[DEBUG]: signup body ${res.body.toString()}');
 
-    if (res.statusCode > 400) return false;
+    if (res.statusCode >= 400) return {'status': 'failed', 'message': error};
 
-    return true;
+    return {'status': 'success', 'message': 'Location added'};
   }
 
   static Future<String> getCurrentAccountId() async {

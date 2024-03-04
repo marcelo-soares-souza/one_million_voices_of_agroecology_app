@@ -121,83 +121,93 @@ class _NewPractice extends State<NewPractice> {
         ),
       );
 
-      if (_isLoggedIn) {
-        content = SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  const SizedBox(height: 10),
-                  const Text('Location', style: TextStyle(color: Colors.grey, fontSize: 18)),
-                  DropdownButtonFormField(
-                    items: dropDownLocations,
-                    value: _locations.isNotEmpty ? _locations[0].id.toString() : null,
-                    onChanged: (value) {
-                      setState(() {
-                        _practice.locationId = value!;
-                      });
-                    },
-                    decoration: const InputDecoration(
-                      filled: false,
-                      fillColor: Colors.blueAccent,
-                    ),
-                    dropdownColor: Theme.of(context).colorScheme.background,
-                  ),
-                  const SizedBox(height: 21),
-                  const Text('Practice Name', style: TextStyle(color: Colors.grey, fontSize: 18)),
-                  TextFormField(
-                    textCapitalization: TextCapitalization.sentences,
-                    keyboardType: TextInputType.text,
-                    maxLength: 64,
-                    style: const TextStyle(color: Colors.white),
-                    validator: (value) => FormHelper.validateInputSize(value, 1, 64),
-                    onSaved: (value) => _practice.name = value!,
-                    decoration: InputDecoration(
-                      hintText: 'Name this practice (e.g. my agroforestry, permaculture experiment, etc.).?',
-                      hintStyle: TextStyle(
-                        color: Colors.grey.withOpacity(0.4),
-                        fontSize: 12,
+      if (_locations.isNotEmpty) {
+        if (_isLoggedIn) {
+          content = SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10),
+                    const Text('Location', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                    DropdownButtonFormField(
+                      items: dropDownLocations,
+                      value: _locations.isNotEmpty ? _locations[0].id.toString() : null,
+                      onChanged: (value) {
+                        setState(() {
+                          _practice.locationId = value!;
+                        });
+                      },
+                      decoration: const InputDecoration(
+                        filled: false,
+                        fillColor: Colors.blueAccent,
                       ),
+                      dropdownColor: Theme.of(context).colorScheme.background,
                     ),
-                  ),
-                  const SizedBox(height: 21),
-                  const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 18)),
-                  const SizedBox(height: 21),
-                  ImageInput(onPickImage: (image) => _selectedImage = image),
-                  const SizedBox(height: 20),
-                  //
-                  // Buttons
-                  //
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: const Size(128, 36),
-                          textStyle: const TextStyle(fontSize: 21),
+                    const SizedBox(height: 21),
+                    const Text('Practice Name', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                    TextFormField(
+                      textCapitalization: TextCapitalization.sentences,
+                      keyboardType: TextInputType.text,
+                      maxLength: 64,
+                      style: const TextStyle(color: Colors.white),
+                      validator: (value) => FormHelper.validateInputSize(value, 1, 64),
+                      onSaved: (value) => _practice.name = value!,
+                      decoration: InputDecoration(
+                        hintText: 'Name this practice (e.g. my agroforestry, permaculture experiment, etc.).?',
+                        hintStyle: TextStyle(
+                          color: Colors.grey.withOpacity(0.4),
+                          fontSize: 12,
                         ),
-                        onPressed: _isSending ? null : _saveItem,
-                        child: _isSending
-                            ? const SizedBox(
-                                height: 21,
-                                width: 16,
-                                child: CircularProgressIndicator(),
-                              )
-                            : const Text('Save'),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                ],
+                    ),
+                    const SizedBox(height: 21),
+                    const Text('Photo', style: TextStyle(color: Colors.grey, fontSize: 18)),
+                    const SizedBox(height: 21),
+                    ImageInput(onPickImage: (image) => _selectedImage = image),
+                    const SizedBox(height: 20),
+                    //
+                    // Buttons
+                    //
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: const Size(128, 36),
+                            textStyle: const TextStyle(fontSize: 21),
+                          ),
+                          onPressed: _isSending ? null : _saveItem,
+                          child: _isSending
+                              ? const SizedBox(
+                                  height: 21,
+                                  width: 16,
+                                  child: CircularProgressIndicator(),
+                                )
+                              : const Text('Save'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
               ),
             ),
+          );
+        }
+      } else {
+        content = Center(
+          child: Text(
+            'You need to add at least one location',
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
           ),
         );
       }
     }
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Add a new Practice'),

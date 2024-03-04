@@ -30,16 +30,19 @@ class _LoginScreen extends State<LoginScreen> {
   }
 
   Future<String?> _signUp(SignupData signupData) async {
-    signupData.additionalSignupData?.forEach((key, value) {
-      debugPrint('$key: $value');
-    });
+    // signupData.additionalSignupData?.forEach((key, value) {
+    //  debugPrint('$key: $value');
+    // });
 
-    bool isAuthenticated =
+    Map<String, String> response =
         await AuthService.signup(signupData.additionalSignupData!['name'], signupData.name, signupData.password);
 
+    String status = response['status'].toString();
+    String message = response['message'].toString();
+
     return Future.delayed(singupTime).then((_) {
-      if (!isAuthenticated) {
-        return 'Something is wrong.';
+      if (status == 'failed') {
+        return 'Something is wrong. $message';
       }
 
       return null;
