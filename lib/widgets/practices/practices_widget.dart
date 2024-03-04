@@ -9,11 +9,12 @@ import 'package:one_million_voices_of_agroecology_app/services/practice_service.
 import 'package:one_million_voices_of_agroecology_app/widgets/practices/practice_item_widget.dart';
 
 class PracticesWidget extends StatefulWidget {
-  const PracticesWidget({super.key});
+  final String filter;
+
+  const PracticesWidget({super.key, this.filter = ''});
+
   @override
-  State<PracticesWidget> createState() {
-    return _PracticesWidget();
-  }
+  State<PracticesWidget> createState() => _PracticesWidget();
 }
 
 class _PracticesWidget extends State<PracticesWidget> {
@@ -35,13 +36,13 @@ class _PracticesWidget extends State<PracticesWidget> {
 
   void _loadPractices() async {
     try {
-      _practices = await PracticeService.retrieveAllPractices();
-
-      if (_practices.isNotEmpty) {
-        setState(() {
-          _isLoading = false;
-        });
+      if (widget.filter.isNotEmpty) {
+        _practices = await PracticeService.retrievePracticesByFilter(widget.filter);
+      } else {
+        _practices = await PracticeService.retrieveAllPractices();
       }
+
+      setState(() => _isLoading = false);
     } catch (e) {
       throw Exception('[PracticesWidget] Error: $e');
     }
@@ -65,36 +66,48 @@ class _PracticesWidget extends State<PracticesWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = const Center(child: Text('No practices'));
+    Widget content = Column(children: [
+      const SizedBox(height: 200),
+      Center(
+          child: Text(
+        textAlign: TextAlign.center,
+        'No practices found',
+        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+      ))
+    ]);
 
     if (_isLoading) {
       content = const Center(child: CircularProgressIndicator());
     } else {
-      content = ListView.builder(
-        itemCount: _practices.length,
-        itemBuilder: (ctx, index) => Slidable(
-          endActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            children: [
-              if (_practices[index].hasPermission) ...[
-                SlidableAction(
-                  onPressed: (onPressed) => _removePractice(_practices[index]),
-                  label: 'Delete',
-                  icon: FontAwesomeIcons.trash,
-                  backgroundColor: const Color(0xFFFE4A49),
-                  foregroundColor: Colors.white,
-                )
-              ]
-            ],
+      if (_practices.isNotEmpty) {
+        content = ListView.builder(
+          itemCount: _practices.length,
+          itemBuilder: (ctx, index) => Slidable(
+            endActionPane: ActionPane(
+              motion: const ScrollMotion(),
+              children: [
+                if (_practices[index].hasPermission) ...[
+                  SlidableAction(
+                    onPressed: (onPressed) => _removePractice(_practices[index]),
+                    label: 'Delete',
+                    icon: FontAwesomeIcons.trash,
+                    backgroundColor: const Color(0xFFFE4A49),
+                    foregroundColor: Colors.white,
+                  )
+                ]
+              ],
+            ),
+            key: ValueKey(_practices[index].id),
+            child: PracticeItemWidget(
+              key: ObjectKey(_practices[index].id),
+              practice: _practices[index],
+              onSelectPractice: selectPractice,
+            ),
           ),
-          key: ValueKey(_practices[index].id),
-          child: PracticeItemWidget(
-            key: ObjectKey(_practices[index].id),
-            practice: _practices[index],
-            onSelectPractice: selectPractice,
-          ),
-        ),
-      );
+        );
+      }
     }
 
     return content;

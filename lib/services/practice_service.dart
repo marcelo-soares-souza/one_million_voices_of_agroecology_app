@@ -33,6 +33,20 @@ class PracticeService {
     return practices;
   }
 
+  static Future<List<Practice>> retrievePracticesByFilter(String filter) async {
+    final List<Practice> practices = [];
+
+    final res = await httpClient.get(Config.getURI('practices.json'), params: {'filter': 'true', 'name': filter});
+
+    for (final practice in json.decode(res.body.toString())) {
+      Practice p = Practice.fromJson(practice);
+      p.hasPermission = await AuthService.hasPermission(int.parse(p.accountId));
+      practices.add(p);
+    }
+
+    return practices;
+  }
+
   static Future<Practice> retrievePractice(String id) async {
     final res = await httpClient.get(Config.getURI('/practices/$id.json'));
     Practice practice = Practice.fromJson(json.decode(res.body.toString()));

@@ -10,7 +10,9 @@ import 'package:one_million_voices_of_agroecology_app/widgets/locations/location
 
 class LocationsWidget extends StatefulWidget {
   final String filter;
+
   const LocationsWidget({super.key, this.filter = ''});
+
   @override
   State<LocationsWidget> createState() => _LocationsWidget();
 }
@@ -54,7 +56,7 @@ class _LocationsWidget extends State<LocationsWidget> {
     if (response['status'] == 'success') setState(() => _locations.remove(location));
 
     if (!mounted) return;
-    FormHelper.successMessage(context, 'Location Removed');
+    FormHelper.successMessage(context, 'Location removed');
   }
 
   @override
@@ -64,7 +66,7 @@ class _LocationsWidget extends State<LocationsWidget> {
       Center(
           child: Text(
         textAlign: TextAlign.center,
-        'No Locations Found',
+        'No locations found',
         style: Theme.of(context).textTheme.titleLarge!.copyWith(
               color: Theme.of(context).colorScheme.secondary,
             ),

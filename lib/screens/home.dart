@@ -99,6 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
       activePageTitle,
       style: Theme.of(context).textTheme.titleLarge,
     );
+
     if (activePageTitle == 'Locations') {
       title = TextField(
         cursorColor: Colors.white,
@@ -119,6 +120,32 @@ class _HomeScreenState extends State<HomeScreen> {
                   MaterialPageRoute(
                     builder: (context) =>
                         HomeScreen(activePage: LocationsScreen(filter: _searchQuery), activePageTitle: 'Locations'),
+                  ),
+                );
+              },
+            )),
+        style: const TextStyle(color: Colors.white, fontSize: 15.0),
+      );
+    } else if (activePageTitle == 'Practices') {
+      title = TextField(
+        cursorColor: Colors.white,
+        onChanged: (value) => _searchQuery = value,
+        decoration: InputDecoration(
+            hintText: "Search Practice...",
+            hintStyle: TextStyle(
+              color: Colors.grey.withOpacity(0.4),
+              fontSize: 18,
+            ),
+            border: InputBorder.none,
+            suffixIcon: IconButton(
+              icon: const Icon(FontAwesomeIcons.magnifyingGlass),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        HomeScreen(activePage: PracticesScreen(filter: _searchQuery), activePageTitle: 'Practices'),
                   ),
                 );
               },
