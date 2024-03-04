@@ -9,14 +9,15 @@ import 'package:one_million_voices_of_agroecology_app/services/location_service.
 import 'package:one_million_voices_of_agroecology_app/widgets/locations/location_item_widget.dart';
 
 class LocationsWidget extends StatefulWidget {
-  const LocationsWidget({super.key});
+  final String filter;
+  const LocationsWidget({super.key, this.filter = ''});
   @override
   State<LocationsWidget> createState() => _LocationsWidget();
 }
 
 class _LocationsWidget extends State<LocationsWidget> {
   bool _isLoading = true;
-  late final List<Location> _locations;
+  List<Location> _locations = [];
 
   void selectLocation(BuildContext context, Location location) {
     Navigator.of(context).push(
@@ -28,11 +29,13 @@ class _LocationsWidget extends State<LocationsWidget> {
 
   void _loadLocations() async {
     try {
-      _locations = await LocationService.retrieveAllLocations();
-
-      if (_locations.isNotEmpty) {
-        setState(() => _isLoading = false);
+      if (widget.filter.isNotEmpty) {
+        _locations = await LocationService.retrieveLocationsByFilter(widget.filter);
+      } else {
+        _locations = await LocationService.retrieveAllLocations();
       }
+
+      setState(() => _isLoading = false);
     } catch (e) {
       throw Exception('[LocationsWidget] Error: $e');
     }
@@ -56,36 +59,48 @@ class _LocationsWidget extends State<LocationsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = const Center(child: Text('No locations'));
+    Widget content = Column(children: [
+      const SizedBox(height: 200),
+      Center(
+          child: Text(
+        textAlign: TextAlign.center,
+        'No Locations Found',
+        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+      ))
+    ]);
 
     if (_isLoading) {
       content = const Center(child: CircularProgressIndicator());
     } else {
-      content = ListView.builder(
-        itemCount: _locations.length,
-        itemBuilder: (ctx, index) => Slidable(
-          endActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            children: [
-              if (_locations[index].hasPermission) ...[
-                SlidableAction(
-                  onPressed: (onPressed) => _removeLocation(_locations[index]),
-                  label: 'Delete',
-                  icon: FontAwesomeIcons.trash,
-                  backgroundColor: const Color(0xFFFE4A49),
-                  foregroundColor: Colors.white,
-                )
-              ]
-            ],
+      if (_locations.isNotEmpty) {
+        content = ListView.builder(
+          itemCount: _locations.length,
+          itemBuilder: (ctx, index) => Slidable(
+            endActionPane: ActionPane(
+              motion: const ScrollMotion(),
+              children: [
+                if (_locations[index].hasPermission) ...[
+                  SlidableAction(
+                    onPressed: (onPressed) => _removeLocation(_locations[index]),
+                    label: 'Delete',
+                    icon: FontAwesomeIcons.trash,
+                    backgroundColor: const Color(0xFFFE4A49),
+                    foregroundColor: Colors.white,
+                  )
+                ]
+              ],
+            ),
+            key: ValueKey(_locations[index].id),
+            child: LocationItemWidget(
+              key: ObjectKey(_locations[index].id),
+              location: _locations[index],
+              onSelectLocation: selectLocation,
+            ),
           ),
-          key: ValueKey(_locations[index].id),
-          child: LocationItemWidget(
-            key: ObjectKey(_locations[index].id),
-            location: _locations[index],
-            onSelectLocation: selectLocation,
-          ),
-        ),
-      );
+        );
+      }
     }
 
     return content;

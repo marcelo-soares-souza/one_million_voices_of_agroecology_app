@@ -23,6 +23,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Widget activePage = const MapScreen();
   String activePageTitle = 'Map';
+  String _searchQuery = '';
 
   void _addLocation() async {
     await Navigator.of(context).push(
@@ -93,14 +94,47 @@ class _HomeScreenState extends State<HomeScreen> {
     activePageTitle = widget.activePageTitle;
   }
 
+  Widget getTitle() {
+    Widget title = Text(
+      activePageTitle,
+      style: Theme.of(context).textTheme.titleLarge,
+    );
+    if (activePageTitle == 'Locations') {
+      title = TextField(
+        cursorColor: Colors.white,
+        onChanged: (value) => _searchQuery = value,
+        decoration: InputDecoration(
+            hintText: "Search Location...",
+            hintStyle: TextStyle(
+              color: Colors.grey.withOpacity(0.4),
+              fontSize: 18,
+            ),
+            border: InputBorder.none,
+            suffixIcon: IconButton(
+              icon: const Icon(FontAwesomeIcons.magnifyingGlass),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        HomeScreen(activePage: LocationsScreen(filter: _searchQuery), activePageTitle: 'Locations'),
+                  ),
+                );
+              },
+            )),
+        style: const TextStyle(color: Colors.white, fontSize: 15.0),
+      );
+    }
+
+    return title;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          activePageTitle,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        title: getTitle(),
         actions: [
           if (activePageTitle == 'Locations')
             IconButton(

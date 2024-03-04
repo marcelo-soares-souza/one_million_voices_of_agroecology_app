@@ -30,6 +30,19 @@ class LocationService {
     return locations;
   }
 
+  static Future<List<Location>> retrieveLocationsByFilter(String filter) async {
+    final List<Location> locations = [];
+    final res = await httpClient.get(Config.getURI('locations.json'), params: {'filter': 'true', 'name': filter});
+
+    for (final location in json.decode(res.body.toString())) {
+      Location l = Location.fromJson(location);
+      l.hasPermission = await AuthService.hasPermission(l.accountId);
+      locations.add(l);
+    }
+
+    return locations;
+  }
+
   static Future<Location> retrieveLocation(String id) async {
     final res = await httpClient.get(Config.getURI('/locations/$id.json'));
     Location location = Location.fromJson(json.decode(res.body.toString()));
