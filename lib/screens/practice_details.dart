@@ -175,6 +175,10 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
             children: [
               if (_selectedPageIndex != 5) ...[
                 CachedNetworkImage(
+                  errorWidget: (context, url, error) => const Icon(
+                    FontAwesomeIcons.circleExclamation,
+                    color: Colors.red,
+                  ),
                   height: 250,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -235,6 +239,10 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
                     Stack(
                       children: [
                         CachedNetworkImage(
+                          errorWidget: (context, url, error) => const Icon(
+                            FontAwesomeIcons.circleExclamation,
+                            color: Colors.red,
+                          ),
                           height: 300,
                           width: double.infinity,
                           fit: BoxFit.cover,

@@ -145,6 +145,10 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
               const SizedBox(height: 4),
               if (_selectedPageIndex == 0) ...[
                 CachedNetworkImage(
+                  errorWidget: (context, url, error) => const Icon(
+                    FontAwesomeIcons.circleExclamation,
+                    color: Colors.red,
+                  ),
                   height: 250,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -243,6 +247,10 @@ class _LocationDetailsScreen extends State<LocationDetailsScreen> {
                       child: Stack(
                         children: [
                           CachedNetworkImage(
+                            errorWidget: (context, url, error) => const Icon(
+                              FontAwesomeIcons.circleExclamation,
+                              color: Colors.red,
+                            ),
                             height: 300,
                             width: double.infinity,
                             fit: BoxFit.cover,

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:one_million_voices_of_agroecology_app/models/practice/practice.dart';
 
@@ -23,6 +24,10 @@ class PracticeItemWidget extends StatelessWidget {
         child: Stack(
           children: [
             CachedNetworkImage(
+              errorWidget: (context, url, error) => const Icon(
+                FontAwesomeIcons.circleExclamation,
+                color: Colors.red,
+              ),
               height: 200,
               width: double.infinity,
               fit: BoxFit.cover,

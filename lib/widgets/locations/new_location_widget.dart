@@ -29,7 +29,7 @@ class _NewLocation extends State<NewLocation> {
   final Location _location = Location.initLocation();
   late Position? _currentPosition;
   final LatLng _initialCenter = const LatLng(16.0, 16.0);
-  MapController mapController = MapController();
+  final MapController mapController = MapController();
   final _formKey = GlobalKey<FormState>();
   bool _isSending = false;
   bool _isLoggedIn = false;
@@ -345,7 +345,9 @@ class _NewLocation extends State<NewLocation> {
     setState(() {
       LatLng coordinates = LatLng(double.parse(_location.latitude), double.parse(_location.longitude));
       _marker = LocationHelper.buildMarker(_location.id.toString(), coordinates);
-      mapController.move(coordinates, 3);
+
+      // ignore: unnecessary_null_comparison
+      if (mapController != null) mapController.move(coordinates, 3);
     });
   }
 }
