@@ -10,6 +10,8 @@ class AuthService {
   static const storage = FlutterSecureStorage();
 
   static InterceptedClient httpClient = InterceptedClient.build(
+    onRequestTimeout: () => throw 'Request Timeout',
+    requestTimeout: const Duration(seconds: 45),
     interceptors: [
       CustomInterceptor(),
     ],

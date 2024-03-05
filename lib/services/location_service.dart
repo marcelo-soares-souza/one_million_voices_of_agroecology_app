@@ -11,6 +11,8 @@ import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart
 
 class LocationService {
   static InterceptedClient httpClient = InterceptedClient.build(
+    onRequestTimeout: () => throw 'Request Timeout',
+    requestTimeout: const Duration(seconds: 45),
     interceptors: [
       CustomInterceptor(),
     ],

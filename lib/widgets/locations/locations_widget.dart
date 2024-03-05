@@ -29,7 +29,7 @@ class _LocationsWidget extends State<LocationsWidget> {
     );
   }
 
-  void _loadLocations() async {
+  Future<void> _loadLocations() async {
     try {
       if (widget.filter.isNotEmpty) {
         _locations = await LocationService.retrieveLocationsByFilter(widget.filter);
@@ -77,28 +77,34 @@ class _LocationsWidget extends State<LocationsWidget> {
       content = const Center(child: CircularProgressIndicator());
     } else {
       if (_locations.isNotEmpty) {
-        content = ListView.builder(
-          itemCount: _locations.length,
-          itemBuilder: (ctx, index) => Slidable(
-            endActionPane: ActionPane(
-              motion: const ScrollMotion(),
-              children: [
-                if (_locations[index].hasPermission) ...[
-                  SlidableAction(
-                    onPressed: (onPressed) => _removeLocation(_locations[index]),
-                    label: 'Delete',
-                    icon: FontAwesomeIcons.trash,
-                    backgroundColor: const Color(0xFFFE4A49),
-                    foregroundColor: Colors.white,
-                  )
-                ]
-              ],
-            ),
-            key: ValueKey(_locations[index].id),
-            child: LocationItemWidget(
-              key: ObjectKey(_locations[index].id),
-              location: _locations[index],
-              onSelectLocation: selectLocation,
+        content = RefreshIndicator(
+          onRefresh: () async {
+            setState(() => _isLoading = true);
+            await _loadLocations();
+          },
+          child: ListView.builder(
+            itemCount: _locations.length,
+            itemBuilder: (ctx, index) => Slidable(
+              endActionPane: ActionPane(
+                motion: const ScrollMotion(),
+                children: [
+                  if (_locations[index].hasPermission) ...[
+                    SlidableAction(
+                      onPressed: (onPressed) => _removeLocation(_locations[index]),
+                      label: 'Delete',
+                      icon: FontAwesomeIcons.trash,
+                      backgroundColor: const Color(0xFFFE4A49),
+                      foregroundColor: Colors.white,
+                    )
+                  ]
+                ],
+              ),
+              key: ValueKey(_locations[index].id),
+              child: LocationItemWidget(
+                key: ObjectKey(_locations[index].id),
+                location: _locations[index],
+                onSelectLocation: selectLocation,
+              ),
             ),
           ),
         );

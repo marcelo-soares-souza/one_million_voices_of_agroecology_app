@@ -34,7 +34,7 @@ class _PracticesWidget extends State<PracticesWidget> {
     );
   }
 
-  void _loadPractices() async {
+  Future<void> _loadPractices() async {
     try {
       if (widget.filter.isNotEmpty) {
         _practices = await PracticeService.retrievePracticesByFilter(widget.filter);
@@ -82,28 +82,34 @@ class _PracticesWidget extends State<PracticesWidget> {
       content = const Center(child: CircularProgressIndicator());
     } else {
       if (_practices.isNotEmpty) {
-        content = ListView.builder(
-          itemCount: _practices.length,
-          itemBuilder: (ctx, index) => Slidable(
-            endActionPane: ActionPane(
-              motion: const ScrollMotion(),
-              children: [
-                if (_practices[index].hasPermission) ...[
-                  SlidableAction(
-                    onPressed: (onPressed) => _removePractice(_practices[index]),
-                    label: 'Delete',
-                    icon: FontAwesomeIcons.trash,
-                    backgroundColor: const Color(0xFFFE4A49),
-                    foregroundColor: Colors.white,
-                  )
-                ]
-              ],
-            ),
-            key: ValueKey(_practices[index].id),
-            child: PracticeItemWidget(
-              key: ObjectKey(_practices[index].id),
-              practice: _practices[index],
-              onSelectPractice: selectPractice,
+        content = RefreshIndicator(
+          onRefresh: () async {
+            setState(() => _isLoading = true);
+            await _loadPractices();
+          },
+          child: ListView.builder(
+            itemCount: _practices.length,
+            itemBuilder: (ctx, index) => Slidable(
+              endActionPane: ActionPane(
+                motion: const ScrollMotion(),
+                children: [
+                  if (_practices[index].hasPermission) ...[
+                    SlidableAction(
+                      onPressed: (onPressed) => _removePractice(_practices[index]),
+                      label: 'Delete',
+                      icon: FontAwesomeIcons.trash,
+                      backgroundColor: const Color(0xFFFE4A49),
+                      foregroundColor: Colors.white,
+                    )
+                  ]
+                ],
+              ),
+              key: ValueKey(_practices[index].id),
+              child: PracticeItemWidget(
+                key: ObjectKey(_practices[index].id),
+                practice: _practices[index],
+                onSelectPractice: selectPractice,
+              ),
             ),
           ),
         );

@@ -20,6 +20,7 @@ class MapWidget extends StatefulWidget {
 
 class _MapWidget extends State<MapWidget> {
   bool _isLoading = true;
+  bool _hasError = false;
   late final List<Marker> _markers;
   late final List<Location> _locations;
 
@@ -49,7 +50,11 @@ class _MapWidget extends State<MapWidget> {
         });
       }
     } catch (e) {
-      throw Exception('[MapWidget] Error: $e');
+      debugPrint('[DEBUG]: ${e.toString()}s');
+      setState(() {
+        _hasError = true;
+        _isLoading = false;
+      });
     }
 
     return;
@@ -74,43 +79,59 @@ class _MapWidget extends State<MapWidget> {
     if (_isLoading) {
       content = const Center(child: CircularProgressIndicator());
     } else {
-      content = FlutterMap(
-        options: const MapOptions(
-          initialCenter: LatLng(16.0, 16.0),
-          minZoom: 1.0,
-          maxZoom: 16.0,
-          initialZoom: 3.0,
-          interactionOptions: Config.interactionOptions,
-        ),
-        children: [
-          TileLayer(
-            urlTemplate: Config.osmURL,
+      if (!_hasError) {
+        content = FlutterMap(
+          options: const MapOptions(
+            initialCenter: LatLng(16.0, 16.0),
+            minZoom: 1.0,
+            maxZoom: 16.0,
+            initialZoom: 3.0,
+            interactionOptions: Config.interactionOptions,
           ),
-          SuperclusterLayer.immutable(
-            initialMarkers: _markers,
-            indexBuilder: IndexBuilders.computeWithOriginalMarkers,
-            onMarkerTap: (marker) {
-              int id = int.parse(marker.key.toString().replaceAll(RegExp('[^0-9]'), ''));
-              final Location location = _locations.where((l) => l.id == id).first;
-              selectLocation(context, location);
-            },
-            builder: (context, position, markerCount, extraClusterData) {
-              return Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  color: Colors.blue,
-                ),
-                child: Center(
-                  child: Text(
-                    markerCount.toString(),
-                    style: const TextStyle(color: Colors.white),
+          children: [
+            TileLayer(
+              urlTemplate: Config.osmURL,
+            ),
+            SuperclusterLayer.immutable(
+              initialMarkers: _markers,
+              indexBuilder: IndexBuilders.computeWithOriginalMarkers,
+              onMarkerTap: (marker) {
+                int id = int.parse(marker.key.toString().replaceAll(RegExp('[^0-9]'), ''));
+                final Location location = _locations.where((l) => l.id == id).first;
+                selectLocation(context, location);
+              },
+              builder: (context, position, markerCount, extraClusterData) {
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: Colors.blue,
                   ),
-                ),
-              );
-            },
-          ),
-        ],
-      );
+                  child: Center(
+                    child: Text(
+                      markerCount.toString(),
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      } else {
+        content = Column(
+          children: [
+            const SizedBox(height: 200),
+            Center(
+                child: Text(
+              textAlign: TextAlign.center,
+              'An error has occurred, please try again.',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+            ))
+          ],
+        );
+      }
     }
 
     return content;

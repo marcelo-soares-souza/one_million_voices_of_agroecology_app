@@ -40,7 +40,7 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
   late List<Widget> evaluateBlock;
   late List<Widget> acknowledgeBlock;
 
-  void _retrieveFullPractice() async {
+  Future<void> _retrieveFullPractice() async {
     _practice = await PracticeService.retrievePractice(widget.practice.id.toString());
 
     mainBlock = <Widget>[
@@ -164,127 +164,134 @@ class _LocationDetailsScreen extends State<PracticeDetailsScreen> {
     Widget activePage = const Center(child: CircularProgressIndicator());
 
     if (!_isLoading) {
-      activePage = SingleChildScrollView(
-        child: Column(
-          children: [
-            if (_selectedPageIndex != 5) ...[
-              CachedNetworkImage(
-                height: 250,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => const Center(
-                    child: SizedBox(
-                  width: 30.0,
-                  height: 30.0,
-                  child: CircularProgressIndicator(),
-                )),
-                imageUrl: widget.practice.imageUrl,
-              ),
-            ],
-            if (_selectedPageOperation == 'add') ...[
-              if (_selectedPageIndex == 1)
-                SizedBox(child: NewWhatYouDos(practice: _practice))
-              else if (_selectedPageIndex == 2)
-                SizedBox(child: NewCharacterises(practice: _practice))
-              else if (_selectedPageIndex == 3)
-                SizedBox(child: NewEvaluate(practice: _practice))
-              else if (_selectedPageIndex == 4)
-                SizedBox(child: NewAcknowledge(practice: _practice))
-              else if (_selectedPageIndex == 5)
-                SizedBox(
-                  child: NewMediaWidget(
-                    practice: _practice,
-                    location: Location.initLocation(),
-                    onSetPage: _selectPage,
-                  ),
-                )
-            ] else if (_selectedPageIndex == 0 && mainBlock.isNotEmpty)
-              ...mainBlock
-            else if (_selectedPageIndex == 1 && whatYouDoBlock.isNotEmpty)
-              ...whatYouDoBlock
-            else if (_selectedPageIndex == 2 && characteriseBlock.isNotEmpty)
-              ...characteriseBlock
-            else if (_selectedPageIndex == 3 && evaluateBlock.isNotEmpty)
-              ...evaluateBlock
-            else if (_selectedPageIndex == 4 && acknowledgeBlock.isNotEmpty)
-              ...acknowledgeBlock
-            else if (_selectedPageIndex == 5) ...[
-              //
-              // Gallery
-              //
-              if (_gallery.isEmpty) ...[
-                Column(children: [
-                  const SizedBox(height: 200),
-                  Center(
-                      child: Text(
-                    textAlign: TextAlign.center,
-                    'No images available',
+      activePage = RefreshIndicator(
+        onRefresh: () async {
+          setState(() => _isLoading = true);
+          await _retrieveFullPractice();
+        },
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              if (_selectedPageIndex != 5) ...[
+                CachedNetworkImage(
+                  height: 250,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => const Center(
+                      child: SizedBox(
+                    width: 30.0,
+                    height: 30.0,
+                    child: CircularProgressIndicator(),
+                  )),
+                  imageUrl: widget.practice.imageUrl,
+                ),
+              ],
+              if (_selectedPageOperation == 'add') ...[
+                if (_selectedPageIndex == 1)
+                  SizedBox(child: NewWhatYouDos(practice: _practice))
+                else if (_selectedPageIndex == 2)
+                  SizedBox(child: NewCharacterises(practice: _practice))
+                else if (_selectedPageIndex == 3)
+                  SizedBox(child: NewEvaluate(practice: _practice))
+                else if (_selectedPageIndex == 4)
+                  SizedBox(child: NewAcknowledge(practice: _practice))
+                else if (_selectedPageIndex == 5)
+                  SizedBox(
+                    child: NewMediaWidget(
+                      practice: _practice,
+                      location: Location.initLocation(),
+                      onSetPage: _selectPage,
+                    ),
+                  )
+              ] else if (_selectedPageIndex == 0 && mainBlock.isNotEmpty)
+                ...mainBlock
+              else if (_selectedPageIndex == 1 && whatYouDoBlock.isNotEmpty)
+                ...whatYouDoBlock
+              else if (_selectedPageIndex == 2 && characteriseBlock.isNotEmpty)
+                ...characteriseBlock
+              else if (_selectedPageIndex == 3 && evaluateBlock.isNotEmpty)
+                ...evaluateBlock
+              else if (_selectedPageIndex == 4 && acknowledgeBlock.isNotEmpty)
+                ...acknowledgeBlock
+              else if (_selectedPageIndex == 5) ...[
+                //
+                // Gallery
+                //
+                if (_gallery.isEmpty) ...[
+                  Column(children: [
+                    const SizedBox(height: 200),
+                    Center(
+                        child: Text(
+                      textAlign: TextAlign.center,
+                      'No images available',
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                    ))
+                  ])
+                ] else
+                  for (final i in _gallery) ...[
+                    Stack(
+                      children: [
+                        CachedNetworkImage(
+                          height: 300,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => const Center(
+                              child: SizedBox(
+                            width: 30.0,
+                            height: 30.0,
+                            child: CircularProgressIndicator(),
+                          )),
+                          imageUrl: i.imageUrl,
+                        ),
+                        if (i.description.length > 5)
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              color: Colors.black54,
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 6,
+                                horizontal: 44,
+                              ),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    i.description,
+                                    maxLines: 2,
+                                    textAlign: TextAlign.center,
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+              ] else ...[
+                const SizedBox(height: 100),
+                Center(
+                  child: Text(
+                    'No data available for this section.',
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
-                  ))
-                ])
-              ] else
-                for (final i in _gallery) ...[
-                  Stack(
-                    children: [
-                      CachedNetworkImage(
-                        height: 300,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => const Center(
-                            child: SizedBox(
-                          width: 30.0,
-                          height: 30.0,
-                          child: CircularProgressIndicator(),
-                        )),
-                        imageUrl: i.imageUrl,
-                      ),
-                      if (i.description.length > 5)
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            color: Colors.black54,
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 6,
-                              horizontal: 44,
-                            ),
-                            child: Column(
-                              children: [
-                                Text(
-                                  i.description,
-                                  maxLines: 2,
-                                  textAlign: TextAlign.center,
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                    ],
                   ),
-                  const SizedBox(height: 20),
-                ],
-            ] else ...[
-              const SizedBox(height: 100),
-              Center(
-                child: Text(
-                  'No data available for this section.',
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                ),
-              )
-            ]
-          ],
+                )
+              ]
+            ],
+          ),
         ),
       );
     }
