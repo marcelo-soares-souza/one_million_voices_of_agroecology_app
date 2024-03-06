@@ -7,7 +7,7 @@ class Config {
   static const bool debugMode = kReleaseMode ? false : true;
 
   static const String title = 'One Million Voices of Agroecology';
-  static const String omvUrl = debugMode ? '10.0.2.2:3000' : 'dev.agroecologymap.org';
+  static const String omvUrl = debugMode ? '10.0.2.2:3000' : 'onemillionvoices.agroecologymap.org';
   static const String aboutPage = 'https://$omvUrl/about';
   static const String osmURL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 
