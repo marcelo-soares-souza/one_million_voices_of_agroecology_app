@@ -31,6 +31,8 @@ class _LocationsWidget extends State<LocationsWidget> {
 
   Future<void> _loadLocations() async {
     try {
+      _locations.clear();
+
       if (widget.filter.isNotEmpty) {
         _locations = await LocationService.retrieveLocationsByFilter(widget.filter);
       } else {

@@ -11,7 +11,7 @@ class AuthService {
 
   static InterceptedClient httpClient = InterceptedClient.build(
     onRequestTimeout: () => throw 'Request Timeout',
-    requestTimeout: const Duration(seconds: 45),
+    requestTimeout: const Duration(seconds: 60),
     interceptors: [
       CustomInterceptor(),
     ],

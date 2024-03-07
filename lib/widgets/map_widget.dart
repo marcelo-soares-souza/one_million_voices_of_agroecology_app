@@ -21,12 +21,16 @@ class MapWidget extends StatefulWidget {
 class _MapWidget extends State<MapWidget> {
   bool _isLoading = true;
   bool _hasError = false;
-  late final List<Marker> _markers;
-  late final List<Location> _locations;
 
-  void _loadMarkers() async {
+  // ignore: prefer_final_fields
+  List<Marker> _markers = [];
+  List<Location> _locations = [];
+
+  Future<void> _loadMarkers() async {
     try {
-      _markers = [];
+      _markers.clear();
+      _locations.clear();
+
       _locations = await LocationService.retrieveAllLocations();
 
       for (final location in _locations) {
@@ -46,6 +50,7 @@ class _MapWidget extends State<MapWidget> {
 
       if (_markers.isNotEmpty) {
         setState(() {
+          _hasError = false;
           _isLoading = false;
         });
       }
@@ -118,18 +123,24 @@ class _MapWidget extends State<MapWidget> {
           ],
         );
       } else {
-        content = Column(
-          children: [
-            const SizedBox(height: 200),
-            Center(
-                child: Text(
-              textAlign: TextAlign.center,
-              'An error has occurred, please try again.',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-            ))
-          ],
+        content = RefreshIndicator(
+          onRefresh: () => _loadMarkers(),
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                const SizedBox(height: 200),
+                Center(
+                    child: Text(
+                  textAlign: TextAlign.center,
+                  'An error has occurred, please try again.',
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                ))
+              ],
+            ),
+          ),
         );
       }
     }

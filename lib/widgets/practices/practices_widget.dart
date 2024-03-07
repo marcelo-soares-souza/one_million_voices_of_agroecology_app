@@ -35,6 +35,8 @@ class _PracticesWidget extends State<PracticesWidget> {
   }
 
   Future<void> _loadPractices() async {
+    _practices.clear();
+
     try {
       if (widget.filter.isNotEmpty) {
         _practices = await PracticeService.retrievePracticesByFilter(widget.filter);
