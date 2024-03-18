@@ -34,17 +34,20 @@ class _MapWidget extends State<MapWidget> {
       _locations = await LocationService.retrieveAllLocations();
 
       for (final location in _locations) {
-        final id = location.id;
-        if (location.latitude != 'null' && location.longitude != 'null') {
-          final latitude = double.parse(location.latitude);
-          final longitude = double.parse(location.longitude);
+        if (location.hideMyLocation == 'false') {
+          final id = location.id;
 
-          _markers.add(
-            LocationHelper.buildMarker(
-              id.toString(),
-              LatLng(latitude, longitude),
-            ),
-          );
+          if (location.latitude != 'null' && location.longitude != 'null') {
+            final latitude = double.parse(location.latitude);
+            final longitude = double.parse(location.longitude);
+
+            _markers.add(
+              LocationHelper.buildMarker(
+                id.toString(),
+                LatLng(latitude, longitude),
+              ),
+            );
+          }
         }
       }
 
