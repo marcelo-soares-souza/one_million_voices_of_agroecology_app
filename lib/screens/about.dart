@@ -45,6 +45,16 @@ The initiative’s goal is to develop a tool, or a series of tools, that enable 
             ),
             const SizedBox(
               height: 20,
+            ),
+            InkWell(
+              child: Text('Read our Privacy Policy',
+                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                        color: Theme.of(context).colorScheme.secondary,
+                      )),
+              onTap: () => launchUrl(Uri.parse(Config.privacyPolicyPage)),
+            ),
+            const SizedBox(
+              height: 20,
             )
           ],
         ),

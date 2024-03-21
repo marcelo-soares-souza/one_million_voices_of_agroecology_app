@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'package:one_million_voices_of_agroecology_app/configs/config.dart';
 import 'package:one_million_voices_of_agroecology_app/screens/home.dart';
 import 'package:one_million_voices_of_agroecology_app/services/auth_service.dart';
 
@@ -57,54 +60,72 @@ class _LoginScreen extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FlutterLogin(
-      hideForgotPasswordButton: true,
-      hideProvidersTitle: true,
-      theme: LoginTheme(
-        primaryColor: Theme.of(context).copyWith().shadowColor,
-        cardTheme: CardTheme(
-          color: Theme.of(context).copyWith().shadowColor,
-          surfaceTintColor: Colors.white,
-        ),
-        inputTheme: const InputDecorationTheme(
-          fillColor: Color.fromARGB(255, 99, 180, 101),
-          filled: true,
-          contentPadding: EdgeInsets.all(10),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black),
+    return Column(
+      children: [
+        Expanded(
+            child: FlutterLogin(
+          hideForgotPasswordButton: true,
+          hideProvidersTitle: true,
+          theme: LoginTheme(
+            primaryColor: Theme.of(context).copyWith().shadowColor,
+            cardTheme: CardTheme(
+              color: Theme.of(context).copyWith().shadowColor,
+              surfaceTintColor: Colors.white,
+            ),
+            inputTheme: const InputDecorationTheme(
+              fillColor: Color.fromARGB(255, 99, 180, 101),
+              filled: true,
+              contentPadding: EdgeInsets.all(10),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.black),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.black),
+              ),
+              labelStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+            ),
           ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black),
-          ),
-          labelStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-      ),
-      logo: const AssetImage('assets/images/logo.png'),
-      onLogin: _authUser,
-      onSignup: _signUp,
-      userValidator: (value) => value!.isEmpty ? 'E-mail is required' : null,
-      passwordValidator: (value) => value!.length < 6 ? 'Password must be at least 6 characters long.' : null,
-      additionalSignupFields: [
-        UserFormField(
-          fieldValidator: (value) {
-            if (value!.isEmpty || value.length < 4) {
-              return 'Must be at least 4 characters long.';
-            }
-            return null;
+          logo: const AssetImage('assets/images/logo.png'),
+          onLogin: _authUser,
+          onSignup: _signUp,
+          userValidator: (value) => value!.isEmpty ? 'E-mail is required' : null,
+          passwordValidator: (value) => value!.length < 6 ? 'Password must be at least 6 characters long.' : null,
+          additionalSignupFields: [
+            UserFormField(
+              fieldValidator: (value) {
+                if (value!.isEmpty || value.length < 4) {
+                  return 'Must be at least 4 characters long.';
+                }
+                return null;
+              },
+              keyName: 'name',
+              icon: const Icon(FontAwesomeIcons.userLarge),
+              displayName: 'Your Name',
+            ),
+          ],
+          onSubmitAnimationCompleted: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const HomeScreen(),
+              ),
+            );
           },
-          keyName: 'name',
-          icon: const Icon(FontAwesomeIcons.userLarge),
-          displayName: 'Your Name',
+          onRecoverPassword: _recoverPassword,
+        )),
+        const SizedBox(
+          height: 10,
         ),
+        InkWell(
+          child: Text('Read our Privacy Policy',
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    color: Theme.of(context).colorScheme.secondary,
+                  )),
+          onTap: () => launchUrl(Uri.parse(Config.privacyPolicyPage)),
+        ),
+        const SizedBox(
+          height: 10,
+        )
       ],
-      onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
-          ),
-        );
-      },
-      onRecoverPassword: _recoverPassword,
     );
   }
 }
